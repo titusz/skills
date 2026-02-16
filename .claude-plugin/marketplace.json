@@ -1,0 +1,22 @@
+{
+  "name": "titusz-skills",
+  "owner": {
+    "name": "Titusz Pan",
+    "email": "tp@py7.de"
+  },
+  "metadata": {
+    "description": "A collection of reusable Claude Code skills, agents, and hooks",
+    "version": "0.1.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "skill-creator",
+      "source": "skill-creator",
+      "description": "Guide for creating effective Claude Code skills with structured methodology, design patterns, and validation tooling",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "keywords": ["skill", "creator", "development", "meta"]
+    }
+  ]
+}

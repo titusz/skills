@@ -1,0 +1,36 @@
+# titusz/skills
+
+A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace with reusable
+skills, agents, and hooks.
+
+## Installation
+
+Add the marketplace and browse available plugins:
+
+```bash
+/plugin marketplace add titusz/skills
+```
+
+Then install individual plugins:
+
+```bash
+/plugin install <plugin-name>@titusz-skills
+```
+
+## Plugins
+
+| Plugin | Description | License |
+|--------|-------------|---------|
+| **skill-creator** | Guide for creating effective Claude Code skills with structured methodology, design patterns, and validation tooling | Apache-2.0 |
+
+## Development
+
+To test plugins locally during development:
+
+```bash
+claude --plugin-dir ./plugins/<plugin-name>
+```
+
+## License
+
+MIT
