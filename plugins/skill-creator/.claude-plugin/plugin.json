@@ -1,0 +1,11 @@
+{
+  "name": "skill-creator",
+  "description": "Guide for creating effective Claude Code skills with structured methodology, design patterns, and validation tooling",
+  "version": "0.1.0",
+  "author": {
+    "name": "Titusz Pan"
+  },
+  "repository": "https://github.com/titusz/skills",
+  "license": "Apache-2.0",
+  "keywords": ["skill", "creator", "development", "meta"]
+}
