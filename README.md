@@ -22,6 +22,7 @@ Then install individual plugins:
 | Plugin | Description | License |
 |--------|-------------|---------|
 | **skill-creator** | Guide for creating effective Claude Code skills with structured methodology, design patterns, and validation tooling | Apache-2.0 |
+| **get-youtube-transcript** | Fetch transcripts from YouTube videos using youtube-transcript-api | Apache-2.0 |
 
 ## Development
 
