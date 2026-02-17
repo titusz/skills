@@ -9,16 +9,8 @@ Guidance for creating effective Claude Code skills packaged as plugins.
 
 ## About Skills
 
-Skills are modular, self-contained packages that extend Claude's capabilities by providing
-specialized knowledge, workflows, and tools. They transform Claude from a general-purpose
-agent into a specialized agent equipped with procedural knowledge that no model can fully possess.
-
-### What Skills Provide
-
-1. Specialized workflows - Multi-step procedures for specific domains
-2. Tool integrations - Instructions for working with specific file formats or APIs
-3. Domain expertise - Company-specific knowledge, schemas, business logic
-4. Bundled resources - Scripts, references, and assets for complex and repetitive tasks
+Skills are modular packages that extend Claude with procedural knowledge, workflows, tools,
+and domain expertise that no model can fully possess on its own.
 
 ## Core Principles
 
@@ -74,6 +66,8 @@ skill-name/
   Include both what the skill does and specific triggers/contexts for when to use it.
   All "when to use" information belongs in the description, not in the body.
 - **Body** (Markdown): Instructions and guidance. Only loaded AFTER the skill triggers.
+- See [references/frontmatter-fields.md](references/frontmatter-fields.md) for all supported
+  frontmatter fields beyond `name` and `description`.
 
 #### Bundled Resources (optional)
 
@@ -105,13 +99,6 @@ limit. Reference split files from SKILL.md with clear descriptions of when to re
 
 **Key principle:** When a skill supports multiple variations, keep only the core workflow and
 selection guidance in SKILL.md. Move variant-specific details into reference files.
-
-Consult these reference guides based on your skill's needs:
-
-- **Multi-step processes**: See [references/workflows.md](references/workflows.md)
-- **Output formats or quality standards**: See [references/output-patterns.md](references/output-patterns.md)
-- **Testing methodology**: See [references/testing.md](references/testing.md)
-- **Common issues**: See [references/troubleshooting.md](references/troubleshooting.md)
 
 ## Skill Creation Process
 
@@ -158,10 +145,11 @@ avoids re-discovering table schemas each time.
 
 Skip if the skill already exists and only needs iteration.
 
-Run the init script to create a new plugin with template structure:
+Run the init script to create a new plugin with template structure. Resolve the script
+path relative to this skill's base directory (provided when the skill loads):
 
 ```bash
-uv run scripts/init_plugin.py <skill-name> --path <output-directory>
+uv run <skill-base-dir>/scripts/init_plugin.py <skill-name> --path <output-directory>
 ```
 
 The script creates:
@@ -203,14 +191,24 @@ Write the YAML frontmatter with `name` and `description`:
 
 ##### Body
 
-Write instructions for using the skill and its bundled resources.
+Write instructions for using the skill and its bundled resources. Structure the body
+based on skill type:
+
+- **Workflow-based**: Step-by-step procedures (`## Step 1` → `## Step 2`)
+- **Task-based**: Different operations (`## Merge PDFs` → `## Split PDFs`)
+- **Reference/Guidelines**: Standards or specs (`## Guidelines` → `## Specs`)
+
+Consult these reference guides for patterns applicable to the skill being created:
+
+- **Multi-step processes**: See [references/workflows.md](references/workflows.md)
+- **Output formats or quality standards**: See [references/output-patterns.md](references/output-patterns.md)
 
 ### Step 5: Validate and Register
 
-Validate the skill structure:
+Validate the skill structure (resolve path relative to this skill's base directory):
 
 ```bash
-uv run scripts/validate_skill.py <path/to/skill-directory>
+uv run <skill-base-dir>/scripts/validate_skill.py <path/to/skill-directory>
 ```
 
 The validator checks:
@@ -241,3 +239,49 @@ Skills are living documents. Test before distributing, then iterate based on rea
 - **Context bloat**: Move detail to references/, keep SKILL.md under 5,000 words.
 
 See [references/troubleshooting.md](references/troubleshooting.md) for diagnosing common issues.
+
+## Improving an Existing Skill
+
+When asked to improve, update, or iterate on an existing skill, follow this process
+instead of the creation process above.
+
+### Step 1: Audit
+
+Read the current SKILL.md and all bundled resources (scripts, references, assets).
+Understand the skill's purpose, structure, and current capabilities.
+
+### Step 2: Evaluate
+
+Assess the skill against these quality criteria:
+
+- **Triggering**: Is the description specific enough? Does it include trigger phrases
+  and negative triggers? Would it over-trigger or under-trigger?
+- **Conciseness**: Does every paragraph justify its token cost? Is there content Claude
+  already knows? Is there duplication between SKILL.md and references?
+- **Completeness**: Are all supported use cases covered? Are there gaps in workflows
+  or missing edge cases?
+- **Accuracy**: Are script paths correct? Do referenced files exist? Are instructions
+  current and working?
+- **Organization**: Is content in the right place (SKILL.md vs references)? Is
+  progressive disclosure working? Is SKILL.md under 500 lines?
+
+### Step 3: Plan and Implement
+
+Identify specific improvements. Prioritize by impact:
+
+1. **Correctness fixes** - Broken paths, outdated instructions, missing files
+2. **Gap filling** - Missing workflows, undocumented features, absent error handling
+3. **Conciseness** - Remove redundant content, tighten verbose explanations
+4. **Organization** - Move content to appropriate locations, improve structure
+
+Implement changes using targeted edits. Validate after each significant change.
+
+### Step 4: Validate
+
+Run the validator and verify the skill still triggers correctly:
+
+```bash
+uv run <skill-base-dir>/scripts/validate_skill.py <path/to/skill-directory>
+```
+
+See [references/testing.md](references/testing.md) for comprehensive testing methodology.
