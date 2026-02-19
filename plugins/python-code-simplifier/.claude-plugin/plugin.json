@@ -1,0 +1,11 @@
+{
+  "name": "python-code-simplifier",
+  "description": "Simplifies and refines Python code for clarity, consistency, and maintainability while preserving all functionality",
+  "version": "0.1.0",
+  "author": {
+    "name": "Titusz Pan"
+  },
+  "repository": "https://github.com/titusz/skills",
+  "license": "Apache-2.0",
+  "keywords": ["python", "simplify", "refactor", "code-quality", "ruff"]
+}
