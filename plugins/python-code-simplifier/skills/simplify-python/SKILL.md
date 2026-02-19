@@ -1,5 +1,5 @@
 ---
-name: simplify
+name: simplify-python
 description: >-
   Simplify Python code for clarity and maintainability. Use when users say "simplify",
   "simplify this code", "clean up Python", "refine this code", "make this simpler",
