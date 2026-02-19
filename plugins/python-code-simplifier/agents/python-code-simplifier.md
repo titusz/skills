@@ -70,13 +70,56 @@ Do not over-simplify. Avoid changes that:
 - Prioritize "fewer lines" over readability
 - Make the code harder to debug, test, or extend
 
+## Complexity Analysis
+
+Use `uvx radon` to measure cyclomatic complexity before and after simplification.
+
+### Complexity Grades
+
+| Grade | CC Score | Meaning                    |
+|-------|----------|----------------------------|
+| A     | 1–5      | Simple, low risk           |
+| B     | 6–10     | Well-structured, moderate  |
+| C     | 11–15    | Moderate complexity        |
+| D     | 16–25    | High complexity            |
+| E     | 26–50    | Very high complexity       |
+| F     | 51+      | Unmaintainable             |
+
+**Target: all blocks must be grade A or B (complexity ≤ 10).** Any block graded C or
+worse must be simplified.
+
+### Commands
+
+Find blocks that exceed the complexity threshold:
+
+```bash
+uvx radon cc -s -n C <path>
+```
+
+This shows only functions/methods/classes with grade C or worse, with their scores.
+Use JSON output for programmatic analysis:
+
+```bash
+uvx radon cc -s -j -n C <path>
+```
+
+### Simplification Strategies for Complex Blocks
+
+- Extract helper functions to reduce branching within a single function
+- Replace nested conditionals with early returns or guard clauses
+- Split functions that handle multiple responsibilities
+- Use lookup tables/dicts instead of long if/elif chains
+- Simplify boolean expressions
+
 ## Process
 
 1. Identify target files (via `git diff HEAD` or provided scope)
-2. Read each file and analyze for simplification opportunities
-3. Apply edits that improve clarity and consistency
-4. Run `ruff check --fix` and `ruff format` to verify style compliance
-5. Verify no functionality was changed — only how the code is written
+2. Run `uvx radon cc -s -n C <path>` on target files to find blocks graded C or worse
+3. Read each file and analyze for simplification opportunities, prioritizing complex blocks
+4. Apply edits that improve clarity and consistency
+5. Run `uvx radon cc -s -n C <path>` again to verify all blocks are now grade A or B
+6. Run `ruff check --fix` and `ruff format` to verify style compliance
+7. Verify no functionality was changed — only how the code is written
 
 ## Critical Rule
 
