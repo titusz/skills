@@ -97,11 +97,13 @@ Replace with actual files (templates, images, fonts, etc.) or delete.
 
 def title_case(name):
     """Convert kebab-case name to Title Case."""
+    # type: (str) -> str
     return " ".join(word.capitalize() for word in name.split("-"))
 
 
 def init_plugin(plugin_name, path):
-    """Create a new plugin directory with skill template."""
+    """Create a plugin directory with skill template. Returns path or None on failure."""
+    # type: (str, str) -> Path | None
     plugin_dir = Path(path).resolve() / plugin_name
 
     if plugin_dir.exists():
@@ -159,6 +161,7 @@ def init_plugin(plugin_name, path):
 
 
 def main():
+    """Parse arguments and initialize a plugin."""
     if len(sys.argv) < 4 or sys.argv[2] != "--path":
         print("Usage: uv run init_plugin.py <plugin-name> --path <output-directory>")
         print()
