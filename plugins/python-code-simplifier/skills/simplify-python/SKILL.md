@@ -12,7 +12,7 @@ allowed-tools:
 
 # Simplify Python Code
 
-Delegate to the `python-code-simplifier` agent to simplify Python code.
+Delegate to the `python-code-simplifier:python-code-simplifier` agent to simplify Python code.
 
 ## Determine Scope
 
@@ -25,7 +25,7 @@ Parse `$ARGUMENTS` to determine what to simplify:
 
 ## Dispatch
 
-Launch the `python-code-simplifier` agent with a task prompt describing the scope:
+Launch a Task with `subagent_type` set to `python-code-simplifier:python-code-simplifier` and a prompt describing the scope:
 
 - If a specific file or directory was given, instruct the agent to focus on that path
 - If a description was given, pass it as the scope context
