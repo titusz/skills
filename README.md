@@ -1,6 +1,6 @@
 # titusz/skills
 
-A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace with reusable
+A personal [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace with reusable
 skills, agents, and hooks.
 
 ## Installation
@@ -19,11 +19,11 @@ Then install individual plugins:
 
 ## Plugins
 
-| Plugin | Description | License |
-|--------|-------------|---------|
-| **skill-creator** | Guide for creating effective Claude Code skills with structured methodology, design patterns, and validation tooling | Apache-2.0 |
-| **get-youtube-transcript** | Fetch transcripts from YouTube videos using youtube-transcript-api | Apache-2.0 |
-| **python-code-simplifier** | Simplifies and refines Python code for clarity, consistency, and maintainability | Apache-2.0 |
+| Plugin                     | Description                                                                                                          | License    |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------- |
+| **skill-creator**          | Guide for creating effective Claude Code skills with structured methodology, design patterns, and validation tooling | Apache-2.0 |
+| **get-youtube-transcript** | Fetch transcripts from YouTube videos using youtube-transcript-api                                                   | Apache-2.0 |
+| **python-code-simplifier** | Simplifies and refines Python code for clarity, consistency, and maintainability                                     | Apache-2.0 |
 
 ## Development
 

@@ -87,7 +87,9 @@ def validate_skill(skill_path):
             if "--" in name:
                 errors.append(f"Name '{name}' cannot contain consecutive hyphens")
             if len(name) > MAX_NAME_LENGTH:
-                errors.append(f"Name too long ({len(name)} chars, max {MAX_NAME_LENGTH})")
+                errors.append(
+                    f"Name too long ({len(name)} chars, max {MAX_NAME_LENGTH})"
+                )
             if name.startswith("claude") or name.startswith("anthropic"):
                 errors.append(f"Name '{name}' uses a reserved prefix")
             if name != skill_path.name:
@@ -101,7 +103,9 @@ def validate_skill(skill_path):
     else:
         description = frontmatter["description"]
         if not isinstance(description, str):
-            errors.append(f"Description must be a string, got {type(description).__name__}")
+            errors.append(
+                f"Description must be a string, got {type(description).__name__}"
+            )
         else:
             description = description.strip()
             if not description:
@@ -122,7 +126,7 @@ def validate_skill(skill_path):
                 errors.append("Description contains TODO placeholder")
 
     # Validate body content
-    body = content[match.end() + 4:]  # skip past closing --- and newline
+    body = content[match.end() + 4 :]  # skip past closing --- and newline
     body_stripped = body.strip()
 
     if not body_stripped:
@@ -146,8 +150,12 @@ def validate_skill(skill_path):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Validate a Claude Code skill directory")
-    parser.add_argument("skill_directory", help="Path to the skill directory to validate")
+    parser = argparse.ArgumentParser(
+        description="Validate a Claude Code skill directory"
+    )
+    parser.add_argument(
+        "skill_directory", help="Path to the skill directory to validate"
+    )
     args = parser.parse_args()
 
     errors, warnings = validate_skill(args.skill_directory)

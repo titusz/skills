@@ -15,6 +15,7 @@ Filling a PDF form involves these steps:
 ```
 
 Key techniques:
+
 - Explicit step ordering
 - Dependencies between steps
 - Validation at each stage
@@ -59,6 +60,7 @@ Use when workflows span multiple services. Separate into phases with data passin
 ```
 
 Key techniques:
+
 - Clear phase separation
 - Data passing between MCPs (outputs of one phase feed into the next)
 - Validation before moving to next phase
@@ -94,6 +96,7 @@ Use when output quality improves with iteration:
 ```
 
 Key techniques:
+
 - Explicit quality criteria
 - Validation scripts for deterministic checks
 - Clear stopping condition to prevent infinite loops
@@ -122,6 +125,7 @@ Explain why that storage was chosen
 ```
 
 Key techniques:
+
 - Clear decision criteria
 - Fallback options for each branch
 - Transparency about choices made

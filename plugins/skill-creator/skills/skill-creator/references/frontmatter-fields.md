@@ -46,7 +46,7 @@ Placeholder text shown to users when invoking the skill. Only meaningful when
 `user-invocable` is enabled.
 
 ```yaml
-argument-hint: "PR URL or number"
+argument-hint: PR URL or number
 ```
 
 ### allowed-tools

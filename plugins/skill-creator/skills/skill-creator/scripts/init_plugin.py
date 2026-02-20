@@ -13,7 +13,6 @@ Examples:
     uv run init_plugin.py pdf-editor --path ~/.claude/skills
 """
 
-import json
 import sys
 from pathlib import Path
 
@@ -146,7 +145,7 @@ def init_plugin(plugin_name, path):
         return None
 
     print(f"Created plugin at {plugin_dir}")
-    print(f"  .claude-plugin/plugin.json")
+    print("  .claude-plugin/plugin.json")
     print(f"  skills/{plugin_name}/SKILL.md")
     print(f"  skills/{plugin_name}/scripts/example.py")
     print(f"  skills/{plugin_name}/references/example_reference.md")

@@ -62,12 +62,12 @@ skill-name/
 #### SKILL.md (required)
 
 - **Frontmatter** (YAML): Contains `name` and `description` fields (required). The `description`
-  is the primary triggering mechanism - Claude uses it to decide when to load the skill.
-  Include both what the skill does and specific triggers/contexts for when to use it.
-  All "when to use" information belongs in the description, not in the body.
+    is the primary triggering mechanism - Claude uses it to decide when to load the skill.
+    Include both what the skill does and specific triggers/contexts for when to use it.
+    All "when to use" information belongs in the description, not in the body.
 - **Body** (Markdown): Instructions and guidance. Only loaded AFTER the skill triggers.
 - See [references/frontmatter-fields.md](references/frontmatter-fields.md) for all supported
-  frontmatter fields beyond `name` and `description`.
+    frontmatter fields beyond `name` and `description`.
 
 #### Bundled Resources (optional)
 
@@ -91,7 +91,7 @@ The skill should only contain information needed for an AI agent to do the job.
 Skills use a three-level loading system to manage context efficiently:
 
 1. **Metadata (name + description)** - Always in context (~100 words)
-2. **SKILL.md body** - When skill triggers (<5k words)
+2. **SKILL.md body** - When skill triggers (\<5k words)
 3. **Bundled resources** - As needed by Claude
 
 Keep SKILL.md body under 500 lines. Split content into separate files when approaching this
@@ -153,6 +153,7 @@ uv run <skill-base-dir>/scripts/init_plugin.py <skill-name> --path <output-direc
 ```
 
 The script creates:
+
 - Plugin directory with `.claude-plugin/plugin.json`
 - Skill directory with template `SKILL.md` and example resource directories
 - Example files in `scripts/`, `references/`, and `assets/` to customize or delete
@@ -183,11 +184,11 @@ Write the YAML frontmatter with `name` and `description`:
 
 - `name`: Kebab-case identifier matching the directory name
 - `description`: Primary triggering mechanism. Include both what the skill does and when to
-  use it. Include trigger phrases. Add negative triggers to prevent over-triggering.
-  - Good: "Comprehensive document creation and editing with tracked changes. Use when working
-    with .docx files for creating, modifying, or reviewing documents."
-  - Bad: "Helps with projects" (too vague, no triggers)
-  - Bad: "Implements the Project entity model" (too technical, no user context)
+    use it. Include trigger phrases. Add negative triggers to prevent over-triggering.
+    - Good: "Comprehensive document creation and editing with tracked changes. Use when working
+        with .docx files for creating, modifying, or reviewing documents."
+    - Bad: "Helps with projects" (too vague, no triggers)
+    - Bad: "Implements the Project entity model" (too technical, no user context)
 
 ##### Body
 
@@ -212,6 +213,7 @@ uv run <skill-base-dir>/scripts/validate_skill.py <path/to/skill-directory>
 ```
 
 The validator checks:
+
 - YAML frontmatter format and required fields
 - Skill naming conventions and directory structure
 - Description completeness and quality
@@ -227,7 +229,7 @@ Skills are living documents. Test before distributing, then iterate based on rea
 **Testing approach** (see [references/testing.md](references/testing.md) for details):
 
 1. **Triggering tests** - Verify the skill loads on relevant queries and not on unrelated ones.
-   Run 10-20 test queries. Adjust description triggers as needed.
+    Run 10-20 test queries. Adjust description triggers as needed.
 2. **Functional tests** - Verify correct outputs, successful tool calls, error handling, edge cases.
 3. **Performance comparison** - Compare the same task with and without the skill.
 
@@ -255,15 +257,15 @@ Understand the skill's purpose, structure, and current capabilities.
 Assess the skill against these quality criteria:
 
 - **Triggering**: Is the description specific enough? Does it include trigger phrases
-  and negative triggers? Would it over-trigger or under-trigger?
+    and negative triggers? Would it over-trigger or under-trigger?
 - **Conciseness**: Does every paragraph justify its token cost? Is there content Claude
-  already knows? Is there duplication between SKILL.md and references?
+    already knows? Is there duplication between SKILL.md and references?
 - **Completeness**: Are all supported use cases covered? Are there gaps in workflows
-  or missing edge cases?
+    or missing edge cases?
 - **Accuracy**: Are script paths correct? Do referenced files exist? Are instructions
-  current and working?
+    current and working?
 - **Organization**: Is content in the right place (SKILL.md vs references)? Is
-  progressive disclosure working? Is SKILL.md under 500 lines?
+    progressive disclosure working? Is SKILL.md under 500 lines?
 
 ### Step 3: Plan and Implement
 

@@ -5,7 +5,7 @@ description: >-
   "simplify this code", "clean up Python", "refine this code", "make this simpler",
   "simplify recent changes". Delegates to the python-code-simplifier agent.
 user-invocable: true
-argument-hint: "[file, directory, or scope]"
+argument-hint: '[file, directory, or scope]'
 allowed-tools:
   - Task
 ---

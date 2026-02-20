@@ -3,14 +3,17 @@
 ## Skill Structure Errors
 
 **Error: "SKILL.md not found"**
+
 - File must be named exactly `SKILL.md` (case-sensitive)
 
 **Error: "Invalid frontmatter"**
+
 - Missing `---` delimiters (must have opening and closing)
 - Unclosed quotes in YAML values
 - Invalid YAML syntax
 
 **Error: "Invalid skill name"**
+
 - Name has spaces or capitals: use kebab-case (`my-cool-skill`, not `My Cool Skill`)
 - Name contains reserved prefix: `claude` or `anthropic` are reserved
 - Name does not match directory name
@@ -20,6 +23,7 @@
 Symptom: Skill never loads automatically.
 
 Fixes:
+
 - Description is too generic (`"Helps with projects"` won't match anything)
 - Missing trigger phrases that users would actually say
 - Missing relevant file types or tool names
@@ -30,6 +34,7 @@ Fixes:
 Symptom: Skill loads for unrelated queries.
 
 Fixes:
+
 1. Add negative triggers: `"Do NOT use for simple data exploration (use data-viz skill instead)."`
 2. Narrow the description scope: `"Processes PDF legal documents for contract review"` instead of `"Processes documents"`
 3. Clarify boundaries: `"Use specifically for online payment workflows, not for general financial queries."`
@@ -50,6 +55,7 @@ Common causes and fixes:
 Symptom: Slow responses or degraded quality.
 
 Fixes:
+
 - Move detailed docs to references/ and link from SKILL.md
 - Keep SKILL.md under 5,000 words
 - Reduce the number of simultaneously enabled skills if using more than 20-50

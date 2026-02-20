@@ -9,11 +9,13 @@ Goal: Ensure the skill loads at the right times.
 Prepare two sets of test queries:
 
 **Should trigger** (10+ queries):
+
 - Obvious requests matching the skill's purpose
 - Paraphrased versions of the same requests
 - Requests using different terminology for the same task
 
 **Should NOT trigger** (5+ queries):
+
 - Unrelated topics
 - Adjacent but out-of-scope tasks
 - Tasks that belong to a different skill
@@ -39,6 +41,7 @@ Should NOT trigger:
 Goal: Verify the skill produces correct outputs.
 
 Test cases to cover:
+
 - Valid outputs generated for standard inputs
 - API/MCP calls succeed
 - Error handling works for known failure modes
@@ -65,12 +68,12 @@ Goal: Prove the skill improves results vs. baseline.
 
 Compare the same task with and without the skill enabled:
 
-| Metric | Without skill | With skill |
-|--------|--------------|------------|
-| Back-and-forth messages | Count | Count |
-| Failed API calls | Count | Count |
-| Tokens consumed | Estimate | Estimate |
-| User corrections needed | Count | Count |
+| Metric                  | Without skill | With skill |
+| ----------------------- | ------------- | ---------- |
+| Back-and-forth messages | Count         | Count      |
+| Failed API calls        | Count         | Count      |
+| Tokens consumed         | Estimate      | Estimate   |
+| User corrections needed | Count         | Count      |
 
 ## Pro Tip
 

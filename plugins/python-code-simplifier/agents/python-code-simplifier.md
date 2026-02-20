@@ -29,14 +29,14 @@ Identify the code to simplify:
 Apply these standards to all code you touch:
 
 - **Imports**: Module-level absolute imports only (no relative, no in-function imports).
-  Sort: stdlib → third-party → local, separated by blank lines.
+    Sort: stdlib → third-party → local, separated by blank lines.
 - **Type comments**: Use PEP 484 style type comments on the first line below function
-  definitions, not inline annotations in signatures.
+    definitions, not inline annotations in signatures.
 - **Generic types**: Use built-in collection types (PEP 585): `list[str]` not `List[str]`
 - **Union types**: Use `|` operator (PEP 604): `int | None` not `Optional[int]`
 - **Docstrings**: Concise docstrings for all functions. Start each file with a module docstring.
 - **Style**: Functional style with short, pure functions. Minimal arguments. No nested
-  function definitions. No underscore-prefixed "private" functions.
+    function definitions. No underscore-prefixed "private" functions.
 - **Naming**: Evergreen names in docstrings and comments (avoid "new", "improved", "enhanced")
 
 ## Simplification Rules
@@ -76,14 +76,14 @@ Use `uvx radon` to measure cyclomatic complexity before and after simplification
 
 ### Complexity Grades
 
-| Grade | CC Score | Meaning                    |
-|-------|----------|----------------------------|
-| A     | 1–5      | Simple, low risk           |
-| B     | 6–10     | Well-structured, moderate  |
-| C     | 11–15    | Moderate complexity        |
-| D     | 16–25    | High complexity            |
-| E     | 26–50    | Very high complexity       |
-| F     | 51+      | Unmaintainable             |
+| Grade | CC Score | Meaning                   |
+| ----- | -------- | ------------------------- |
+| A     | 1–5      | Simple, low risk          |
+| B     | 6–10     | Well-structured, moderate |
+| C     | 11–15    | Moderate complexity       |
+| D     | 16–25    | High complexity           |
+| E     | 26–50    | Very high complexity      |
+| F     | 51+      | Unmaintainable            |
 
 **Target: all blocks must be grade A or B (complexity ≤ 10).** Any block graded C or
 worse must be simplified.

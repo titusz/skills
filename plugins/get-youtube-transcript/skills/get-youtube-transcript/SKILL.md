@@ -6,7 +6,7 @@ description: >-
   "get transcript", "youtube transcript", "fetch subtitles", "transcribe video",
   "video transcript", "what does this video say". Requires uvx with youtube-transcript-api.
 user-invocable: true
-argument-hint: "<youtube-url-or-video-id> [options]"
+argument-hint: <youtube-url-or-video-id> [options]
 allowed-tools:
   - Bash
   - Write
@@ -22,10 +22,10 @@ Fetch transcripts from YouTube videos via `uvx --from youtube-transcript-api you
 Extract video ID(s) and options from `$ARGUMENTS`:
 
 - **YouTube URLs**: Extract video ID from patterns like:
-  - `https://www.youtube.com/watch?v=VIDEO_ID`
-  - `https://youtu.be/VIDEO_ID`
-  - `https://www.youtube.com/embed/VIDEO_ID`
-  - `https://youtube.com/shorts/VIDEO_ID`
+    - `https://www.youtube.com/watch?v=VIDEO_ID`
+    - `https://youtu.be/VIDEO_ID`
+    - `https://www.youtube.com/embed/VIDEO_ID`
+    - `https://youtube.com/shorts/VIDEO_ID`
 - **Bare video IDs**: Use directly (11-character alphanumeric strings with `-` and `_`)
 - **Multiple videos**: Space-separated URLs or IDs are supported
 
@@ -33,14 +33,14 @@ Extract video ID(s) and options from `$ARGUMENTS`:
 
 Users may specify these inline with the URL/ID:
 
-| Option | Description |
-|--------|-------------|
-| `--languages` or language name (e.g., "in German") | Preferred transcript language(s) |
-| `--translate <lang>` or "translate to \<language\>" | Translate transcript to target language |
-| `--format <fmt>` | Output format: `text` (default), `json`, `pretty`, `srt`, `webvtt` |
-| `--list` or "list languages" | List available transcript languages |
-| `--exclude-generated` | Skip auto-generated transcripts |
-| `--exclude-manually-created` | Skip manually created transcripts |
+| Option                                             | Description                                                        |
+| -------------------------------------------------- | ------------------------------------------------------------------ |
+| `--languages` or language name (e.g., "in German") | Preferred transcript language(s)                                   |
+| `--translate <lang>` or "translate to \<language>" | Translate transcript to target language                            |
+| `--format <fmt>`                                   | Output format: `text` (default), `json`, `pretty`, `srt`, `webvtt` |
+| `--list` or "list languages"                       | List available transcript languages                                |
+| `--exclude-generated`                              | Skip auto-generated transcripts                                    |
+| `--exclude-manually-created`                       | Skip manually created transcripts                                  |
 
 ## Workflow
 
@@ -74,6 +74,7 @@ uvx --from youtube-transcript-api youtube_transcript_api VIDEO_ID [OPTIONS]
 Default flags when no format is specified: `--format text`
 
 **Language handling:**
+
 - If user specifies a language (e.g., "in German"), map to ISO 639-1 code and use `--languages de`
 - If user asks to translate (e.g., "translate to French"), use `--translate fr`
 - If no language specified, omit `--languages` to get the default transcript
