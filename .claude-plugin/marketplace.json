@@ -6,13 +6,12 @@
   },
   "metadata": {
     "description": "A collection of reusable Claude Code skills, agents, and hooks",
-    "version": "0.1.0",
-    "pluginRoot": "./plugins"
+    "version": "0.1.0"
   },
   "plugins": [
     {
       "name": "skill-creator",
-      "source": "skill-creator",
+      "source": "./plugins/skill-creator",
       "description": "Guide for creating effective Claude Code skills with structured methodology, design patterns, and validation tooling",
       "version": "0.1.0",
       "license": "Apache-2.0",
@@ -20,7 +19,7 @@
     },
     {
       "name": "get-youtube-transcript",
-      "source": "get-youtube-transcript",
+      "source": "./plugins/get-youtube-transcript",
       "description": "Fetch transcripts from YouTube videos using youtube-transcript-api",
       "version": "0.1.0",
       "license": "Apache-2.0",
@@ -28,7 +27,7 @@
     },
     {
       "name": "python-code-simplifier",
-      "source": "python-code-simplifier",
+      "source": "./plugins/python-code-simplifier",
       "description": "Simplifies and refines Python code for clarity, consistency, and maintainability while preserving all functionality",
       "version": "0.1.0",
       "license": "Apache-2.0",
