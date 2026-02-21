@@ -1,0 +1,11 @@
+{
+  "name": "create-cli",
+  "description": "Design command-line interface parameters and UX: arguments, flags, subcommands, help text, output formats, error messages, exit codes, prompts, config/env precedence, and safe/dry-run behavior",
+  "version": "1.0.0",
+  "author": {
+    "name": "Titusz Pan"
+  },
+  "repository": "https://github.com/titusz/skills",
+  "license": "Apache-2.0",
+  "keywords": ["cli", "design", "ux", "interface", "arguments", "flags"]
+}
