@@ -32,6 +32,14 @@
       "version": "0.1.0",
       "license": "Apache-2.0",
       "keywords": ["python", "simplify", "refactor", "code-quality", "ruff"]
+    },
+    {
+      "name": "zensical-customizer",
+      "source": "./plugins/zensical-customizer",
+      "description": "Customize and extend Zensical documentation sites with interactive pages, custom templates, JavaScript widgets, and CSS styling",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "keywords": ["zensical", "docs", "customization", "templates", "javascript", "css"]
     }
   ]
 }
