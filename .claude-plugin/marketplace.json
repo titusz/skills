@@ -48,6 +48,14 @@
       "version": "1.0.0",
       "license": "Apache-2.0",
       "keywords": ["cli", "design", "ux", "interface", "arguments", "flags"]
+    },
+    {
+      "name": "docs-for-agents",
+      "source": "./plugins/docs-for-agents",
+      "description": "Create and maintain prescriptive reference documentation optimized for AI coding agents — architecture maps, decision dispatch tables, constraints catalogs, and task recipes",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "keywords": ["documentation", "agents", "reference", "architecture", "ai"]
     }
   ]
 }
