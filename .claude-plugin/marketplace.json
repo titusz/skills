@@ -10,14 +10,6 @@
   },
   "plugins": [
     {
-      "name": "skill-creator",
-      "source": "./plugins/skill-creator",
-      "description": "Guide for creating effective Claude Code skills with structured methodology, design patterns, and validation tooling",
-      "version": "0.1.0",
-      "license": "Apache-2.0",
-      "keywords": ["skill", "creator", "development", "meta"]
-    },
-    {
       "name": "get-youtube-transcript",
       "source": "./plugins/get-youtube-transcript",
       "description": "Fetch transcripts from YouTube videos using youtube-transcript-api",
