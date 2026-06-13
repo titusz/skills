@@ -9,6 +9,16 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` — see [Versioning](.claude/CLAUDE.md#versioning).
 
+## [0.3.0] — 2026-06-13
+
+### Added
+
+- **address-feedback** — triage and act on a code review without assuming the
+    reviewer is right: verify each item against the actual code, apply the
+    small/valid/uncontested fixes directly, escalate load-bearing or risky ones to
+    the user as grounded options, then run the project's quality gates before
+    reporting.
+
 ## [0.2.0] — 2026-06-13
 
 ### Added
@@ -32,3 +42,4 @@ predates this changelog.) Plugins available at this version:
 
 [0.1.0]: https://github.com/titusz/skills/releases/tag/v0.1.0
 [0.2.0]: https://github.com/titusz/skills/releases/tag/v0.2.0
+[0.3.0]: https://github.com/titusz/skills/releases/tag/v0.3.0

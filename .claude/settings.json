@@ -7,7 +7,8 @@
     "create-cli@titusz-skills": true,
     "systems-thinking@titusz-skills": true,
     "high-stakes@titusz-skills": true,
-    "cybernetics@titusz-skills": true
+    "cybernetics@titusz-skills": true,
+    "address-feedback@titusz-skills": true
   },
   "extraKnownMarketplaces": {
     "titusz-skills": {

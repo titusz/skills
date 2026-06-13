@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of reusable Claude Code skills, agents, and hooks",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "plugins": [
     {
@@ -72,6 +72,14 @@
       "version": "0.1.0",
       "license": "Apache-2.0",
       "keywords": ["cybernetics", "bio-cybernetics", "vester", "feedback-loops", "systems", "viability", "sustainability"]
+    },
+    {
+      "name": "address-feedback",
+      "source": "./plugins/address-feedback",
+      "description": "Triage and act on a code review without assuming the reviewer is right — verify each item against the actual code, apply small/valid/uncontested fixes directly, escalate load-bearing or risky ones to the user as grounded options, then run the project's quality gates before reporting",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "keywords": ["code-review", "feedback", "triage", "fixes", "quality-gates", "pull-request"]
     }
   ]
 }
