@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of reusable Claude Code skills, agents, and hooks",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "plugins": [
     {
