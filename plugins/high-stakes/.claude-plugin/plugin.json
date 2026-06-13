@@ -1,0 +1,11 @@
+{
+  "name": "high-stakes",
+  "description": "Produce a reliable, high-stakes-grade result for any task by treating the work as guilty until independent skeptics fail to break it — runs a dynamic many-subagent adversarial-verification Workflow that hunts ten specific failure modes (silent assumptions, hidden inconsistencies, sycophancy, subtle conceptual errors, overcomplication, dead code, orthogonal damage, and more) and loops until two consecutive clean rounds",
+  "version": "0.1.0",
+  "author": {
+    "name": "Titusz Pan"
+  },
+  "repository": "https://github.com/titusz/skills",
+  "license": "Apache-2.0",
+  "keywords": ["high-stakes", "adversarial-verification", "code-review", "quality", "rigor", "workflow", "subagents"]
+}

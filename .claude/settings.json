@@ -5,7 +5,8 @@
     "zensical-customizer@titusz-skills": true,
     "docs-for-agents@titusz-skills": true,
     "create-cli@titusz-skills": true,
-    "systems-thinking@titusz-skills": true
+    "systems-thinking@titusz-skills": true,
+    "high-stakes@titusz-skills": true
   },
   "extraKnownMarketplaces": {
     "titusz-skills": {

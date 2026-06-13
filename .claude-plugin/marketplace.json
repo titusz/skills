@@ -56,6 +56,14 @@
       "version": "0.1.0",
       "license": "Apache-2.0",
       "keywords": ["systems-thinking", "decision-making", "cynefin", "mental-models", "problem-solving", "dart"]
+    },
+    {
+      "name": "high-stakes",
+      "source": "./plugins/high-stakes",
+      "description": "Produce a reliable, high-stakes-grade result for any task by treating the work as guilty until independent skeptics fail to break it — runs a dynamic adversarial-verification Workflow that hunts ten failure modes and loops until two consecutive clean rounds",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "keywords": ["high-stakes", "adversarial-verification", "code-review", "quality", "rigor", "workflow", "subagents"]
     }
   ]
 }
