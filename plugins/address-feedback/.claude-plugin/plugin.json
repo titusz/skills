@@ -1,7 +1,7 @@
 {
   "name": "address-feedback",
   "description": "Triage and act on a code review without assuming the reviewer is right — verify each item against the actual code, apply the small/valid/uncontested fixes directly, escalate load-bearing or risky ones to the user as grounded options, then run the project's quality gates before reporting",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Titusz Pan"
   },

@@ -106,6 +106,13 @@ read `references/triage-playbook.md` when a call is non-obvious.
 - Capture a **baseline** first (confirm a clean `git status` or note the current diff) so the final
     change set is reviewable and orthogonal edits are visible.
 - Make the **smallest** change that fixes the real issue; match the surrounding file's style.
+- **Don't overengineer the fix.** Right-size it to the problem: no new abstraction, generalization,
+    config knob, helper layer, interface, or defensive scaffolding the issue doesn't call for. A
+    one-line correction stays one line; code with a single caller needs no abstraction; a fix needs no
+    handling for inputs that can't occur. The simplest change that *fully* resolves the verified issue
+    is the target — anything beyond it is the overcomplication you'd flag in someone else's diff. If a
+    correct fix genuinely seems to require new structure or a broad refactor, that's an escalation
+    signal (Step 2), not a licence to build it inline.
 - Keep each fix **isolated** — no opportunistic refactoring, no reformatting unrelated lines, no
     fixing problems the review didn't raise (note those separately instead).
 
@@ -123,7 +130,8 @@ Use **`AskUserQuestion`** for the escalated items. Make each one trivial to deci
     always available to the user for a custom answer.)
 
 Apply exactly what the user chose; don't reopen settled choices. If a chosen option is itself large,
-apply it with the same smallest-change discipline as Step 3.
+apply it with the same right-sized, smallest-change discipline as Step 3 — implement what was chosen,
+not a more general version of it.
 
 ## Step 5 — Run the quality gates
 
