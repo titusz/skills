@@ -19,13 +19,14 @@ Then install individual plugins:
 
 ## Plugins
 
-| Plugin                     | Description                                                                                                        | License    |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------- |
-| **get-youtube-transcript** | Fetch transcripts from YouTube videos using youtube-transcript-api                                                 | Apache-2.0 |
-| **python-code-simplifier** | Simplifies and refines Python code for clarity, consistency, and maintainability                                   | Apache-2.0 |
-| **zensical-customizer**    | Customize and extend Zensical documentation sites with interactive pages, templates, JS widgets, and CSS styling   | Apache-2.0 |
-| **create-cli**             | Design CLI parameters and UX: arguments, flags, subcommands, help text, output formats, error messages, exit codes | Apache-2.0 |
-| **docs-for-agents**        | Create and maintain prescriptive reference documentation optimized for AI coding agents                            | Apache-2.0 |
+| Plugin                     | Description                                                                                                                                            | License    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- |
+| **get-youtube-transcript** | Fetch transcripts from YouTube videos using youtube-transcript-api                                                                                     | Apache-2.0 |
+| **python-code-simplifier** | Simplifies and refines Python code for clarity, consistency, and maintainability                                                                       | Apache-2.0 |
+| **zensical-customizer**    | Customize and extend Zensical documentation sites with interactive pages, templates, JS widgets, and CSS styling                                       | Apache-2.0 |
+| **create-cli**             | Design CLI parameters and UX: arguments, flags, subcommands, help text, output formats, error messages, exit codes                                     | Apache-2.0 |
+| **docs-for-agents**        | Create and maintain prescriptive reference documentation optimized for AI coding agents                                                                | Apache-2.0 |
+| **systems-thinking**       | Apply systems thinking to a problem or decision — classify it (clear/complicated/complex/chaotic), diagnose with DART, recommend the matching protocol | Apache-2.0 |
 
 ## Development
 
@@ -37,4 +38,4 @@ claude --plugin-dir ./plugins/<plugin-name>
 
 ## License
 
-MIT
+Apache-2.0
