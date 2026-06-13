@@ -64,6 +64,14 @@
       "version": "0.1.0",
       "license": "Apache-2.0",
       "keywords": ["high-stakes", "adversarial-verification", "code-review", "quality", "rigor", "workflow", "subagents"]
+    },
+    {
+      "name": "cybernetics",
+      "source": "./plugins/cybernetics",
+      "description": "Review an idea, concept, system, or problem against Frederic Vester's 8 bio-cybernetic rules — map its feedback loops, score each rule (aligned/at-risk/violated), surface the highest-leverage fixes, and judge whether the design is viable or headed for runaway growth, brittleness, or collapse",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "keywords": ["cybernetics", "bio-cybernetics", "vester", "feedback-loops", "systems", "viability", "sustainability"]
     }
   ]
 }
