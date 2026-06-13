@@ -1,0 +1,17 @@
+{
+  "enabledPlugins": {
+    "get-youtube-transcript@titusz-skills": true,
+    "python-code-simplifier@titusz-skills": true,
+    "zensical-customizer@titusz-skills": true,
+    "docs-for-agents@titusz-skills": true,
+    "create-cli@titusz-skills": true
+  },
+  "extraKnownMarketplaces": {
+    "titusz-skills": {
+      "source": {
+        "source": "directory",
+        "path": "."
+      }
+    }
+  }
+}
