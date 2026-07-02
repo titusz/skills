@@ -9,6 +9,21 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` — see [Versioning](.claude/CLAUDE.md#versioning).
 
+## [0.4.0] — 2026-07-02
+
+### Added
+
+- **long-horizon** — Continuous Iterative Development (CID) for long-horizon
+    projects, distilled from CID harnesses proven on two real long-running builds.
+    An autonomous loop of four fresh-context roles (update-state → define-next →
+    advance → review) advances a project in small verified increments toward a
+    human-owned target. The loop self-determines its phase (new/poc/mvp/stable)
+    from checkable exit criteria and adjusts rigor per phase; skills:
+    `/long-horizon:init` (greenfield/brownfield setup wizard),
+    `/long-horizon:build` (one iteration), `/long-horizon:status` (read-only
+    report), `/long-horizon:retro` (self-improvement pass with guarded
+    auto-apply).
+
 ## [0.3.1] — 2026-06-13
 
 ### Changed
@@ -54,3 +69,4 @@ predates this changelog.) Plugins available at this version:
 [0.2.0]: https://github.com/titusz/skills/releases/tag/v0.2.0
 [0.3.0]: https://github.com/titusz/skills/releases/tag/v0.3.0
 [0.3.1]: https://github.com/titusz/skills/releases/tag/v0.3.1
+[0.4.0]: https://github.com/titusz/skills/releases/tag/v0.4.0

@@ -1,0 +1,11 @@
+{
+  "name": "long-horizon",
+  "description": "Continuous Iterative Development (CID) for long-horizon projects: an autonomous loop of four fresh-context roles (update-state, define-next, advance, review) that advances a project in small verified increments toward a human-owned target, self-determines its phase (new/poc/mvp/stable), adjusts rigor per phase, and self-improves through a learnings ledger and retro passes",
+  "version": "0.1.0",
+  "author": {
+    "name": "Titusz Pan"
+  },
+  "repository": "https://github.com/titusz/skills",
+  "license": "Apache-2.0",
+  "keywords": ["cid", "long-horizon", "autonomous", "iteration", "agents", "phases", "greenfield", "loop"]
+}
