@@ -9,6 +9,25 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` — see [Versioning](.claude/CLAUDE.md#versioning).
 
+## [0.5.0] — 2026-07-04
+
+### Added
+
+- **taskmate** — a task companion for the [Vikunja](https://vikunja.io) task
+    manager. Self-healing configuration (collects server URL + API token when
+    missing, structured errors agents can act on), a token-efficient bundled CLI
+    (Python via `uv`, covers tasks/projects/labels/assignees/relations/comments
+    plus a raw-API escape hatch), and two identity modes: `user` (act as the
+    human's own account, quietly) or `companion` (the agent's own account with a
+    signing persona and colleague etiquette). Skills: the auto-triggering core,
+    `/taskmate:setup` (guided onboarding), `/taskmate:pulse` (read-only daily
+    radar — one high-signal nudge or silence), and `/taskmate:auto <playbook>`
+    (dry-run-by-default automations: groom, split, review, celebrate, unstick,
+    triage; extensible via custom playbook files). A per-profile journal
+    (`taskmate.py journal add|recent`, 90-day retention) gives otherwise
+    stateless scheduled runs cross-run memory, so pulse and playbooks don't
+    repeat nudges or re-propose changes a human declined.
+
 ## [0.4.0] — 2026-07-02
 
 ### Added
@@ -70,3 +89,4 @@ predates this changelog.) Plugins available at this version:
 [0.3.0]: https://github.com/titusz/skills/releases/tag/v0.3.0
 [0.3.1]: https://github.com/titusz/skills/releases/tag/v0.3.1
 [0.4.0]: https://github.com/titusz/skills/releases/tag/v0.4.0
+[0.5.0]: https://github.com/titusz/skills/releases/tag/v0.5.0

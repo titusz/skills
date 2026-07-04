@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of reusable Claude Code skills, agents, and hooks",
-    "version": "0.4.0"
+    "version": "0.5.0"
   },
   "plugins": [
     {
@@ -88,6 +88,14 @@
       "version": "0.1.0",
       "license": "Apache-2.0",
       "keywords": ["cid", "long-horizon", "autonomous", "iteration", "agents", "phases", "greenfield", "loop"]
+    },
+    {
+      "name": "taskmate",
+      "source": "./plugins/taskmate",
+      "description": "Turn any agent into a kind, efficient, occasionally funny task companion for the Vikunja task manager: self-healing setup, token-efficient bundled CLI, two identity modes (user account or companion account), a daily pulse radar, and schedulable automation playbooks (groom, split, review, celebrate, unstick, triage)",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "keywords": ["vikunja", "tasks", "todo", "productivity", "companion", "automation", "playbooks", "gtd"]
     }
   ]
 }
