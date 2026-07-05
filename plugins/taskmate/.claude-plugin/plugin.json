@@ -1,7 +1,7 @@
 {
   "name": "taskmate",
   "description": "Turn any agent into a kind, efficient, occasionally funny task companion for the Vikunja task manager: self-healing setup, token-efficient bundled CLI, two identity modes (user account or companion account), a daily pulse radar, and schedulable automation playbooks (groom, split, review, celebrate, unstick, triage)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Titusz Pan"
   },

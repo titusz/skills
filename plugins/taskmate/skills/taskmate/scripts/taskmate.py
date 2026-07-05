@@ -561,15 +561,19 @@ def cmd_projects(args, ctx) -> None:
 
 def cmd_tasks(args, ctx) -> None:
     """List or filter tasks; hides done tasks unless --all or --filter is given."""
+    filt = args.filter or (None if args.all else "done = false")
+    if args.project:
+        # The API exposes projects/{id}/tasks only for creation (PUT); listing
+        # is scoped through the filter grammar instead.
+        filt = f"project_id = {args.project}" + (f" && ({filt})" if filt else "")
     params = {
         "s": args.search,
-        "filter": args.filter or (None if args.all else "done = false"),
+        "filter": filt,
         "filter_timezone": ctx["profile"]["timezone"],
         "sort_by": args.sort,
         "order_by": args.order,
     }
-    path = f"/projects/{args.project}/tasks" if args.project else "/tasks"
-    tasks = fetch_list(ctx, path, params, args.limit)
+    tasks = fetch_list(ctx, "/tasks", params, args.limit)
     output(args, tasks, [fmt_task(t) for t in tasks] or ["no matching tasks"])
 
 
@@ -882,7 +886,7 @@ def build_parser() -> argparse.ArgumentParser:
     sp.add_argument("--project", type=int)
     sp.add_argument("--search")
     sp.add_argument(
-        "--filter", help='Vikunja filter, e.g. "priority >= 3 && dueDate < now+7d"'
+        "--filter", help='Vikunja filter, e.g. "priority >= 3 && due_date < now+7d"'
     )
     sp.add_argument("--all", action="store_true", help="include done tasks")
     sp.add_argument("--sort", default="updated")

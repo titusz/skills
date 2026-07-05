@@ -10,7 +10,7 @@ print `NO_ACTION` (self-congratulation via someone's own account is deeply weird
 ## Gather
 
 ```bash
-taskmate.py tasks --filter "done = true && doneAt > now-7d" --all --sort done_at --order desc
+taskmate.py tasks --filter "done = true && done_at > now-7d" --all --sort done_at --order desc
 ```
 
 For each candidate, `taskmate.py task <id>` to check existing comments.

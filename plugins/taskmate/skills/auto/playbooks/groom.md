@@ -6,7 +6,7 @@ mode: mutate
 ## Gather
 
 ```bash
-taskmate.py tasks --filter "dueDate < now && done = false" --sort due_date --order asc
+taskmate.py tasks --filter "due_date < now && done = false" --sort due_date --order asc
 taskmate.py tasks --filter "updated < now-30d && done = false" --sort updated --order asc
 taskmate.py tasks --filter "priority >= 3 && done = false"
 ```

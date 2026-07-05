@@ -96,7 +96,7 @@ record only what future runs must know — above all a human declining a propose
 | List projects             | `taskmate.py projects`                                                                                |
 | Open tasks (all projects) | `taskmate.py tasks`                                                                                   |
 | Tasks in project          | `taskmate.py tasks --project 7`                                                                       |
-| Filter                    | `taskmate.py tasks --filter "priority >= 3 && dueDate < now+7d"`                                      |
+| Filter                    | `taskmate.py tasks --filter "priority >= 3 && due_date < now+7d"`                                     |
 | Full-text search          | `taskmate.py tasks --search "invoice"`                                                                |
 | Task detail + comments    | `taskmate.py task 123`                                                                                |
 | Create                    | `taskmate.py add 7 "Title" --desc "..." --due +3d --priority 2 --label okr --assign kira`             |

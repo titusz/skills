@@ -9,6 +9,19 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` — see [Versioning](.claude/CLAUDE.md#versioning).
 
+## [0.5.1] — 2026-07-05
+
+### Fixed
+
+- **taskmate 0.1.1** — Vikunja API compatibility fixes for task listing and
+    filters. `tasks --project N` now scopes through the filter grammar
+    (`project_id = N` on `GET /tasks`) instead of `GET /projects/{id}/tasks`,
+    which current Vikunja exposes only for task creation. All bundled filter
+    examples (pulse scans, groom/review/celebrate playbooks, docs) now use the
+    snake_case field names the API accepts (`due_date`, `done_at`,
+    `percent_done`) — the camelCase spellings shown in the Vikunja web UI are
+    translated by its frontend and rejected on raw API calls.
+
 ## [0.5.0] — 2026-07-04
 
 ### Added
@@ -90,3 +103,4 @@ predates this changelog.) Plugins available at this version:
 [0.3.1]: https://github.com/titusz/skills/releases/tag/v0.3.1
 [0.4.0]: https://github.com/titusz/skills/releases/tag/v0.4.0
 [0.5.0]: https://github.com/titusz/skills/releases/tag/v0.5.0
+[0.5.1]: https://github.com/titusz/skills/releases/tag/v0.5.1

@@ -6,9 +6,9 @@ mode: read-only
 ## Gather
 
 ```bash
-taskmate.py tasks --filter "done = true && doneAt > now-7d" --all --sort done_at --order desc
-taskmate.py tasks --filter "dueDate < now && done = false" --sort due_date --order asc
-taskmate.py tasks --filter "dueDate > now && dueDate < now+7d && done = false" --sort due_date --order asc
+taskmate.py tasks --filter "done = true && done_at > now-7d" --all --sort done_at --order desc
+taskmate.py tasks --filter "due_date < now && done = false" --sort due_date --order asc
+taskmate.py tasks --filter "due_date > now && due_date < now+7d && done = false" --sort due_date --order asc
 taskmate.py tasks --filter "priority >= 3 && done = false"
 ```
 

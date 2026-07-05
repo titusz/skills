@@ -20,8 +20,8 @@ CLI: `uv run "${CLAUDE_PLUGIN_ROOT}/skills/taskmate/scripts/taskmate.py" ...`
 ## Scan (3–5 cheap queries, ~1 API roundtrip each)
 
 ```bash
-taskmate.py tasks --filter "dueDate < now && done = false" --sort due_date --order asc   # overdue
-taskmate.py tasks --filter "dueDate > now && dueDate < now+7d && done = false" --sort due_date --order asc
+taskmate.py tasks --filter "due_date < now && done = false" --sort due_date --order asc   # overdue
+taskmate.py tasks --filter "due_date > now && due_date < now+7d && done = false" --sort due_date --order asc
 taskmate.py tasks --filter "priority >= 3 && done = false"                               # important
 taskmate.py tasks --filter "priority >= 2 && updated < now-21d && done = false"          # stuck
 taskmate.py tasks --limit 15                                                             # recent motion

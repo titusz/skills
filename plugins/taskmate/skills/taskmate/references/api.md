@@ -16,8 +16,8 @@ Interactive docs live at `<server>/api/v1/docs` (OpenAPI spec: `<server>/api/v1/
 | Get / update / delete project | GET / POST / DELETE | `projects/{id}`                                                               |
 | Share project with user       | PUT                 | `projects/{id}/users` body `{"user_id": N, "right": 1}`                       |
 | Project members               | GET                 | `projects/{id}/projectusers`                                                  |
-| List all accessible tasks     | GET                 | `tasks`                                                                       |
-| Tasks in project              | GET                 | `projects/{id}/tasks`                                                         |
+| List all accessible tasks     | GET                 | `tasks` (scope to a project via filter `project_id = N`)                      |
+| Tasks in a project view       | GET                 | `projects/{id}/views/{viewID}/tasks`                                          |
 | Create task                   | PUT                 | `projects/{id}/tasks`                                                         |
 | Get / update / delete task    | GET / POST / DELETE | `tasks/{id}`                                                                  |
 | Comments                      | GET / PUT           | `tasks/{id}/comments`                                                         |
@@ -35,9 +35,9 @@ Sharing rights: `0` read, `1` read+write, `2` admin.
 
 ## Filter language
 
-Pass via `tasks --filter "..."`. Fields: `done`, `priority`, `percentDone`, `dueDate`,
-`startDate`, `endDate`, `doneAt`, `assignees`, `labels`, `project`, `reminders`, `created`,
-`updated`. Operators: `=` `!=` `>` `>=` `<` `<=` `like` (with `%` wildcards) `in`.
+Pass via `tasks --filter "..."`. Fields: `done`, `priority`, `percent_done`, `due_date`,
+`start_date`, `end_date`, `done_at`, `assignees`, `labels`, `project`, `reminders`,
+`created`, `updated`. Operators: `=` `!=` `>` `>=` `<` `<=` `like` (with `%` wildcards) `in`.
 Combine with `&&` and `||`, group with parentheses.
 
 Date values accept RFC3339 or relative math: `now`, `now+7d`, `now-1w`, `now/w` (start of
@@ -45,11 +45,11 @@ week), units `s m h d w M y`. Examples that work:
 
 ```text
 done = false && priority >= 3
-dueDate < now && done = false                  # overdue
-updated < now-30d && done = false              # stale
-assignees in titusz, kira && dueDate < now+7d  # someone's week
-labels in okr && percentDone < 0.5
-project in 6, 7, 8                             # roll-up across projects
+due_date < now && done = false                  # overdue
+updated < now-30d && done = false               # stale
+assignees in titusz, kira && due_date < now+7d  # someone's week
+labels in okr && percent_done < 0.5
+project in 6, 7, 8                              # roll-up across projects
 ```
 
 Notes: `assignees` matches usernames, `labels` matches label titles (both accept
@@ -61,6 +61,11 @@ pass no filter; pass `--all` or your own `--filter` to override.
 
 - **PUT creates, POST updates** — inverted from typical REST. The CLI hides this; remember it
     for `call`.
+- **Filter fields are snake_case at the API** (`due_date`, `done_at`, `percent_done`). The
+    Vikunja web UI and its docs show camelCase (`dueDate`) because the frontend translates
+    before sending — raw API calls and `--filter` strings must use snake_case or the server
+    rejects the filter. There is also no `GET projects/{id}/tasks` (that route only creates);
+    project-scoped listing is `filter=project_id = N` or a view route.
 - **Task update replaces the whole object.** `POST tasks/{id}` with a partial body zeroes
     omitted fields (due date vanishes, title blanks). Always GET, merge, POST — the CLI's
     `update`/`done`/`move` do this automatically. Never hand-craft a partial update via `call`.
