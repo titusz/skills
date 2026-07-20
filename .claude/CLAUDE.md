@@ -130,6 +130,9 @@ accompanied by a `references/` directory and/or `scripts/`.
 - **`description` is the trigger.** It's how Claude decides to auto-invoke the skill, so the
     convention is to pack it with trigger phrases ("Use when…", quoted user phrasings) *and*
     negative guidance ("Do NOT use for…"). This matters more than the prose body.
+    Exception: manual-only skills (`disable-model-invocation: true`, e.g. `devcontainer-setup`)
+    never load their description into context — keep it a concise human-facing summary for the
+    `/` menu instead of trigger phrases.
 - **Progressive disclosure.** `SKILL.md` is the entrypoint and stays lean (under 500 lines);
     heavyweight material goes in sibling `references/*.md` that the skill pulls in on demand.
 - **Two execution patterns:**

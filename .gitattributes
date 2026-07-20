@@ -1,0 +1,5 @@
+# Shell scripts and devcontainer template assets execute inside Linux
+# containers — a CRLF checkout (Windows autocrlf) breaks shebangs, Dockerfile
+# line continuations, and bash parsing. Pin them to LF everywhere.
+*.sh text eol=lf
+plugins/*/skills/*/assets/** text eol=lf

@@ -1,0 +1,21 @@
+# mise.toml — tool versions and task runner for {{PROJECT_NAME}}
+#
+# Single source of truth for toolchains: the devcontainer, Anthropic cloud
+# sessions, and local installs all provision from [tools] via `mise install`.
+# Usage: mise run <task>
+
+[tools]
+# Pin the project's toolchains here, e.g.:
+# python = "3.13"
+# uv = "latest"
+# node = "24"
+# go = "1.26"
+# rust = "1.89"
+
+[tasks.setup]
+description = "Install project dependencies (used by devcontainer bootstrap and cloud sessions)"
+run = "echo 'no dependency install configured'"
+
+[tasks.doctor]
+description = "Check devcontainer/agent environment health (append --fix to repair)"
+run = "bash .devcontainer/doctor.sh"

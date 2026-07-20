@@ -9,6 +9,32 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` — see [Versioning](.claude/CLAUDE.md#versioning).
 
+## [0.6.0] — 2026-07-20
+
+### Added
+
+- **devcontainer-setup** — generate or upgrade a complete `.devcontainer/`
+    setup for any project. Mounts the host's git identity and Claude Code/Codex
+    credentials into the container (Codex via a named volume seeded from a
+    read-only host mount, since its SQLite/WAL store breaks on Windows bind
+    mounts), resolves the host home cross-platform via the
+    `${localEnv:HOME}${localEnv:USERPROFILE}` idiom, and degrades gracefully
+    when host tooling is missing (stub creation + sign-in-from-container).
+    Toolchains are pinned in `mise.toml` and provisioned by `mise install`
+    (language-tailored: Python/uv, Node, Go, Rust, and anything in the mise
+    registry; ML projects get commit-safe CUDA GPU access via
+    `hostRequirements.gpu: "optional"` that degrades to CPU-only on hosts
+    without a GPU), a shared `bootstrap.sh` plus a `CLAUDE_CODE_REMOTE`-guarded
+    `SessionStart` hook makes the same repo work in Anthropic cloud
+    (claude.ai/code) sessions, and `doctor.sh` / `mise run doctor` verifies or
+    repairs (`--fix`) git auth, agent credentials, toolchains, volume
+    ownership, and line endings. Editor-agnostic (Zed, VS Code, devcontainer
+    CLI) and free of secrets or machine-specific paths in committed files.
+    User-invoked only (`disable-model-invocation` — it never auto-triggers);
+    the slash command accepts a target directory plus a free-text project
+    brief so it can also bootstrap fresh, empty repositories where there is
+    nothing to inspect.
+
 ## [0.5.1] — 2026-07-05
 
 ### Fixed

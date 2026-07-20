@@ -1,0 +1,11 @@
+{
+  "name": "devcontainer-setup",
+  "description": "Generate a complete, cross-platform .devcontainer setup for any project: host git/Claude Code/Codex credentials mounted in and ready to go, mise as tool-version manager and task runner, language-tailored toolchains and caches, a doctor check/repair command, Anthropic cloud (claude.ai/code) bootstrap, and graceful degradation when host tooling is missing — with zero secrets in the committed files",
+  "version": "0.1.0",
+  "author": {
+    "name": "Titusz Pan"
+  },
+  "repository": "https://github.com/titusz/skills",
+  "license": "Apache-2.0",
+  "keywords": ["devcontainer", "dev-container", "docker", "mise", "claude-code", "codex", "vscode", "sandbox", "development-environment"]
+}

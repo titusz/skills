@@ -1,0 +1,32 @@
+{
+  "name": "{{PROJECT_NAME}}",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "TZ": "${localEnv:TZ:UTC}"
+    }
+  },
+  "initializeCommand": "bash .devcontainer/init-host.sh",
+  "remoteUser": "dev",
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude,target=/home/dev/.claude,type=bind",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.codex,target=/home/dev/.codex-host,type=bind,readonly",
+    "source={{PROJECT_NAME}}-codex-${devcontainerId},target=/home/dev/.codex,type=volume",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/dev/.gitconfig-host,type=bind,readonly",
+    "source={{PROJECT_NAME}}-history-${devcontainerId},target=/commandhistory,type=volume",
+    "source={{PROJECT_NAME}}-cache-${devcontainerId},target=/home/dev/.cache,type=volume",
+    "source={{PROJECT_NAME}}-config-${devcontainerId},target=/home/dev/.config,type=volume",
+    "source={{PROJECT_NAME}}-mise-${devcontainerId},target=/home/dev/.local/share/mise,type=volume"
+  ],
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/dev/.claude",
+    "NODE_OPTIONS": "--max-old-space-size=4096",
+    "GH_TOKEN": "${localEnv:GH_TOKEN}",
+    "GIT_CONFIG_COUNT": "1",
+    "GIT_CONFIG_KEY_0": "commit.gpgsign",
+    "GIT_CONFIG_VALUE_0": "false"
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/{{PROJECT_NAME}},type=bind,consistency=delegated",
+  "workspaceFolder": "/workspace/{{PROJECT_NAME}}"
+}
