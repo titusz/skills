@@ -11,7 +11,8 @@
     "address-feedback@titusz-skills": true,
     "long-horizon@titusz-skills": true,
     "taskmate@titusz-skills": true,
-    "devcontainer-setup@titusz-skills": true
+    "devcontainer-setup@titusz-skills": true,
+    "evaluate-startup@titusz-skills": true
   },
   "extraKnownMarketplaces": {
     "titusz-skills": {

@@ -1,0 +1,11 @@
+{
+  "name": "evaluate-startup",
+  "description": "Run a rigorous, research-backed evaluation of a startup or business idea — adaptive founder interview, parallel deep research, adversarial fact-checking, a scored analysis.json separating attractiveness from conviction, a polished standalone HTML report, and a searchable index across all evaluations",
+  "version": "0.1.0",
+  "author": {
+    "name": "Titusz Pan"
+  },
+  "repository": "https://github.com/titusz/skills",
+  "license": "Apache-2.0",
+  "keywords": ["startup", "evaluation", "idea", "research", "scoring", "verdict", "report"]
+}

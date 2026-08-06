@@ -9,6 +9,28 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` — see [Versioning](.claude/CLAUDE.md#versioning).
 
+## [0.7.0] — 2026-08-06
+
+### Added
+
+- **evaluate-startup** — turn a raw startup or business idea into an
+    evidence-backed, scored evaluation with a durable artifact trail. Runs an
+    adaptive founder interview (max 3 batches of 3 plain-language questions,
+    skipping anything already answered), parallel research subagents across
+    five standard angles (market, competitors, technology, customer economics,
+    regulation/timing), and an adversarial review pass (fact-checker,
+    consistency auditor, devil's advocate) before rendering. The scoring model
+    separates **attractiveness** (weighted composite over 6 categories, scored
+    against explicit anchors) from **conviction** (evidence strength), and maps
+    both to a verdict band (pursue/prototype/validate/explore/monitor/avoid)
+    with falsifiable assumptions, kill criteria, and a cheapest-first
+    validation plan. A bundled `render.py` (uv, PEP 723) validates the
+    `analysis.json` against a JSON Schema plus semantic checks (weight sums,
+    recomputed composite/conviction, mechanically derived verdict band,
+    dimension-mean drift), renders a
+    self-contained light/dark HTML report, and maintains a searchable card
+    index across all evaluations.
+
 ## [0.6.1] — 2026-08-06
 
 ### Fixed
@@ -147,3 +169,6 @@ predates this changelog.) Plugins available at this version:
 [0.4.0]: https://github.com/titusz/skills/releases/tag/v0.4.0
 [0.5.0]: https://github.com/titusz/skills/releases/tag/v0.5.0
 [0.5.1]: https://github.com/titusz/skills/releases/tag/v0.5.1
+[0.6.0]: https://github.com/titusz/skills/releases/tag/v0.6.0
+[0.6.1]: https://github.com/titusz/skills/releases/tag/v0.6.1
+[0.7.0]: https://github.com/titusz/skills/releases/tag/v0.7.0

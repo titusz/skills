@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of reusable Claude Code skills, agents, and hooks",
-    "version": "0.6.1"
+    "version": "0.7.0"
   },
   "plugins": [
     {
@@ -104,6 +104,14 @@
       "version": "0.2.0",
       "license": "Apache-2.0",
       "keywords": ["devcontainer", "dev-container", "docker", "mise", "claude-code", "codex", "vscode", "sandbox", "development-environment"]
+    },
+    {
+      "name": "evaluate-startup",
+      "source": "./plugins/evaluate-startup",
+      "description": "Run a rigorous, research-backed evaluation of a startup or business idea — adaptive founder interview, parallel deep research, adversarial fact-checking, a scored analysis.json separating attractiveness from conviction, a polished standalone HTML report, and a searchable index across all evaluations",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "keywords": ["startup", "evaluation", "idea", "research", "scoring", "verdict", "report"]
     }
   ]
 }

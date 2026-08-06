@@ -1,0 +1,231 @@
+{
+  "schema_version": "1.0",
+  "meta": {
+    "slug": "freight-invoice-audit-agent",
+    "name": "Freight Invoice Audit Agent",
+    "one_liner": "AI agent that audits freight invoices against contracts and recovers the 2-5% shippers overpay.",
+    "evaluated_at": "2026-08-06T12:00:00Z",
+    "evaluator": "Claude (evaluate-startup) — ILLUSTRATIVE EXAMPLE, all data fictional",
+    "skill_version": "0.1.0",
+    "idea_source": "user interview",
+    "custom_instructions": null,
+    "tags": ["b2b", "logistics", "agentic", "fintech-adjacent"]
+  },
+  "idea": {
+    "description": "Mid-market shippers (50-500 shipments/week) routinely overpay freight carriers due to billing errors: wrong accessorial charges, misapplied contract rates, duplicate invoices. Large enterprises employ audit firms; mid-market firms eat the loss. The agent ingests carrier invoices and rate contracts, flags discrepancies with evidence, and drafts dispute claims for human approval.",
+    "target_customer": "Logistics or finance manager at a mid-market shipper with 50-500 shipments/week and no dedicated audit staff.",
+    "value_proposition": "Recover 2-5% of freight spend with near-zero effort: forward invoices, approve flagged disputes, collect refunds.",
+    "stage": "concept",
+    "founder_context": "Solo technical founder, 8 years backend/ML, no logistics background but a warm contact at two regional shippers. Bootstrapping, 20 h/week alongside consulting.",
+    "interview_notes": [
+      { "q": "Walk me through the moment someone hits this problem.", "a": "AP clerk gets a 40-line carrier invoice, has no time to check line items against the rate contract PDF, approves it. Errors surface only in annual audits, if ever." },
+      { "q": "Have you seen anyone pay to work around this?", "a": "Enterprises pay audit firms 30-50% contingency on recovered amounts. Mid-market firms told me the firms won't take them - too small." },
+      { "q": "What's the failure you fear?", "a": "That contract parsing is too messy - every carrier contract is a differently-scanned PDF with amendments." }
+    ]
+  },
+  "research": {
+    "conducted_at": "2026-08-06",
+    "angles": [
+      {
+        "id": "market",
+        "title": "Market size & demand",
+        "summary": "US mid-market freight audit is a genuinely underserved slice of a large spend pool; incumbent audit firms concentrate on enterprise contingency deals, leaving smaller shippers with no realistic option.",
+        "findings": [
+          "US business freight spend is measured in the high hundreds of billions annually; even fractions of a percent in billing errors represent a large recoverable pool (estimate).",
+          "Industry rules of thumb place freight invoice error rates between 2% and 5% of spend (estimate, multiple secondary sources).",
+          "Traditional audit firms typically require enterprise-scale volume, quoting minimums that exclude sub-500-shipments/week shippers.",
+          "No dominant self-serve software product for contract-vs-invoice freight audit surfaced in searches; adjacent TMS platforms treat audit as a checkbox feature."
+        ],
+        "sources": [
+          { "title": "Industry logistics spend overview (illustrative)", "note": "Supports total spend magnitude" },
+          { "title": "Freight audit firm service pages (illustrative)", "note": "Supports contingency pricing and enterprise minimums" }
+        ]
+      },
+      {
+        "id": "competitors",
+        "title": "Competitors & alternatives",
+        "summary": "Competition is real but oblique: contingency audit firms (enterprise-only), TMS suites with shallow audit modules, and spreadsheets. Nobody owns the mid-market wedge with a product-shaped offer.",
+        "findings": [
+          "Contingency audit firms are the strongest analog and validate willingness to pay a revenue share for recovered money.",
+          "TMS vendors could add deeper audit features, but their incentive is carrier-relationship-neutral workflow software, not adversarial auditing.",
+          "The credible fast-follower threat is another AI startup, not an incumbent."
+        ],
+        "sources": [
+          { "title": "TMS vendor feature comparisons (illustrative)", "note": "Supports shallow-audit-module claim" }
+        ]
+      },
+      {
+        "id": "technology",
+        "title": "Technology & state of the art",
+        "summary": "Invoice extraction is a solved problem at high accuracy; heterogeneous contract parsing (scanned PDFs, amendments, rate tables) is the hard 20% and the de-facto moat if cracked for the long tail of carrier formats.",
+        "findings": [
+          "Modern document AI reliably extracts line items from standard carrier invoice formats.",
+          "Rate contracts are the messy side: multi-document amendments, embedded tables, carrier-specific accessorial codes.",
+          "The audit computation itself (rate x lane x weight vs. billed) is deterministic once both sides are structured - ideal verifiability."
+        ],
+        "sources": [
+          { "title": "Document AI benchmark literature (illustrative)", "note": "Supports extraction accuracy claims" }
+        ]
+      }
+    ]
+  },
+  "assessment": {
+    "categories": [
+      {
+        "id": "problem",
+        "name": "Problem & Demand",
+        "weight": 0.2,
+        "score": 7.5,
+        "confidence": "high",
+        "summary": "Quantified, recurring money leak with proven willingness to pay a share of recovery - but the pain is silent (victims often don't know), which raises the education burden.",
+        "dimensions": [
+          { "id": "pain_intensity", "name": "Pain intensity", "score": 8, "rationale": "Direct, quantifiable financial loss; 2-5% of a core cost line is CFO-visible once surfaced." },
+          { "id": "frequency_urgency", "name": "Frequency & urgency", "score": 8, "rationale": "Every invoice cycle, continuously; urgency is low only because the loss is invisible." },
+          { "id": "problem_specificity", "name": "Problem specificity", "score": 8, "rationale": "Crisply nameable: billed amount deviates from contracted amount." },
+          { "id": "demand_evidence", "name": "Demand evidence", "score": 6, "rationale": "Enterprises demonstrably pay contingency auditors; mid-market willingness inferred, not yet observed." }
+        ],
+        "sources": [
+          { "title": "Freight audit firm service pages (illustrative)", "note": "Contingency model proves payment for recovery" }
+        ]
+      },
+      {
+        "id": "market",
+        "name": "Market & Timing",
+        "weight": 0.15,
+        "score": 6.5,
+        "confidence": "medium",
+        "summary": "Comfortable niche rather than venture-scale headline; timing is good because document AI just crossed the accuracy bar that makes long-tail contract parsing economical.",
+        "dimensions": [
+          { "id": "reachable_market", "name": "Reachable market", "score": 6, "rationale": "Mid-market shipper audit is plausibly a low-hundreds-of-millions serviceable pool - solid for a focused company, not a land grab." },
+          { "id": "growth_trajectory", "name": "Growth trajectory", "score": 7, "rationale": "Freight complexity and accessorial proliferation trend upward, growing the error surface." },
+          { "id": "why_now", "name": "Why now", "score": 7, "rationale": "Contract-grade document AI became cheap enough to serve customers audit firms reject." },
+          { "id": "tailwinds", "name": "Tailwinds", "score": 6, "rationale": "Margin pressure in logistics helps; no regulatory forcing function either way." }
+        ],
+        "sources": [
+          { "title": "Industry logistics spend overview (illustrative)", "note": "Market magnitude" }
+        ]
+      },
+      {
+        "id": "leverage",
+        "name": "Solution & Automation Leverage",
+        "weight": 0.25,
+        "score": 8.0,
+        "confidence": "high",
+        "summary": "Near-ideal agentic shape: deterministic verification core, cheap errors, fast feedback, clean decomposition. The one soft spot is getting clean contract data in.",
+        "dimensions": [
+          { "id": "outcome_verifiability", "name": "Outcome verifiability", "score": 9, "rationale": "Billed-vs-contracted is arithmetic once parsed; carrier accept/reject of disputes is a binary external ground truth." },
+          { "id": "error_tolerance", "name": "Error tolerance", "score": 8, "rationale": "False positive costs a 5-minute human review before filing; no irreversible action is automated." },
+          { "id": "feedback_loop_speed", "name": "Feedback loop speed", "score": 8, "rationale": "Parsing errors surface immediately; dispute outcomes return in days to weeks." },
+          { "id": "scope_decomposability", "name": "Scope decomposability", "score": 8, "rationale": "Month-audit → invoice → line item → field extraction; each level independently checkable, errors caught before rolling up." },
+          { "id": "data_context_availability", "name": "Data & context availability", "score": 7, "rationale": "Invoices arrive by email/EDI; contracts exist but as heterogeneous PDFs - accessible, messy." }
+        ],
+        "sources": [
+          { "title": "Document AI benchmark literature (illustrative)", "note": "Extraction feasibility" }
+        ]
+      },
+      {
+        "id": "moat",
+        "name": "Competition & Moat",
+        "weight": 0.15,
+        "score": 5.5,
+        "confidence": "medium",
+        "summary": "Wedge is open today, but durable defense must be earned: the carrier-format parsing corpus and dispute-outcome dataset compound, everything else is copyable.",
+        "dimensions": [
+          { "id": "competitive_intensity", "name": "Competitive intensity", "score": 5, "rationale": "No direct mid-market product found, but adjacent players abound and the idea is discoverable." },
+          { "id": "differentiation", "name": "Differentiation", "score": 6, "rationale": "10x on access (serving the rejected segment) more than on capability." },
+          { "id": "defensibility", "name": "Defensibility", "score": 5, "rationale": "Parsing corpus across carrier formats + dispute win-rate data are the only compounding assets; both take time." },
+          { "id": "platform_risk", "name": "Platform risk", "score": 6, "rationale": "TMS vendors could bundle audit, but adversarial auditing conflicts with their carrier-neutral positioning." }
+        ],
+        "sources": [
+          { "title": "TMS vendor feature comparisons (illustrative)", "note": "Bundling-threat assessment" }
+        ]
+      },
+      {
+        "id": "economics",
+        "name": "Business & Economics",
+        "weight": 0.1,
+        "score": 7.0,
+        "confidence": "medium",
+        "summary": "Contingency pricing (share of recovered money) aligns incentives, prices itself, and converts skeptics; margins hinge on automating the contract-onboarding cost per customer.",
+        "dimensions": [
+          { "id": "revenue_clarity", "name": "Revenue clarity", "score": 8, "rationale": "Take 20-30% of recovered amounts - the enterprise-proven model, self-justifying ROI." },
+          { "id": "unit_economics", "name": "Unit economics", "score": 7, "rationale": "Marginal audit cost is near-zero compute; per-customer contract onboarding is the real COGS." },
+          { "id": "scalability", "name": "Scalability", "score": 7, "rationale": "Each new carrier format parsed benefits all customers; revenue scales with processed spend, not headcount." },
+          { "id": "capital_intensity", "name": "Capital intensity", "score": 6, "rationale": "Bootstrappable to first revenue, but contingency model delays cash collection by the dispute cycle." }
+        ],
+        "sources": []
+      },
+      {
+        "id": "execution",
+        "name": "Execution & Fit",
+        "weight": 0.15,
+        "score": 6.5,
+        "confidence": "medium",
+        "summary": "Technically well-matched solo founder with real but thin domain access; part-time capacity and enterprise-ish sales cycles are the honest constraints.",
+        "dimensions": [
+          { "id": "technical_feasibility", "name": "Technical feasibility", "score": 7, "rationale": "Core pipeline buildable with current document AI; long-tail contract formats are grind, not research." },
+          { "id": "mvp_effort", "name": "MVP effort", "score": 7, "rationale": "Single-carrier, single-customer manual-assist audit demonstrable in 4-6 weeks at 20 h/week." },
+          { "id": "founder_advantage", "name": "Founder advantage", "score": 5, "rationale": "Strong builder profile; two warm shipper contacts but no logistics operating history or distribution." },
+          { "id": "regulatory_dependency_drag", "name": "Regulatory & dependency drag", "score": 7, "rationale": "No licensing required; dependency is carrier cooperation on disputes, which contingency firms prove is workable." }
+        ],
+        "sources": []
+      }
+    ]
+  },
+  "scores": {
+    "composite": 6.98,
+    "conviction": 0.78,
+    "band": "prototype"
+  },
+  "verdict": {
+    "recommendation": "prototype",
+    "confidence": "medium",
+    "summary": "A textbook agentic wedge: deterministic verification core, contained errors, contingency pricing that sells itself - aimed at a segment incumbents structurally ignore. Attractiveness is capped by niche market size and an earnable-but-not-yet-earned moat. Build the smallest honest test: one carrier, one shipper, manual-assist audit of one month of invoices.",
+    "strengths": [
+      "Outcome verifiability is near-perfect: billed-vs-contracted arithmetic plus binary carrier accept/reject ground truth.",
+      "Contingency pricing removes the buying decision - customers only pay from money they didn't know they'd lost.",
+      "Mid-market is structurally rejected by incumbent audit firms, not merely underserved.",
+      "Errors are cheap and contained: every automated flag passes a 5-minute human review before any external action."
+    ],
+    "weaknesses": [
+      "Silent pain: prospects don't know they're bleeding, so top-of-funnel requires proof-first selling (e.g. free retro-audit).",
+      "Moat is prospective - the parsing corpus and dispute dataset only compound after meaningful volume.",
+      "Solo founder at 20 h/week vs. a grind-heavy long tail of contract formats.",
+      "Niche ceiling: strong cash business, unlikely venture-scale story without adjacent expansion."
+    ],
+    "risks": [
+      { "risk": "Contract parsing accuracy stalls below the trust threshold on messy scanned amendments", "severity": "high", "likelihood": "medium", "mitigation": "Human-in-the-loop contract onboarding initially; treat parsing corpus as the product asset." },
+      { "risk": "Carriers stonewall disputes from a software vendor without audit-firm standing", "severity": "high", "likelihood": "low", "mitigation": "File disputes in the customer's name with evidence packets; measure accept-rate from customer one." },
+      { "risk": "A funded AI competitor takes the same wedge with a sales team", "severity": "medium", "likelihood": "medium", "mitigation": "Speed to referenceable recoveries; publish recovery benchmarks to own the category narrative." },
+      { "risk": "Founder capacity: 20 h/week stretches MVP-to-revenue past 6 months and morale breaks", "severity": "medium", "likelihood": "medium", "mitigation": "Scope MVP to one carrier format; pre-commit a go/no-go date." }
+    ],
+    "assumptions": [
+      { "assumption": "Mid-market shippers exhibit the same 2-5% error rate reported for enterprise freight", "criticality": "high", "current_evidence": "Secondary-source rules of thumb only; no primary mid-market data found." },
+      { "assumption": "A retro-audit of past invoices converts skeptical prospects at meaningful rates", "criticality": "high", "current_evidence": "Untested; analog is contingency firms' free-audit sales motion." },
+      { "assumption": "Two warm shipper contacts convert into design-partner access to real invoices and contracts", "criticality": "medium", "current_evidence": "Verbal interest expressed; nothing shared yet." }
+    ],
+    "kill_criteria": [
+      "Retro-audit of two real customers' invoices finds under 1% recoverable spend.",
+      "Carrier dispute acceptance rate below 30% after 20 evidence-backed filings.",
+      "Contract onboarding cannot be pushed below ~2 hours of human effort per carrier after 10 carriers."
+    ],
+    "validation_plan": [
+      { "question": "Is the error rate real in mid-market?", "method": "Free manual retro-audit of 1 month of invoices for both warm contacts", "effort": "2 weeks", "success_signal": ">=2% of audited spend flagged with defensible evidence" },
+      { "question": "Will carriers pay out?", "method": "File the top 10 flagged disputes in customer's name with evidence packets", "effort": "4 weeks elapsed", "success_signal": ">=50% accepted or credited" },
+      { "question": "Will strangers buy?", "method": "Cold-outreach 30 mid-market shippers offering the free retro-audit", "effort": "2 weeks", "success_signal": ">=5 accept and share invoice data" }
+    ],
+    "next_steps": [
+      "Get written data-sharing agreement from both warm shipper contacts.",
+      "Build extraction pipeline for their primary carrier's invoice + contract format only.",
+      "Run the manual-assist retro-audit; hand-verify every flag.",
+      "File disputes for verified flags; instrument acceptance tracking.",
+      "Decision gate at week 8 against the kill criteria above."
+    ]
+  },
+  "custom_sections": [
+    {
+      "title": "Recovery economics at a glance",
+      "html": "<table><tr><th>Annual freight spend</th><th>Errors @ 3%</th><th>Recovered @ 60%</th><th>Revenue @ 25% take</th></tr><tr><td class='mono'>$2M</td><td class='mono'>$60K</td><td class='mono'>$36K</td><td class='mono'>$9K</td></tr><tr><td class='mono'>$10M</td><td class='mono'>$300K</td><td class='mono'>$180K</td><td class='mono'>$45K</td></tr><tr><td class='mono'>$50M</td><td class='mono'>$1.5M</td><td class='mono'>$900K</td><td class='mono'>$225K</td></tr></table><p class='small muted'>Illustrative: a ~$45K/yr account requires a $10M-spend shipper - defines the minimum viable customer profile.</p>"
+    }
+  ]
+}

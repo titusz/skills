@@ -33,6 +33,7 @@ Then install individual plugins:
 | **long-horizon**           | Continuous Iterative Development (CID) for long-horizon projects — an autonomous loop of four fresh-context roles advances the project in small verified increments, self-determines its phase (new/poc/mvp/stable), and self-improves via learnings and retros         | Apache-2.0 |
 | **taskmate**               | A task companion for the [Vikunja](https://vikunja.io) task manager — self-healing setup, token-efficient CLI, two identity modes (user/companion account), daily pulse radar, and schedulable automation playbooks (groom, split, review, celebrate, unstick, triage)  | Apache-2.0 |
 | **devcontainer-setup**     | Generate or upgrade a cross-platform .devcontainer that mounts host git/Claude Code/Codex credentials, pins toolchains via [mise](https://mise.jdx.dev), bootstraps Anthropic cloud sessions, and ships a doctor check/repair command — zero secrets in committed files | Apache-2.0 |
+| **evaluate-startup**       | Evaluate a startup or business idea with evidence — adaptive founder interview, parallel deep research, adversarial fact-checking, a scored analysis separating attractiveness from conviction, a standalone HTML report, and a searchable index of all evaluations     | Apache-2.0 |
 
 ## Development
 
