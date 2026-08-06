@@ -153,10 +153,37 @@ if [ "$MODE" = devcontainer ]; then
   else
     warn "CLAUDE_CONFIG_DIR is not $HOME/.claude — container Claude state will not survive rebuilds; check containerEnv in devcontainer.json"
   fi
+  creds_present=0
   if [ -s "$HOME/.claude/.credentials.json" ]; then
+    creds_present=1
     ok "credentials present (host session carried over)"
   else
     warn "no credentials — run 'claude' to sign in (stored on the host mount, survives rebuilds)"
+  fi
+  # Sign-in/account state and the onboarding flag live in .claude.json
+  # (seeded from the host by setup-claude.sh); without both, the interactive
+  # UI runs first-run onboarding with a login screen despite valid
+  # credentials. Without credentials the state alone cannot promise a
+  # prompt-free start (macOS hosts seed state but keep tokens in the Keychain).
+  # Sourcing setup-claude.sh loads only claude_signin_state_ok (its seed body
+  # runs only when executed) — the predicate lives in one place.
+  . "$SCRIPT_DIR/setup-claude.sh"
+  claude_state="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.claude.json"
+  if claude_signin_state_ok "$claude_state"; then
+    if [ "$creds_present" = 1 ]; then
+      ok "account + onboarding state present (no login prompt)"
+    else
+      ok "account + onboarding state present (sign-in above still required)"
+    fi
+  elif [ "$FIX" = 1 ]; then
+    bash "$SCRIPT_DIR/setup-claude.sh"
+    if claude_signin_state_ok "$claude_state"; then
+      ok "re-ran setup-claude.sh — sign-in state seeded from host"
+    else
+      warn "setup-claude.sh could not seed sign-in state (host signed out, or stale ro mount — rebuild the container) — run 'claude' to sign in"
+    fi
+  else
+    warn "account/onboarding state incomplete in .claude.json — first 'claude' run will ask to sign in; fix: bash .devcontainer/setup-claude.sh (or --fix)"
   fi
   # Host-side plugin marketplaces store Windows install paths that the
   # container plugin system cannot resolve.

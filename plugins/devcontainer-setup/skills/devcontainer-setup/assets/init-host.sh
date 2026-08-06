@@ -41,6 +41,16 @@ fi
 mkdir -p "$home/.claude"
 mkdir -p "$home/.codex"
 [ -f "$home/.gitconfig" ] || touch "$home/.gitconfig"
+# Claude Code keeps sign-in/account state in ~/.claude.json (separate from the
+# ~/.claude dir); it is mounted read-only as a seed so the host sign-in carries
+# into the container without a login prompt. Advisory like the checks below:
+# a failed stub must not abort creation here — the mount itself will surface it.
+if [ ! -e "$home/.claude.json" ]; then
+  echo '{}' > "$home/.claude.json" \
+    || echo "init-host: WARNING — could not create the ~/.claude.json stub; the read-only seed mount will fail" >&2
+elif [ ! -f "$home/.claude.json" ]; then
+  echo "init-host: WARNING — ~/.claude.json is not a regular file (leftover from an old mount?) — remove it so the sign-in seed can work" >&2
+fi
 
 # Advisory only — never fail: missing credentials just mean signing in inside
 # the container instead of inheriting the host session.

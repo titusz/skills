@@ -5,18 +5,19 @@ setups. Read this before deviating from the templates or when debugging a genera
 
 ## Mount model
 
-| Mount                                                                      | Type         | Why                                                                                                                                                                                                                                                                                                                 |
-| -------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `~/.claude` → `/home/dev/.claude`                                          | bind, rw     | Claude Code config + OAuth credentials. Read-write so token refreshes and in-container sign-ins write back to the host — the host and container share one session that survives rebuilds. `containerEnv` sets `CLAUDE_CONFIG_DIR=/home/dev/.claude`, so the container's `.claude.json` also lives here (see below). |
-| `~/.codex` → `/home/dev/.codex-host`                                       | bind, **ro** | Seed source only. See "Codex and SQLite/WAL".                                                                                                                                                                                                                                                                       |
-| volume → `/home/dev/.codex`                                                | volume       | Codex's live home.                                                                                                                                                                                                                                                                                                  |
-| `~/.gitconfig` → `/home/dev/.gitconfig-host`                               | bind, ro     | Host git identity/aliases, inherited via `[include]` from a generated container `~/.gitconfig` that overrides credential helpers (host helpers reference binaries that don't exist in the container).                                                                                                               |
-| volume → `/commandhistory`, `~/.cache`, `~/.config`, `~/.local/share/mise` | volume       | Shell history, download caches, tool logins (`gh auth login` → `~/.config/gh`), and mise toolchains survive rebuilds. Named per-project + `${devcontainerId}` so parallel projects never collide.                                                                                                                   |
+| Mount                                                                      | Type         | Why                                                                                                                                                                                                                                                                                                                         |
+| -------------------------------------------------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `~/.claude` → `/home/dev/.claude`                                          | bind, rw     | Claude Code config + OAuth credentials. Read-write so token refreshes and in-container sign-ins write back to the host — the host and container share one session that survives rebuilds. `containerEnv` sets `CLAUDE_CONFIG_DIR=/home/dev/.claude`, so the container's `.claude.json` also lives here (see below).         |
+| `~/.claude.json` → `/home/dev/.claude.json-host`                           | bind, **ro** | Seed source only. Sign-in/account state (`oauthAccount`) and the onboarding flag live in this file, not in `.credentials.json`; `setup-claude.sh` merges those two fields into `$CLAUDE_CONFIG_DIR/.claude.json` when the container copy lacks either, so the host sign-in carries over without a login prompt (see below). |
+| `~/.codex` → `/home/dev/.codex-host`                                       | bind, **ro** | Seed source only. See "Codex and SQLite/WAL".                                                                                                                                                                                                                                                                               |
+| volume → `/home/dev/.codex`                                                | volume       | Codex's live home.                                                                                                                                                                                                                                                                                                          |
+| `~/.gitconfig` → `/home/dev/.gitconfig-host`                               | bind, ro     | Host git identity/aliases, inherited via `[include]` from a generated container `~/.gitconfig` that overrides credential helpers (host helpers reference binaries that don't exist in the container).                                                                                                                       |
+| volume → `/commandhistory`, `~/.cache`, `~/.config`, `~/.local/share/mise` | volume       | Shell history, download caches, tool logins (`gh auth login` → `~/.config/gh`), and mise toolchains survive rebuilds. Named per-project + `${devcontainerId}` so parallel projects never collide.                                                                                                                           |
 
-### Why `.claude.json` is NOT bind-mounted
+### Why `.claude.json` is seeded, not rw-bind-mounted
 
 Claude Code saves `~/.claude.json` via atomic temp-file+rename (several times a minute in an
-active session). A single-file bind mount pins one inode, so a host-side save orphans the
+active session). A rw single-file bind mount pins one inode, so a host-side save orphans the
 container's view (stale reads forever), and an in-container rename over the mountpoint fails
 with EBUSY on every Docker backend. And the "shared project state" it promised was illusory
 anyway: project entries are keyed by absolute path, and `/workspace/...` never matches
@@ -24,6 +25,25 @@ anyway: project entries are keyed by absolute path, and `/workspace/...` never m
 `.claude.json` lives *inside* the mounted `~/.claude` directory, where renames are ordinary
 file operations — so saves work and container state still survives rebuilds on the host
 mount. Host and container keep separate `.claude.json` files; credentials stay shared.
+
+The catch: sign-in/account state (`oauthAccount`, onboarding flags) lives in `.claude.json`,
+not in `.credentials.json` — a fresh container with only the credentials mount still prompts
+for login. Hence the read-only `~/.claude.json-host` mount plus `setup-claude.sh` (run by
+`post-create.sh`, re-runnable via `doctor.sh --fix`): when the host file has an
+`oauthAccount` object *and* `hasCompletedOnboarding: true` but the container's `.claude.json`
+lacks either, exactly those two fields are merged into the container copy. Never a whole-file
+copy: the host file also carries stdio MCP servers with host paths, `installMethod`, and the
+full `projects`/history map — none of which can work in the container. The merge preserves
+everything the container has accumulated (trust dialogs, MCP servers), Claude never writes to
+the mountpoint (no EBUSY), and a completed in-container sign-in already has both fields, so
+it is never touched again.
+
+The read-only `~/.claude.json-host` view shares the inode-pinning caveat: after a host-side
+save (atomic rename), backends that pin the original inode keep serving the create-time
+snapshot. The mount is therefore trustworthy only at first create — which is the only moment
+anything reads it. A sign-in completed on the host *after* creation reaches the container
+only via a rebuild; re-running `setup-claude.sh` against the stale mount finds no sign-in
+state and reports that instead of seeding.
 
 ### Home resolution across platforms
 
@@ -50,18 +70,18 @@ OAuth token refreshes stay in sync with the host.
 
 Startup must succeed on a host that has none of the tooling configured:
 
-| Missing on host                                       | What happens                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `~/.claude`, `~/.codex`, `~/.gitconfig`               | `init-host.sh` creates empty stubs before build; mounts succeed; container starts signed-out.                                                                                                                                                                                                                                                                                                                                |
-| Claude credentials                                    | Container works; doctor says: run `claude` to sign in. The sign-in lands on the host mount → survives rebuilds and pre-authorizes a later host install. macOS hosts always take this path even when signed in: Claude Code stores OAuth tokens in the Keychain there, not in `~/.claude/.credentials.json`, so host sessions cannot carry over.                                                                              |
-| Codex credentials                                     | Same, via `codex login --device-auth`; stored in the volume.                                                                                                                                                                                                                                                                                                                                                                 |
-| git identity                                          | Include of empty `~/.gitconfig-host` is harmless; doctor prints the exact fix commands, targeting `~/.config/git/config` (volume-backed, included last by the generated config) so the identity survives rebuilds.                                                                                                                                                                                                           |
-| `GH_TOKEN`                                            | `containerEnv` passes an empty string; `gh auth login` in the container persists in the `~/.config` volume.                                                                                                                                                                                                                                                                                                                  |
-| NVIDIA GPU / container runtime (GPU-enabled projects) | `hostRequirements.gpu: "optional"` makes launchers skip the `--gpus` flag; the container starts CPU-only and the doctor's GPU section names what the host is missing. See `references/gpu-cuda.md`.                                                                                                                                                                                                                          |
-| bash on a Windows host                                | Hard requirement (Git Bash or WSL): `initializeCommand` needs *some* bash. Default Git-for-Windows installs put only `Git\cmd` on PATH, so an unqualified `bash` often resolves to the System32 WSL launcher — `init-host.sh` detects WSL and re-targets the real Windows home via `cmd.exe`/`wslpath`. With neither Git Bash on PATH nor a WSL distro, container creation fails before build with "bash is not recognized". |
+| Missing on host                                           | What happens                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `~/.claude`, `~/.claude.json`, `~/.codex`, `~/.gitconfig` | `init-host.sh` creates empty stubs before build; mounts succeed; container starts signed-out.                                                                                                                                                                                                                                                                                                                                |
+| Claude credentials                                        | Container works; doctor says: run `claude` to sign in. The sign-in lands on the host mount → survives rebuilds and pre-authorizes a later host install. macOS hosts always take this path even when signed in: Claude Code stores OAuth tokens in the Keychain there, not in `~/.claude/.credentials.json`, so host sessions cannot carry over.                                                                              |
+| Codex credentials                                         | Same, via `codex login --device-auth`; stored in the volume.                                                                                                                                                                                                                                                                                                                                                                 |
+| git identity                                              | Include of empty `~/.gitconfig-host` is harmless; doctor prints the exact fix commands, targeting `~/.config/git/config` (volume-backed, included last by the generated config) so the identity survives rebuilds.                                                                                                                                                                                                           |
+| `GH_TOKEN`                                                | `containerEnv` passes an empty string; `gh auth login` in the container persists in the `~/.config` volume.                                                                                                                                                                                                                                                                                                                  |
+| NVIDIA GPU / container runtime (GPU-enabled projects)     | `hostRequirements.gpu: "optional"` makes launchers skip the `--gpus` flag; the container starts CPU-only and the doctor's GPU section names what the host is missing. See `references/gpu-cuda.md`.                                                                                                                                                                                                                          |
+| bash on a Windows host                                    | Hard requirement (Git Bash or WSL): `initializeCommand` needs *some* bash. Default Git-for-Windows installs put only `Git\cmd` on PATH, so an unqualified `bash` often resolves to the System32 WSL launcher — `init-host.sh` detects WSL and re-targets the real Windows home via `cmd.exe`/`wslpath`. With neither Git Bash on PATH nor a WSL distro, container creation fails before build with "bash is not recognized". |
 
-Non-fatality rules that make this work: `setup-codex.sh` always exits 0; `post-create.sh`
-treats credential seeding as advisory; `doctor.sh` reports instead of failing creation (it is
+Non-fatality rules that make this work: `setup-claude.sh` and `setup-codex.sh` always exit 0;
+`post-create.sh` treats credential seeding as advisory; `doctor.sh` reports instead of failing creation (it is
 informational in postCreate, strict only when run manually). `bootstrap.sh` is deliberately
 *not* on this list: a failed toolchain/dependency install makes `post-create.sh` exit nonzero
 (after the doctor has reported details), because a container without toolchains is not ready.
@@ -124,9 +144,11 @@ what's missing, preserving all project-specific customizations:
     `post-create.sh` + `bootstrap.sh` (cloud reuse).
 6. **No doctor?** → add `doctor.sh` + the `doctor` mise task; extend `DEV_OWNED_PATHS` in
     `owned-paths.sh` with any project-specific volumes (venv, cargo, go).
-7. **`~/.claude.json` still bind-mounted?** → remove the mount and set
-    `containerEnv.CLAUDE_CONFIG_DIR=/home/dev/.claude` (single-file mounts break Claude
-    Code's atomic saves — see the mount model above).
+7. **`~/.claude.json` still rw-bind-mounted?** → replace with the read-only
+    `~/.claude.json-host` seed mount + `setup-claude.sh` (called from post-create), and set
+    `containerEnv.CLAUDE_CONFIG_DIR=/home/dev/.claude` (rw single-file mounts break Claude
+    Code's atomic saves; no seed at all brings back the first-run login prompt — see the
+    mount model above).
 8. **No cloud path?** → add `bootstrap.sh` + the guarded `SessionStart` hook.
 9. **`~/.config` and `~/.cache` volumes missing?** → add (gh logins and caches currently die
     on rebuild).

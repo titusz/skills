@@ -9,6 +9,23 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` — see [Versioning](.claude/CLAUDE.md#versioning).
 
+## [0.6.1] — 2026-08-06
+
+### Fixed
+
+- **devcontainer-setup 0.2.0** — host Claude Code sign-ins now carry into the
+    container without a login prompt: sign-in/account state lives in
+    `~/.claude.json` (not in `.credentials.json`), so the host file is mounted
+    read-only at `~/.claude.json-host` and a new `setup-claude.sh` merges
+    exactly the `oauthAccount` + `hasCompletedOnboarding` fields into the
+    container's config — never a whole-file copy, which would import host-only
+    MCP servers and history and could clobber in-container state on rebuild.
+    The seed retries transient bind-mount errors and is re-runnable via
+    `doctor.sh --fix`; the doctor reports account/onboarding state without
+    contradicting its credentials check on Keychain-only (macOS) hosts, and
+    `init-host.sh` no longer aborts container creation when `~/.claude.json`
+    exists as a directory or the stub cannot be written.
+
 ## [0.6.0] — 2026-07-20
 
 ### Added

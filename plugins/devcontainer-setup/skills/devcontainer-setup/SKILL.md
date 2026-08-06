@@ -42,6 +42,7 @@ it may be the only source of truth.
 | `.devcontainer/post-create.sh`     | In-container setup orchestrator                                             |
 | `.devcontainer/bootstrap.sh`       | Shared toolchain/deps install (devcontainer + Anthropic cloud)              |
 | `.devcontainer/setup-gitconfig.sh` | Container gitconfig: host include + gh credential helper                    |
+| `.devcontainer/setup-claude.sh`    | Merge Claude sign-in state from read-only host mount                        |
 | `.devcontainer/setup-codex.sh`     | Seed Codex volume from read-only host mount                                 |
 | `.devcontainer/owned-paths.sh`     | Single list of dev-owned paths (sourced by post-create + doctor)            |
 | `.devcontainer/doctor.sh`          | Check/repair everything (`--fix`)                                           |
@@ -168,11 +169,16 @@ When `.devcontainer/` already exists, do not regenerate blindly:
     cross-platform idiom. Never use only one. Caveat: a Windows setup that defines `HOME`
     globally expands both and breaks every mount path; `init-host.sh` detects and warns about
     this (registry probe).
-- **Claude state via `CLAUDE_CONFIG_DIR=/home/dev/.claude`**: never bind-mount the single file
-    `~/.claude.json` — Claude Code replaces it by atomic rename, which a file mountpoint cannot
-    track (stale reads on host saves, EBUSY on container saves). The env var keeps the
-    container's `.claude.json` inside the mounted directory instead, where renames work and
-    state survives rebuilds.
+- **Claude state via `CLAUDE_CONFIG_DIR=/home/dev/.claude` + host seed**: never rw-bind-mount
+    the single file `~/.claude.json` — Claude Code replaces it by atomic rename, which a file
+    mountpoint cannot track (stale reads on host saves, EBUSY on container saves). The env var
+    keeps the container's `.claude.json` inside the mounted directory instead, where renames
+    work and state survives rebuilds. But sign-in/account state (`oauthAccount`) and the
+    onboarding flag live in `.claude.json`, not `.credentials.json` — so the host file is
+    additionally mounted read-only at `~/.claude.json-host` and `setup-claude.sh` merges
+    exactly those two fields into the container copy when it lacks either (never a whole-file
+    copy, which would import host-only MCP servers and history). Dropping the seed brings
+    back a login prompt on first create.
 - **Codex on a volume**: `~/.codex` must stay a named volume seeded from the read-only
     `~/.codex-host` bind mount. Codex's SQLite/WAL storage corrupts on Windows bind mounts
     (`disk I/O error`). Full story in `references/design.md`.

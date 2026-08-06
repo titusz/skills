@@ -20,6 +20,11 @@ done
 # helpers to use the container's gh CLI.
 bash .devcontainer/setup-gitconfig.sh
 
+# Claude: merge sign-in state (oauthAccount + onboarding flag) from the
+# read-only host mount into the container's .claude.json (non-fatal).
+bash .devcontainer/setup-claude.sh \
+  || echo "claude: setup failed (non-fatal) — run 'bash .devcontainer/setup-claude.sh' manually"
+
 # Codex: seed the ~/.codex volume from the read-only host mount (non-fatal).
 bash .devcontainer/setup-codex.sh \
   || echo "codex: setup failed (non-fatal) — run 'bash .devcontainer/setup-codex.sh' manually"
