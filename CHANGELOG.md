@@ -9,6 +9,40 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` — see [Versioning](.claude/CLAUDE.md#versioning).
 
+## [0.7.1] — 2026-08-23
+
+### Changed
+
+- **devcontainer-setup 0.3.0** — lifecycle self-healing (defense in depth),
+    prompted by a field incident where a silently skipped `postCreateCommand`
+    left Codex unauthenticated and git identity unset for hours with no error
+    anywhere. Lifecycle hooks are editor-dependent and none reports a skipped
+    hook inside the container, so the template now layers four mechanisms:
+    a `postStartCommand` re-runs the sub-second idempotent setup scripts
+    (gitconfig + Claude/Codex credential seeders) on every container start,
+    turning any missed or failed seed into "fixed on next start";
+    `post-create.sh` stamps completion on the container-local filesystem
+    (which vanishes on rebuild, so a stale stamp cannot mask a rebuild whose
+    hook was skipped — even with a runArgs-pinned hostname); the shell rc warns
+    on every shell start while the stamp is absent; and `doctor.sh` checks the
+    stamp first and re-runs `post-create.sh` on `--fix`. Runs of
+    `post-create.sh` are flock-serialized so a repair can never race a
+    still-running create hook (editors attach before postCreate finishes).
+    `post-create.sh` and the doctor's ownership section also guard
+    their `owned-paths.sh` source so one transient bind-mount read error under
+    `set -u` degrades one step instead of killing the whole orchestrator, and
+    the hand-off instructions now tell users to run `mise run doctor` before
+    starting work instead of trusting the create hook's output.
+
+### Fixed
+
+- **devcontainer-setup 0.3.0** — `initializeCommand` is now array-form
+    (`["bash", ".devcontainer/init-host.sh"]`): Zed wraps string-form lifecycle
+    commands in a hardcoded `/bin/sh -c`, which doesn't exist on Windows hosts,
+    failing container creation before anything runs. Array form is spawned
+    directly (no shell) and works in Zed, VS Code, and the devcontainer CLI on
+    all platforms.
+
 ## [0.7.0] — 2026-08-06
 
 ### Added
@@ -172,3 +206,4 @@ predates this changelog.) Plugins available at this version:
 [0.6.0]: https://github.com/titusz/skills/releases/tag/v0.6.0
 [0.6.1]: https://github.com/titusz/skills/releases/tag/v0.6.1
 [0.7.0]: https://github.com/titusz/skills/releases/tag/v0.7.0
+[0.7.1]: https://github.com/titusz/skills/releases/tag/v0.7.1

@@ -69,6 +69,33 @@ else
   ok "all .devcontainer scripts have LF line endings"
 fi
 
+# --- post-create completion ----------------------------------------------------
+# post-create.sh stamps /var/tmp/.post-create-ok on success. The stamp lives on
+# the container-local filesystem (never a volume): it survives stops/starts but
+# not rebuilds, so a previous container's stamp cannot mask a rebuild whose
+# create hook was silently skipped — even when runArgs pins the hostname.
+# A missing stamp explains most credential/toolchain failures below at once.
+# Editors attach before postCreate finishes, so when post-create's flock shows
+# a run in flight, report that instead of racing it with a second copy.
+if [ "$MODE" = devcontainer ]; then
+  section "post-create"
+  stamp=/var/tmp/.post-create-ok
+  if [ -e "$stamp" ]; then
+    ok "post-create completed in this container"
+  elif command -v flock >/dev/null 2>&1 && ! flock -n /tmp/.post-create.lock true 2>/dev/null; then
+    warn "post-create is running right now — wait for it to finish, then re-run doctor"
+  elif [ "$FIX" = 1 ] && [ -f "$SCRIPT_DIR/post-create.sh" ]; then
+    bash "$SCRIPT_DIR/post-create.sh"
+    if [ -e "$stamp" ]; then
+      ok "re-ran post-create.sh — setup completed"
+    else
+      bad "post-create.sh re-run did not complete (see its output above) — fix the error, then: bash .devcontainer/post-create.sh"
+    fi
+  else
+    bad "post-create never completed in this container (lifecycle hook skipped or aborted) — fix: bash .devcontainer/post-create.sh (or --fix)"
+  fi
+fi
+
 # --- git ---------------------------------------------------------------------
 section "git"
 if command -v git >/dev/null 2>&1; then
@@ -322,20 +349,26 @@ fi
 # --- volume ownership --------------------------------------------------------
 if [ "$MODE" = devcontainer ]; then
   section "volume ownership"
-  . "$SCRIPT_DIR/owned-paths.sh"
-  bad_own=""
-  for d in $DEV_OWNED_PATHS; do
-    [ -e "$d" ] || continue
-    [ -O "$d" ] || bad_own="$bad_own $d"
-  done
-  if [ -n "$bad_own" ]; then
-    if [ "$FIX" = 1 ]; then
-      sudo chown -R "$(id -un)":"$(id -gn)" $bad_own && ok "reclaimed ownership of:$bad_own"
-    else
-      bad "not owned by $(id -un):$bad_own — fix: --fix (sudo chown)"
-    fi
+  # Guarded source: a transient bind-mount read error must degrade this one
+  # section, not abort the report via set -u (same rule as post-create.sh).
+  . "$SCRIPT_DIR/owned-paths.sh" 2>/dev/null || true
+  if [ -z "${DEV_OWNED_PATHS:-}" ]; then
+    warn "could not read owned-paths.sh (bind-mount hiccup?) — ownership not checked; re-run doctor"
   else
-    ok "volumes owned by $(id -un)"
+    bad_own=""
+    for d in $DEV_OWNED_PATHS; do
+      [ -e "$d" ] || continue
+      [ -O "$d" ] || bad_own="$bad_own $d"
+    done
+    if [ -n "$bad_own" ]; then
+      if [ "$FIX" = 1 ]; then
+        sudo chown -R "$(id -un)":"$(id -gn)" $bad_own && ok "reclaimed ownership of:$bad_own"
+      else
+        bad "not owned by $(id -un):$bad_own — fix: --fix (sudo chown)"
+      fi
+    else
+      ok "volumes owned by $(id -un)"
+    fi
   fi
 fi
 

@@ -156,9 +156,17 @@ When `.devcontainer/` already exists, do not regenerate blindly:
 - Validate `devcontainer.json` is valid JSON and every script referenced by its lifecycle
     commands exists.
 - Run `bash -n` on every generated `.sh` file.
-- Tell the user the first-run steps: reopen in container (Zed/VS Code/`devcontainer up`), watch
-    `post-create.sh` finish with the doctor report, then `mise run doctor` any time (or
-    `bash .devcontainer/doctor.sh --fix` to repair).
+- Tell the user the first-run steps: reopen in container (Zed/VS Code/`devcontainer up`),
+    then — unconditionally, before starting work — run `mise run doctor` (or
+    `bash .devcontainer/doctor.sh --fix` to auto-repair). Do not assume `post-create.sh` ran or
+    that its output was visible: lifecycle hooks are editor-dependent and can be skipped
+    silently.
+- State the diagnosis rule: the completion stamp is the signal, not credential prompts. The
+    shell prints a `post-create has not completed` warning (and the doctor reports it) whenever
+    the create hook was skipped or aborted; `bash .devcontainer/doctor.sh --fix` repairs it. A
+    credential prompt alone proves nothing — a host that was never signed in (or a macOS host
+    with Keychain-only Claude tokens) reaches the same prompt with post-create completed, which
+    is supported degradation; the doctor names the in-container sign-in command for that case.
 - Mention graceful degradation: hosts without Claude/Codex/git setup still start — the doctor
     explains how to sign in from inside the container. Claude sign-ins land on the host
     `~/.claude` mount; Codex logins and git identity persist in named volumes across rebuilds.
@@ -183,7 +191,21 @@ When `.devcontainer/` already exists, do not regenerate blindly:
     `~/.codex-host` bind mount. Codex's SQLite/WAL storage corrupts on Windows bind mounts
     (`disk I/O error`). Full story in `references/design.md`.
 - **Scripts run via `bash script.sh`**: Windows bind mounts cannot preserve exec bits.
+- **`initializeCommand` stays array-form** (`["bash", ".devcontainer/init-host.sh"]`): it runs
+    on the *host*, and Zed executes string-form lifecycle commands through a hardcoded
+    `/bin/sh -c` — which doesn't exist on Windows, failing container creation with os error 3
+    before anything runs. Array form is spawned directly, no shell, and works in Zed, VS Code,
+    and the devcontainer CLI on all platforms. In-container commands (`postCreateCommand`) may
+    stay string-form: `/bin/sh` always exists inside the container.
 - **Non-fatal setup**: credential seeding must never fail container creation.
+- **Layered self-healing**: `postStartCommand` re-runs the sub-second setup scripts (gitconfig
+    and both credential seeders — all idempotent, always exit 0) on every start,
+    `post-create.sh` stamps completion on the container-local filesystem, the shell rc warns
+    while the stamp is absent, and the doctor checks and repairs it (post-create runs are
+    flock-serialized, so a repair can never race the in-flight create hook). Any lifecycle hook
+    may silently not run (editor-dependent); never collapse these layers, and keep
+    bootstrap/chown out of postStart — it must stay sub-second. Full model in
+    `references/design.md`.
 - **mise is the single source of truth** for tool versions; the Dockerfile stays generic.
 - **Agent CLIs**: installed together via npm at latest, verified at build.
 - **No secrets, no personal paths** in any committed file.

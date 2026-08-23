@@ -90,13 +90,20 @@ RUN npm install -g @anthropic-ai/claude-code@latest @openai/codex@latest \
     && codex --version
 
 # ZSH with oh-my-zsh; history persists to the /commandhistory volume; mise is
-# activated in both interactive shells
+# activated in both interactive shells. The last two lines warn on every shell
+# start while the post-create completion stamp is absent: lifecycle hooks are
+# editor-dependent and can be skipped silently, and the shell rc is the only
+# layer guaranteed to reach the user on every path. The stamp (written by
+# post-create.sh) lives on the container-local filesystem, so it vanishes on
+# rebuild and a previous container's run can never mask a skipped hook.
 RUN curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -o /tmp/omz-install.sh \
     && sh /tmp/omz-install.sh --unattended \
     && rm /tmp/omz-install.sh \
     && echo 'export HISTFILE=/commandhistory/.zsh_history' >> $HOME/.zshrc \
     && echo 'eval "$(mise activate zsh)"' >> $HOME/.zshrc \
-    && echo 'eval "$(mise activate bash)"' >> $HOME/.bashrc
+    && echo 'eval "$(mise activate bash)"' >> $HOME/.bashrc \
+    && echo '[ -e /var/tmp/.post-create-ok ] || echo "devcontainer: post-create has not completed in this container — wait if it is still running, else run: bash .devcontainer/post-create.sh"' >> $HOME/.zshrc \
+    && echo '[ -e /var/tmp/.post-create-ok ] || echo "devcontainer: post-create has not completed in this container — wait if it is still running, else run: bash .devcontainer/post-create.sh"' >> $HOME/.bashrc
 
 # ---- host- and project-specific layers below: keep them last so the generic
 # ---- layers above stay shared across projects in the build cache
