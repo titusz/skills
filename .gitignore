@@ -24,7 +24,8 @@ uv.lock
 .DS_Store
 Thumbs.db
 
-# Claude Code local settings
+# AI Agents
 .claude/settings.local.json
 .claude/agent-memory-local/
 .claude/plans/
+AGENTS.md
