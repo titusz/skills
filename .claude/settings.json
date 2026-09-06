@@ -12,7 +12,8 @@
     "long-horizon@titusz-skills": true,
     "taskmate@titusz-skills": true,
     "devcontainer-setup@titusz-skills": true,
-    "evaluate-startup@titusz-skills": true
+    "evaluate-startup@titusz-skills": true,
+    "imagegen@titusz-skills": true
   },
   "extraKnownMarketplaces": {
     "titusz-skills": {

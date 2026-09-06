@@ -9,6 +9,30 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` — see [Versioning](.claude/CLAUDE.md#versioning).
 
+## [0.8.0] — 2026-09-06
+
+### Added
+
+- **imagegen 0.1.0** — image generation and editing through the Codex CLI's
+    built-in `image_gen` tool, billed to the user's ChatGPT subscription rather
+    than an API key. Two skills: `generate-image` (generate, edit with
+    reference images, variants, exact-size `--fit` and format conversion) and
+    `art-style` (create reusable style cards from a description or from
+    reference images, list/show/sample them, apply via `--style`). A bundled
+    `uv`-runnable `codex_image.py` owns the `codex exec` gotchas found while
+    building it: the prompt must be piped via stdin (a positional prompt hangs
+    on non-TTY stdin), `OPENAI_API_KEY`/`CODEX_API_KEY` are stripped so billing stays on the
+    subscription, Codex runs read-only and ephemeral with low reasoning, and
+    outputs are harvested by thread id from `$CODEX_HOME/generated_images`
+    instead of trusting Codex to copy files. Every output lands in
+    `cauldron/images/<slug>/` with a numbered filename and a sidecar JSON
+    recording the spec, references, style, and thread id. Ships with a
+    self-running pytest suite for the script's pure parts.
+
+### Changed
+
+- README now opens with the `titusz/skills` logo banner (`assets/titusz-skills-banner.png`).
+
 ## [0.7.1] — 2026-08-23
 
 ### Changed

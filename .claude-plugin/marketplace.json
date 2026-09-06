@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of reusable Claude Code skills, agents, and hooks",
-    "version": "0.7.1"
+    "version": "0.8.0"
   },
   "plugins": [
     {
@@ -112,6 +112,14 @@
       "version": "0.1.0",
       "license": "Apache-2.0",
       "keywords": ["startup", "evaluation", "idea", "research", "scoring", "verdict", "report"]
+    },
+    {
+      "name": "imagegen",
+      "source": "./plugins/imagegen",
+      "description": "Generate and edit raster images through the Codex CLI's built-in image_gen tool on your ChatGPT subscription (no API key) — reference images, reusable art-style cards, exact-size post-processing, and every output stored with its prompt in a project-local cauldron/ folder",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "keywords": ["image", "image-generation", "codex", "gpt-image", "art-style", "illustration", "assets"]
     }
   ]
 }
