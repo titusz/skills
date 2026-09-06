@@ -9,6 +9,16 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` — see [Versioning](.claude/CLAUDE.md#versioning).
 
+## [0.8.1] — 2026-09-06
+
+### Fixed
+
+- License metadata now matches the repository's `LICENSE` file (MIT). Every
+    plugin manifest and marketplace entry declared Apache-2.0; all now declare
+    MIT, and `docs-for-agents` and `zensical-customizer` gained the previously
+    missing `license` field. Each plugin's patch version is bumped so
+    already-installed copies pick up the corrected manifest.
+
 ## [0.8.0] — 2026-09-06
 
 ### Added

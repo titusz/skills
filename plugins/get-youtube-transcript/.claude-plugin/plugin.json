@@ -1,11 +1,11 @@
 {
   "name": "get-youtube-transcript",
   "description": "Fetch transcripts from YouTube videos using youtube-transcript-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Titusz Pan"
   },
   "repository": "https://github.com/titusz/skills",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "keywords": ["youtube", "transcript", "subtitles", "video"]
 }

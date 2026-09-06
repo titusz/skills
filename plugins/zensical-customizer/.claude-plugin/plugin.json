@@ -1,5 +1,6 @@
 {
   "name": "zensical-customizer",
   "description": "Customize and extend Zensical documentation sites with interactive pages, custom templates, JavaScript widgets, and CSS styling",
-  "version": "0.1.0"
+  "version": "0.1.1",
+  "license": "MIT"
 }
