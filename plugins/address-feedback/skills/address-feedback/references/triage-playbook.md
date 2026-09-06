@@ -7,7 +7,7 @@ classification call is non-obvious or you want a model for writing escalation op
 ## The verification checklist (Step 1, in full)
 
 An external reviewer's comment can be wrong for mundane reasons. Before believing any item, rule out
-these "false-positive" causes — each is itself a valid rejection reason when it's the explanation:
+these "false-positive" causes - each is itself a valid rejection reason when it's the explanation:
 
 | Cause                    | What it looks like                                                             | How to check                                                              |
 | ------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
@@ -17,10 +17,10 @@ these "false-positive" causes — each is itself a valid rejection reason when i
 | **Wrong mental model**   | Assumes a framework/library behaves differently than it does                   | Confirm against the actual API/docs, not the reviewer's assumption        |
 | **Scope confusion**      | Comments on code the current change didn't touch                               | Diff the change under review; is the line even in scope?                  |
 
-A "Confirmed" verdict means you reproduced the problem against the real code — not that the comment
+A "Confirmed" verdict means you reproduced the problem against the real code - not that the comment
 sounded plausible. A "Refuted" verdict means you found the specific reason it's wrong and can cite it.
 
-## Apply-directly — more examples
+## Apply-directly - more examples
 
 Safe to apply without asking, *when verified and in scope*:
 
@@ -30,14 +30,14 @@ Safe to apply without asking, *when verified and in scope*:
 - Unused import / variable / dead local with no side effect.
 - A missing `await` / unhandled promise on an already-async path.
 - Wrong or misleading log/error *message* (text only, not error *type* or code).
-- An obvious resource leak — unclosed file/socket/handle on the happy path.
+- An obvious resource leak - unclosed file/socket/handle on the happy path.
 - A clearly-missing unit test for behavior that already exists and is settled.
 - Tightening an overly-broad `catch`/`except` to the specific error already being handled elsewhere.
 
-The through-line: a competent engineer seeing the diff would say "yes, obviously" — there is no
+The through-line: a competent engineer seeing the diff would say "yes, obviously" - there is no
 *decision*, only a *correction*.
 
-## Escalate — more examples, and why
+## Escalate - more examples, and why
 
 Each of these hides a decision the user owns:
 
@@ -54,20 +54,20 @@ Each of these hides a decision the user owns:
 - **"Loosen this type to `any` to fix the error."** → trades type safety; usually the wrong fix and
     worth surfacing the real options.
 
-When the *problem* is real but the *fix* is a judgment call, escalate the problem with options —
+When the *problem* is real but the *fix* is a judgment call, escalate the problem with options -
 don't pick for the user and don't drop the problem.
 
-## Reject — write the reason like a reviewer would
+## Reject - write the reason like a reviewer would
 
 A rejection is itself a small review comment back. Make it specific and evidence-bearing:
 
-- ✅ "Refuted — `cfg.timeout` is defaulted to `30` in `config.ts:12`, so the null-deref the comment
+- ✅ "Refuted - `cfg.timeout` is defaulted to `30` in `config.ts:12`, so the null-deref the comment
     describes can't occur on this path."
-- ✅ "Out of scope — `legacy_parser.py` wasn't touched by this change; flagging it here mixes
+- ✅ "Out of scope - `legacy_parser.py` wasn't touched by this change; flagging it here mixes
     concerns. Noted separately for a future cleanup."
-- ✅ "Deliberate — the `setTimeout(0)` is an intentional yield to unblock the event loop; see the
+- ✅ "Deliberate - the `setTimeout(0)` is an intentional yield to unblock the event loop; see the
     comment on `scheduler.ts:88`."
-- ❌ "Disagree." / "Not needed." / "The reviewer is wrong." — no evidence; this is unverified trust
+- ❌ "Disagree." / "Not needed." / "The reviewer is wrong." - no evidence; this is unverified trust
     inverted.
 
 ## Writing AskUserQuestion options (Step 4)
@@ -89,10 +89,10 @@ options:
 Rules of thumb:
 
 - **Ground the framing.** One clause of "what I verified" earns the user's trust in your options.
-- **Each option carries its consequence**, not just its action — "(keeps the API stable)", "(breaks
+- **Each option carries its consequence**, not just its action - "(keeps the API stable)", "(breaks
     callers)", "(adds a dependency)".
 - **Recommend when you can defend it.** First option, "(Recommended)" suffix. Don't recommend on a
-    true 50/50 — present it neutrally.
+    true 50/50 - present it neutrally.
 - **Make them exclusive and short.** A sentence each. Long options read as work, and the user bails.
 - **Always leave room to decline.** A "Leave as-is" option is legitimate; the user's "Other" is
     automatic.
@@ -101,10 +101,10 @@ Rules of thumb:
 
 **Review (from an external agent, no plan/context):**
 
-1. "`parseConfig` can throw on missing file — should be wrapped in try/catch."
+1. "`parseConfig` can throw on missing file - should be wrapped in try/catch."
 2. "Variable `usr` should be `user` for readability."
 3. "This loop is O(n²); use a Map for the lookup."
-4. "`MAX_RETRIES` is hardcoded to 3 — make it configurable."
+4. "`MAX_RETRIES` is hardcoded to 3 - make it configurable."
 5. "The `formatDate` import is unused."
 
 **Triage:**
@@ -116,7 +116,7 @@ Rules of thumb:
 - **#3 → Escalate.** Confirmed the O(n²); but `n` is bounded to ~5 here (verified at the call site),
     so the Map adds complexity for no real gain. Offer "leave as-is (n is tiny)" as recommended,
     "use a Map" as the alternative.
-- **#4 → Escalate.** Touches the public config surface — backward-compat and naming decision.
+- **#4 → Escalate.** Touches the public config surface - backward-compat and naming decision.
 - **#5 → Apply.** Verified `formatDate` has no references in the file. Removed the import.
 
 **Then:** run the project's gates (e.g. lint + tests), report the ledger with #5 under Applied,

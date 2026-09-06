@@ -59,15 +59,15 @@ pass no filter; pass `--all` or your own `--filter` to override.
 
 ## Gotchas (each of these cost someone an afternoon)
 
-- **PUT creates, POST updates** — inverted from typical REST. The CLI hides this; remember it
+- **PUT creates, POST updates** - inverted from typical REST. The CLI hides this; remember it
     for `call`.
 - **Filter fields are snake_case at the API** (`due_date`, `done_at`, `percent_done`). The
     Vikunja web UI and its docs show camelCase (`dueDate`) because the frontend translates
-    before sending — raw API calls and `--filter` strings must use snake_case or the server
+    before sending - raw API calls and `--filter` strings must use snake_case or the server
     rejects the filter. There is also no `GET projects/{id}/tasks` (that route only creates);
     project-scoped listing is `filter=project_id = N` or a view route.
 - **Task update replaces the whole object.** `POST tasks/{id}` with a partial body zeroes
-    omitted fields (due date vanishes, title blanks). Always GET, merge, POST — the CLI's
+    omitted fields (due date vanishes, title blanks). Always GET, merge, POST - the CLI's
     `update`/`done`/`move` do this automatically. Never hand-craft a partial update via `call`.
 - **`percent_done` is 0..1**, not 0..100. The CLI's `--percent` takes 0–100 and converts.
 - **Null dates are `0001-01-01T00:00:00Z`**, not `null`. Sending JSON `null` is ignored by the
@@ -76,7 +76,7 @@ pass no filter; pass `--all` or your own `--filter` to override.
     `**stars**`. The CLI converts plain text to `<p>`/`<br>` HTML on write and strips HTML on
     display. Keep formatting minimal: short plain labels like `Objective:` outperform bold/tables.
 - **API tokens are shown once** at creation and cannot be re-read. If a token is lost, create
-    a new one; don't delete a working token casually. Tokens also carry per-route permissions —
+    a new one; don't delete a working token casually. Tokens also carry per-route permissions -
     a `403` on one route while others work means the token was created with narrow scopes.
 - **Bulk label endpoint (`POST tasks/{id}/labels/bulk`) has returned 500s** on real instances.
     Attach labels one at a time (the CLI does).
@@ -91,6 +91,6 @@ pass no filter; pass `--all` or your own `--filter` to override.
 - **Rendering side effects of native fields**: nonzero priority renders loud exclamation
     marks, near due dates render "Due in ..." warnings, nonzero `percent_done` renders progress
     bars. For clean overview boards some teams prefer short labels (`P1`, `Q3`) over native
-    fields — follow the conventions already visible on the board you're working.
+    fields - follow the conventions already visible on the board you're working.
 - **Web links**: task `<server>/tasks/{id}`, project `<server>/projects/{id}`. Include them in
     reports; humans click, agents re-fetch.

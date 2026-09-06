@@ -2,7 +2,7 @@
 name: docs-for-agents
 description: >-
   Create and maintain a "For Coding Agents" reference page in project documentation.
-  Generates dense, prescriptive documentation optimized for AI coding agents — architecture
+  Generates dense, prescriptive documentation optimized for AI coding agents - architecture
   maps, decision dispatch tables, constraints catalogs, side effects matrices, task recipes,
   change playbooks, and common mistakes. Use when asked to "create agent docs", "update agent
   reference", "add docs for agents", "write coding agent documentation", or "update the
@@ -14,14 +14,14 @@ argument-hint: create | update
 
 # Docs for Agents
 
-Generate or update a "For Coding Agents" reference page — a compressed, prescriptive
+Generate or update a "For Coding Agents" reference page - a compressed, prescriptive
 reference optimized for AI coding agents working on or integrating with the project.
 
 ## Principles
 
 - **Dense and declarative.** Tables and code blocks over prose.
 - **Action-oriented.** Constraint catalogs, decision dispatch, task recipes, change playbooks.
-- **Consistent terminology.** Match the codebase exactly — no synonyms.
+- **Consistent terminology.** Match the codebase exactly - no synonyms.
 - **Self-contained.** An agent should not need to read other docs to act correctly.
 - **Cross-referenced.** Link to existing docs where agents need deeper context.
 
@@ -46,7 +46,7 @@ Read all source files to extract:
 Identify:
 
 - Documentation framework and config (e.g., `mkdocs.yml`, `zensical.toml`, `docs/` layout)
-- Navigation structure — where to add the new page
+- Navigation structure - where to add the new page
 - LLM doc generation scripts (e.g., `gen_llms_full.py`, `llms.txt` generators)
 - Existing pages to cross-reference
 
@@ -56,10 +56,10 @@ Create the page with these sections (omit any that don't apply to the project):
 
 #### Architecture map
 
-- **File layout** — table: file path → what it contains
-- **Class/module hierarchy** — text tree showing inheritance/composition
-- **Import dependency flow** — A → B → C diagram
-- **Public API exports** — what's in `__all__` or equivalent
+- **File layout** - table: file path → what it contains
+- **Class/module hierarchy** - text tree showing inheritance/composition
+- **Import dependency flow** - A → B → C diagram
+- **Public API exports** - what's in `__all__` or equivalent
 
 #### Decision dispatch
 
@@ -103,8 +103,8 @@ Create the page with these sections (omit any that don't apply to the project):
 
 ### 5. Verify
 
-- Build the docs site — confirm the page renders and nav link works
-- Run any LLM doc generators — confirm the page is included in output
+- Build the docs site - confirm the page renders and nav link works
+- Run any LLM doc generators - confirm the page is included in output
 - Review for accuracy against the source code
 
 ## Updating an existing page
@@ -113,7 +113,7 @@ When updating rather than creating:
 
 1. Read the current for-coding-agents page
 2. Read all source files to identify what changed since the page was written
-3. Update affected sections — do not rewrite sections that are still accurate
+3. Update affected sections - do not rewrite sections that are still accurate
 4. Verify the build still passes
 
 ## File naming

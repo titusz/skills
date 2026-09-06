@@ -7,7 +7,7 @@
 Re-invokes `claude -p "/long-horizon:build"` from the project root until the
 printed report block says `Loop: IDLE` (exit 0) or `Loop: STOP` (exit 2),
 bounded by --max-iterations. Exit 6 means the budget ran out while
-`Loop: CONTINUE` — normal progress, re-run to continue (the expected exit under
+`Loop: CONTINUE` - normal progress, re-run to continue (the expected exit under
 one-iteration-per-tick scheduling). Abnormal endings needing human triage:
 unparseable iteration output (exit 3), per-iteration timeout (exit 4),
 environment or process failure including a non-zero claude exit (exit 5).
@@ -124,7 +124,7 @@ def main() -> int:
 
     if not Path(".cid/target.md").is_file():
         print(
-            "No .cid/target.md here — run from the project root of an initialized project."
+            "No .cid/target.md here - run from the project root of an initialized project."
         )
         return EXIT_ENVIRONMENT
     try:
@@ -150,23 +150,23 @@ def main() -> int:
             f"Verdict: {verdict}  Loop: {loop or '?'}  log: {log}"
         )
         if code is None:
-            print(f"Iteration timed out after {args.timeout}s — see {log}.")
+            print(f"Iteration timed out after {args.timeout}s - see {log}.")
             return EXIT_TIMEOUT
         if code != 0:
-            print(f"claude exited {code} — not trusting the report block; see {log}.")
+            print(f"claude exited {code} - not trusting the report block; see {log}.")
             return EXIT_ENVIRONMENT
         if loop == "IDLE":
             print(
-                "Loop parked: IDLE — no autonomous work remains. Triage the blockers."
+                "Loop parked: IDLE - no autonomous work remains. Triage the blockers."
             )
             return EXIT_IDLE
         if loop == "STOP":
             print(
-                "Loop parked: STOP — HUMAN REVIEW REQUESTED. See the log for the reason."
+                "Loop parked: STOP - HUMAN REVIEW REQUESTED. See the log for the reason."
             )
             return EXIT_STOP
         if loop is None:
-            print(f"No Loop: line in the output (claude exit {code}) — see {log}.")
+            print(f"No Loop: line in the output (claude exit {code}) - see {log}.")
             return EXIT_UNPARSEABLE
         if n < args.max_iterations and args.interval:
             time.sleep(args.interval)

@@ -28,7 +28,7 @@ Invocation arguments (empty when none were passed):
 $ARGUMENTS
 
 The first argument names the target project directory when it is a path; everything else is a
-free-text project brief — name, languages, tools, GPU needs, ports. The brief is
+free-text project brief - name, languages, tools, GPU needs, ports. The brief is
 authoritative: it overrides whatever inspection would infer, and in a fresh or empty project
 it may be the only source of truth.
 
@@ -83,14 +83,14 @@ the project root if none exists; when one already exists, merge the `[tasks.setu
 2. Tailor per language using `references/languages.md`: add cache-volume mounts and
     `containerEnv` entries to `devcontainer.json`, fill `[tools]` and the `setup` task in
     `mise.toml`, and add apt packages only under the `PROJECT-APT` marker in the Dockerfile.
-3. Keep the Dockerfile generic otherwise — language toolchains come from `mise install` at
+3. Keep the Dockerfile generic otherwise - language toolchains come from `mise install` at
     postCreate, never from the Dockerfile.
 
 ### 3. Wire the Anthropic cloud bootstrap
 
 Anthropic cloud sessions (claude.ai/code) do not read `.devcontainer/`. Merge a `SessionStart`
 hook into the project's `.claude/settings.json` (create the file if missing, preserve existing
-keys — never overwrite):
+keys - never overwrite):
 
 ```json
 {
@@ -112,7 +112,7 @@ keys — never overwrite):
 
 The `CLAUDE_CODE_REMOTE` guard makes the hook a no-op in local sessions. The hook alone
 re-runs the full toolchain install every cloud session (it fires after the environment
-snapshot is cached — 1–5 min each time), so whenever the user works on claude.ai/code
+snapshot is cached - 1–5 min each time), so whenever the user works on claude.ai/code
 regularly, also hand them the one-line setup-script snippet from
 `references/customization.md`, which moves the install into the cached snapshot and turns
 the hook into a fast no-op.
@@ -136,7 +136,7 @@ and confirm none contains:
 - Absolute host paths or usernames (`C:\Users\...`, `/Users/...`, `/home/<name>`)
 - Email addresses, tokens, API keys, or anything from the user's environment
 - Host-specific mounts that only exist on this machine (extra data/reference mounts belong in
-    opt-in extras — see `references/customization.md` — that the user must add consciously)
+    opt-in extras - see `references/customization.md` - that the user must add consciously)
 
 Host specifics may only enter at runtime via `${localEnv:...}` expansion.
 
@@ -146,7 +146,7 @@ When `.devcontainer/` already exists, do not regenerate blindly:
 
 1. Read the existing files and list project-specific customizations: extra mounts, ports,
     `runArgs` (GPU, memory), apt packages, env vars, lifecycle extras.
-2. Diff against the current templates and apply the pattern piecewise — the checklist and
+2. Diff against the current templates and apply the pattern piecewise - the checklist and
     rationale for each element is in `references/design.md` (§ Upgrade checklist).
 3. Preserve every customization; carry it into the marked sections of the new files.
 4. Show the user a summary of what changed and why before writing.
@@ -157,32 +157,32 @@ When `.devcontainer/` already exists, do not regenerate blindly:
     commands exists.
 - Run `bash -n` on every generated `.sh` file.
 - Tell the user the first-run steps: reopen in container (Zed/VS Code/`devcontainer up`),
-    then — unconditionally, before starting work — run `mise run doctor` (or
+    then - unconditionally, before starting work - run `mise run doctor` (or
     `bash .devcontainer/doctor.sh --fix` to auto-repair). Do not assume `post-create.sh` ran or
     that its output was visible: lifecycle hooks are editor-dependent and can be skipped
     silently.
 - State the diagnosis rule: the completion stamp is the signal, not credential prompts. The
     shell prints a `post-create has not completed` warning (and the doctor reports it) whenever
     the create hook was skipped or aborted; `bash .devcontainer/doctor.sh --fix` repairs it. A
-    credential prompt alone proves nothing — a host that was never signed in (or a macOS host
+    credential prompt alone proves nothing - a host that was never signed in (or a macOS host
     with Keychain-only Claude tokens) reaches the same prompt with post-create completed, which
     is supported degradation; the doctor names the in-container sign-in command for that case.
-- Mention graceful degradation: hosts without Claude/Codex/git setup still start — the doctor
+- Mention graceful degradation: hosts without Claude/Codex/git setup still start - the doctor
     explains how to sign in from inside the container. Claude sign-ins land on the host
     `~/.claude` mount; Codex logins and git identity persist in named volumes across rebuilds.
 
 ## Key invariants (do not break)
 
-- **Home resolution**: mounts use `${localEnv:HOME}${localEnv:USERPROFILE}` concatenation — the
+- **Home resolution**: mounts use `${localEnv:HOME}${localEnv:USERPROFILE}` concatenation - the
     cross-platform idiom. Never use only one. Caveat: a Windows setup that defines `HOME`
     globally expands both and breaks every mount path; `init-host.sh` detects and warns about
     this (registry probe).
 - **Claude state via `CLAUDE_CONFIG_DIR=/home/dev/.claude` + host seed**: never rw-bind-mount
-    the single file `~/.claude.json` — Claude Code replaces it by atomic rename, which a file
+    the single file `~/.claude.json` - Claude Code replaces it by atomic rename, which a file
     mountpoint cannot track (stale reads on host saves, EBUSY on container saves). The env var
     keeps the container's `.claude.json` inside the mounted directory instead, where renames
     work and state survives rebuilds. But sign-in/account state (`oauthAccount`) and the
-    onboarding flag live in `.claude.json`, not `.credentials.json` — so the host file is
+    onboarding flag live in `.claude.json`, not `.credentials.json` - so the host file is
     additionally mounted read-only at `~/.claude.json-host` and `setup-claude.sh` merges
     exactly those two fields into the container copy when it lacks either (never a whole-file
     copy, which would import host-only MCP servers and history). Dropping the seed brings
@@ -193,18 +193,18 @@ When `.devcontainer/` already exists, do not regenerate blindly:
 - **Scripts run via `bash script.sh`**: Windows bind mounts cannot preserve exec bits.
 - **`initializeCommand` stays array-form** (`["bash", ".devcontainer/init-host.sh"]`): it runs
     on the *host*, and Zed executes string-form lifecycle commands through a hardcoded
-    `/bin/sh -c` — which doesn't exist on Windows, failing container creation with os error 3
+    `/bin/sh -c` - which doesn't exist on Windows, failing container creation with os error 3
     before anything runs. Array form is spawned directly, no shell, and works in Zed, VS Code,
     and the devcontainer CLI on all platforms. In-container commands (`postCreateCommand`) may
     stay string-form: `/bin/sh` always exists inside the container.
 - **Non-fatal setup**: credential seeding must never fail container creation.
 - **Layered self-healing**: `postStartCommand` re-runs the sub-second setup scripts (gitconfig
-    and both credential seeders — all idempotent, always exit 0) on every start,
+    and both credential seeders - all idempotent, always exit 0) on every start,
     `post-create.sh` stamps completion on the container-local filesystem, the shell rc warns
     while the stamp is absent, and the doctor checks and repairs it (post-create runs are
     flock-serialized, so a repair can never race the in-flight create hook). Any lifecycle hook
     may silently not run (editor-dependent); never collapse these layers, and keep
-    bootstrap/chown out of postStart — it must stay sub-second. Full model in
+    bootstrap/chown out of postStart - it must stay sub-second. Full model in
     `references/design.md`.
 - **mise is the single source of truth** for tool versions; the Dockerfile stays generic.
 - **Agent CLIs**: installed together via npm at latest, verified at build.
@@ -212,11 +212,11 @@ When `.devcontainer/` already exists, do not regenerate blindly:
 
 ## Additional resources
 
-- **`references/languages.md`** — per-language tailoring: mise `[tools]`, `setup` task, cache
+- **`references/languages.md`** - per-language tailoring: mise `[tools]`, `setup` task, cache
     volumes, `containerEnv`, apt packages, doctor notes.
-- **`references/gpu-cuda.md`** — CUDA GPU support for ML projects: `hostRequirements.gpu`,
+- **`references/gpu-cuda.md`** - CUDA GPU support for ML projects: `hostRequirements.gpu`,
     host prerequisites per OS, shared-memory sizing, toolkit escape hatch, model cache.
-- **`references/customization.md`** — opt-in extras: GPU, ports, memory limits, extra read-only
+- **`references/customization.md`** - opt-in extras: GPU, ports, memory limits, extra read-only
     reference mounts, network firewall, Anthropic cloud setup-script snippet, org policy.
-- **`references/design.md`** — rationale for every element, degradation matrix, upgrade
+- **`references/design.md`** - rationale for every element, degradation matrix, upgrade
     checklist, and the security model. Read before deviating from the templates.

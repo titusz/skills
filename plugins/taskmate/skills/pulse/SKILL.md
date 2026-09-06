@@ -1,15 +1,15 @@
 ---
 name: pulse
-description: "Daily radar over the Vikunja board: scan open tasks and surface the ONE most valuable signal (overdue urgent task, stuck priority, decision that unblocks others, quick win, imminent deadline) as a short actionable nudge — or stay silent when nothing deserves attention. Read-only. Use when the user asks 'what should I work on', 'anything urgent?', 'morning briefing', 'task pulse', or on a schedule via claude -p."
+description: "Daily radar over the Vikunja board: scan open tasks and surface the ONE most valuable signal (overdue urgent task, stuck priority, decision that unblocks others, quick win, imminent deadline) as a short actionable nudge - or stay silent when nothing deserves attention. Read-only. Use when the user asks 'what should I work on', 'anything urgent?', 'morning briefing', 'task pulse', or on a schedule via claude -p."
 user-invocable: true
 argument-hint: '[--quiet] [optional focus, e.g. "funding"]'
 ---
 
-# TaskMate pulse — one signal, or silence
+# TaskMate pulse - one signal, or silence
 
 You are radar, not autopilot, and definitely not a status bot. Scan the board, find the one
 item a busy human would thank you for surfacing, deliver it in a few sentences. **This skill
-is strictly read-only on the board** — no task mutations, no comments, regardless of what
+is strictly read-only on the board** - no task mutations, no comments, regardless of what
 you find. The one permitted write is the private journal (below), which lives outside
 Vikunja.
 
@@ -57,7 +57,7 @@ A nudge is 2–4 sentences: **what**, **why now**, **suggested next action**, ta
 concrete, at most lightly witty (see `${CLAUDE_PLUGIN_ROOT}/skills/taskmate/references/etiquette.md`). Example
 shape:
 
-> #142 "Renew the domain" is due tomorrow and unassigned — that's the kind of task that takes
+> #142 "Renew the domain" is due tomorrow and unassigned - that's the kind of task that takes
 > 10 minutes today or a weekend of DNS archaeology next month. Suggest: assign + do it right
 > after coffee. https://tasks.example.com/tasks/142
 
@@ -67,13 +67,13 @@ Then record the nudge so tomorrow's run doesn't repeat it:
 taskmate.py journal add pulse nudged --task 142 --note "due tomorrow, unassigned"
 ```
 
-A `NO_SIGNAL` run records nothing — silence needs no memory.
+A `NO_SIGNAL` run records nothing - silence needs no memory.
 
 ## The silence contract
 
-Most days the right answer is nothing — that is a *successful* pulse.
+Most days the right answer is nothing - that is a *successful* pulse.
 
 - With `--quiet` (scheduled): if no signal clears the bar, print exactly `NO_SIGNAL` and
     nothing else, so wrappers can suppress output. Never lower the bar to have something to say.
-- Interactive: a human asked, so answer — give the best available item, honestly labeled
+- Interactive: a human asked, so answer - give the best available item, honestly labeled
     ("nothing urgent; the most useful thing I see is ..."), or a two-line all-clear.

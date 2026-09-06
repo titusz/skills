@@ -44,7 +44,7 @@
     {
       "name": "docs-for-agents",
       "source": "./plugins/docs-for-agents",
-      "description": "Create and maintain prescriptive reference documentation optimized for AI coding agents — architecture maps, decision dispatch tables, constraints catalogs, and task recipes",
+      "description": "Create and maintain prescriptive reference documentation optimized for AI coding agents - architecture maps, decision dispatch tables, constraints catalogs, and task recipes",
       "version": "0.1.1",
       "license": "MIT",
       "keywords": ["documentation", "agents", "reference", "architecture", "ai"]
@@ -52,7 +52,7 @@
     {
       "name": "systems-thinking",
       "source": "./plugins/systems-thinking",
-      "description": "Apply systems thinking to a problem or decision — classify it as clear, complicated, complex, or chaotic, diagnose it with the DART framework, surface hidden parts/connections/patterns and incentive/feedback traps, and recommend the action protocol that fits the system type",
+      "description": "Apply systems thinking to a problem or decision - classify it as clear, complicated, complex, or chaotic, diagnose it with the DART framework, surface hidden parts/connections/patterns and incentive/feedback traps, and recommend the action protocol that fits the system type",
       "version": "0.1.1",
       "license": "MIT",
       "keywords": ["systems-thinking", "decision-making", "cynefin", "mental-models", "problem-solving", "dart"]
@@ -60,7 +60,7 @@
     {
       "name": "high-stakes",
       "source": "./plugins/high-stakes",
-      "description": "Produce a reliable, high-stakes-grade result for any task by treating the work as guilty until independent skeptics fail to break it — runs a dynamic adversarial-verification Workflow that hunts ten failure modes and loops until two consecutive clean rounds",
+      "description": "Produce a reliable, high-stakes-grade result for any task by treating the work as guilty until independent skeptics fail to break it - runs a dynamic adversarial-verification Workflow that hunts ten failure modes and loops until two consecutive clean rounds",
       "version": "0.1.1",
       "license": "MIT",
       "keywords": ["high-stakes", "adversarial-verification", "code-review", "quality", "rigor", "workflow", "subagents"]
@@ -68,7 +68,7 @@
     {
       "name": "cybernetics",
       "source": "./plugins/cybernetics",
-      "description": "Review an idea, concept, system, or problem against Frederic Vester's 8 bio-cybernetic rules — map its feedback loops, score each rule (aligned/at-risk/violated), surface the highest-leverage fixes, and judge whether the design is viable or headed for runaway growth, brittleness, or collapse",
+      "description": "Review an idea, concept, system, or problem against Frederic Vester's 8 bio-cybernetic rules - map its feedback loops, score each rule (aligned/at-risk/violated), surface the highest-leverage fixes, and judge whether the design is viable or headed for runaway growth, brittleness, or collapse",
       "version": "0.1.1",
       "license": "MIT",
       "keywords": ["cybernetics", "bio-cybernetics", "vester", "feedback-loops", "systems", "viability", "sustainability"]
@@ -76,7 +76,7 @@
     {
       "name": "address-feedback",
       "source": "./plugins/address-feedback",
-      "description": "Triage and act on a code review without assuming the reviewer is right — verify each item against the actual code, apply small/valid/uncontested fixes directly, escalate load-bearing or risky ones to the user as grounded options, then run the project's quality gates before reporting",
+      "description": "Triage and act on a code review without assuming the reviewer is right - verify each item against the actual code, apply small/valid/uncontested fixes directly, escalate load-bearing or risky ones to the user as grounded options, then run the project's quality gates before reporting",
       "version": "0.1.2",
       "license": "MIT",
       "keywords": ["code-review", "feedback", "triage", "fixes", "quality-gates", "pull-request"]
@@ -100,7 +100,7 @@
     {
       "name": "devcontainer-setup",
       "source": "./plugins/devcontainer-setup",
-      "description": "Generate a complete, cross-platform .devcontainer setup for any project: host git/Claude Code/Codex credentials mounted in and ready to go, mise as tool-version manager and task runner, language-tailored toolchains and caches, a doctor check/repair command, Anthropic cloud (claude.ai/code) bootstrap, and graceful degradation when host tooling is missing — with zero secrets in the committed files",
+      "description": "Generate a complete, cross-platform .devcontainer setup for any project: host git/Claude Code/Codex credentials mounted in and ready to go, mise as tool-version manager and task runner, language-tailored toolchains and caches, a doctor check/repair command, Anthropic cloud (claude.ai/code) bootstrap, and graceful degradation when host tooling is missing - with zero secrets in the committed files",
       "version": "0.3.1",
       "license": "MIT",
       "keywords": ["devcontainer", "dev-container", "docker", "mise", "claude-code", "codex", "vscode", "sandbox", "development-environment"]
@@ -108,7 +108,7 @@
     {
       "name": "evaluate-startup",
       "source": "./plugins/evaluate-startup",
-      "description": "Run a rigorous, research-backed evaluation of a startup or business idea — adaptive founder interview, parallel deep research, adversarial fact-checking, a scored analysis.json separating attractiveness from conviction, a polished standalone HTML report, and a searchable index across all evaluations",
+      "description": "Run a rigorous, research-backed evaluation of a startup or business idea - adaptive founder interview, parallel deep research, adversarial fact-checking, a scored analysis.json separating attractiveness from conviction, a polished standalone HTML report, and a searchable index across all evaluations",
       "version": "0.1.1",
       "license": "MIT",
       "keywords": ["startup", "evaluation", "idea", "research", "scoring", "verdict", "report"]
@@ -116,7 +116,7 @@
     {
       "name": "imagegen",
       "source": "./plugins/imagegen",
-      "description": "Generate and edit raster images through the Codex CLI's built-in image_gen tool on your ChatGPT subscription (no API key) — reference images, reusable art-style cards, exact-size post-processing, and every output stored with its prompt in a project-local cauldron/ folder",
+      "description": "Generate and edit raster images through the Codex CLI's built-in image_gen tool on your ChatGPT subscription (no API key) - reference images, reusable art-style cards, exact-size post-processing, and every output stored with its prompt in a project-local cauldron/ folder",
       "version": "0.1.1",
       "license": "MIT",
       "keywords": ["image", "image-generation", "codex", "gpt-image", "art-style", "illustration", "assets"]

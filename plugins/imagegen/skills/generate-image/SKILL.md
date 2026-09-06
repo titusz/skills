@@ -3,7 +3,7 @@ name: generate-image
 description: >-
   Generate or edit raster images (illustrations, photos, mockups, icons, textures, banners,
   sprites, concept art) with the Codex CLI's built-in image_gen tool, billed to the user's
-  ChatGPT subscription — never an API key. Use whenever the user wants to create, draw,
+  ChatGPT subscription - never an API key. Use whenever the user wants to create, draw,
   render, generate, edit, restyle, or iterate on an image, asks for "a picture of…",
   "an illustration for…", "make this image blue", "generate variants", or mentions
   reference images or applying an art style. Outputs land in the project's cauldron/images/
@@ -72,14 +72,14 @@ If a check fails, relay the fix: `npm i -g @openai/codex` (missing), `codex logo
 
 ### 2. Understand the request
 
-- **Intent** — *generate* (no images, or images only as style/mood/composition references)
+- **Intent** - *generate* (no images, or images only as style/mood/composition references)
     vs *edit* (user wants an existing image changed while preserving the rest).
-- **Images** — assign each a role: edit target → `--edit`; subject/composition reference →
+- **Images** - assign each a role: edit target → `--edit`; subject/composition reference →
     `--ref`; an art style → `--style cauldron/styles/<name>.md` (list with Glob). Use Read
     to look at any provided image before writing the spec so the prompt describes it well.
-- **Slug** — short kebab-case name from the subject (`hero-banner`, `crane-blue`). Reuse
+- **Slug** - short kebab-case name from the subject (`hero-banner`, `crane-blue`). Reuse
     the slug when iterating on the same asset so its history accumulates in one folder.
-- **Size/format** — the built-in tool ignores exact pixel requests (outputs are roughly
+- **Size/format** - the built-in tool ignores exact pixel requests (outputs are roughly
     1024–1600 px). If the user needs exact dimensions, use `--fit WxH` (cover crops, contain
     fits inside) and `--format`.
 - Ask only when a missing detail would make the result useless (e.g. required verbatim
@@ -89,11 +89,11 @@ If a check fails, relay the fix: `npm i -g @openai/codex` (missing), `codex logo
 
 Read [references/prompting.md](references/prompting.md) for the schema, taxonomy, and
 augmentation rules. Write the spec to `cauldron/images/<slug>/prompt.md` using the
-labeled lines that matter — typically `Use case`, `Primary request`, `Subject`,
+labeled lines that matter - typically `Use case`, `Primary request`, `Subject`,
 `Style/medium`, `Composition/framing`, `Lighting/mood`, `Constraints`, `Avoid`.
 
 - Keep the user's specifics verbatim; add detail only where a generic prompt needs it.
-- Refer to attached images by index and role (`Image 1: edit target`) — the script lists
+- Refer to attached images by index and role (`Image 1: edit target`) - the script lists
     them in that order.
 - For edits, state invariants explicitly: `change only X; keep Y unchanged`.
 - Text in the image: quote it verbatim and require exact rendering.
@@ -138,5 +138,5 @@ is recorded. Offer the obvious next step (variant, edit, fit to size, save as st
     never fall back to the OpenAI API or a hand-written script.
 - Never overwrite an existing output; the script numbers files for a reason.
 - One `generate` call per distinct asset; use `--count` only for variants of one spec.
-- Do not leave assets only in `~/.codex/generated_images` — the script copies them, and
+- Do not leave assets only in `~/.codex/generated_images` - the script copies them, and
     you reference the `cauldron/` paths.

@@ -5,7 +5,7 @@
     "name": "Freight Invoice Audit Agent",
     "one_liner": "AI agent that audits freight invoices against contracts and recovers the 2-5% shippers overpay.",
     "evaluated_at": "2026-08-06T12:00:00Z",
-    "evaluator": "Claude (evaluate-startup) — ILLUSTRATIVE EXAMPLE, all data fictional",
+    "evaluator": "Claude (evaluate-startup) - ILLUSTRATIVE EXAMPLE, all data fictional",
     "skill_version": "0.1.0",
     "idea_source": "user interview",
     "custom_instructions": null,

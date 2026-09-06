@@ -7,7 +7,7 @@ setups. Read this before deviating from the templates or when debugging a genera
 
 | Mount                                                                      | Type         | Why                                                                                                                                                                                                                                                                                                                         |
 | -------------------------------------------------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `~/.claude` → `/home/dev/.claude`                                          | bind, rw     | Claude Code config + OAuth credentials. Read-write so token refreshes and in-container sign-ins write back to the host — the host and container share one session that survives rebuilds. `containerEnv` sets `CLAUDE_CONFIG_DIR=/home/dev/.claude`, so the container's `.claude.json` also lives here (see below).         |
+| `~/.claude` → `/home/dev/.claude`                                          | bind, rw     | Claude Code config + OAuth credentials. Read-write so token refreshes and in-container sign-ins write back to the host - the host and container share one session that survives rebuilds. `containerEnv` sets `CLAUDE_CONFIG_DIR=/home/dev/.claude`, so the container's `.claude.json` also lives here (see below).         |
 | `~/.claude.json` → `/home/dev/.claude.json-host`                           | bind, **ro** | Seed source only. Sign-in/account state (`oauthAccount`) and the onboarding flag live in this file, not in `.credentials.json`; `setup-claude.sh` merges those two fields into `$CLAUDE_CONFIG_DIR/.claude.json` when the container copy lacks either, so the host sign-in carries over without a login prompt (see below). |
 | `~/.codex` → `/home/dev/.codex-host`                                       | bind, **ro** | Seed source only. See "Codex and SQLite/WAL".                                                                                                                                                                                                                                                                               |
 | volume → `/home/dev/.codex`                                                | volume       | Codex's live home.                                                                                                                                                                                                                                                                                                          |
@@ -23,24 +23,24 @@ with EBUSY on every Docker backend. And the "shared project state" it promised w
 anyway: project entries are keyed by absolute path, and `/workspace/...` never matches
 `C:\...`. Instead, `containerEnv` sets `CLAUDE_CONFIG_DIR=/home/dev/.claude`: the container's
 `.claude.json` lives *inside* the mounted `~/.claude` directory, where renames are ordinary
-file operations — so saves work and container state still survives rebuilds on the host
+file operations - so saves work and container state still survives rebuilds on the host
 mount. Host and container keep separate `.claude.json` files; credentials stay shared.
 
 The catch: sign-in/account state (`oauthAccount`, onboarding flags) lives in `.claude.json`,
-not in `.credentials.json` — a fresh container with only the credentials mount still prompts
+not in `.credentials.json` - a fresh container with only the credentials mount still prompts
 for login. Hence the read-only `~/.claude.json-host` mount plus `setup-claude.sh` (run by
 `post-create.sh`, re-runnable via `doctor.sh --fix`): when the host file has an
 `oauthAccount` object *and* `hasCompletedOnboarding: true` but the container's `.claude.json`
 lacks either, exactly those two fields are merged into the container copy. Never a whole-file
 copy: the host file also carries stdio MCP servers with host paths, `installMethod`, and the
-full `projects`/history map — none of which can work in the container. The merge preserves
+full `projects`/history map - none of which can work in the container. The merge preserves
 everything the container has accumulated (trust dialogs, MCP servers), Claude never writes to
 the mountpoint (no EBUSY), and a completed in-container sign-in already has both fields, so
 it is never touched again.
 
 The read-only `~/.claude.json-host` view shares the inode-pinning caveat: after a host-side
 save (atomic rename), backends that pin the original inode keep serving the create-time
-snapshot. The mount is therefore trustworthy only at first create — which is the only moment
+snapshot. The mount is therefore trustworthy only at first create - which is the only moment
 anything reads it. A sign-in completed on the host *after* creation reaches the container
 only via a rebuild; re-running `setup-claude.sh` against the stale mount finds no sign-in
 state and reports that instead of seeding.
@@ -51,7 +51,7 @@ state and reports that instead of seeding.
 normally set in the editor/CLI process environment: `HOME` on Linux/macOS, `USERPROFILE` on
 Windows. This is the standard cross-platform devcontainer idiom. Known caveat: a Windows
 setup that defines `HOME` globally (some Cygwin/MSYS/gpg workflows) expands both into a
-broken concatenation — the fix is removing the global `HOME` variable, not editing the
+broken concatenation - the fix is removing the global `HOME` variable, not editing the
 template. `init-host.sh` probes the Windows registry for a global `HOME` and warns before
 the container builds.
 
@@ -63,7 +63,7 @@ shared-memory file accessed via mmap + POSIX locks, which Docker Desktop's Windo
 mount also lets host and container Codex builds collide on migration checksums. Hence:
 volume for the live `~/.codex`, read-only host mount for seeding auth/config on first create,
 seed-only-if-volume-empty so a refreshed container token is never clobbered by a staler host
-copy. Claude Code has no SQLite store, so its rw bind mount is safe — and preferable, because
+copy. Claude Code has no SQLite store, so its rw bind mount is safe - and preferable, because
 OAuth token refreshes stay in sync with the host.
 
 ## Degradation matrix
@@ -78,7 +78,7 @@ Startup must succeed on a host that has none of the tooling configured:
 | git identity                                              | Include of empty `~/.gitconfig-host` is harmless; doctor prints the exact fix commands, targeting `~/.config/git/config` (volume-backed, included last by the generated config) so the identity survives rebuilds.                                                                                                                                                                                                              |
 | `GH_TOKEN`                                                | `containerEnv` passes an empty string; `gh auth login` in the container persists in the `~/.config` volume.                                                                                                                                                                                                                                                                                                                     |
 | NVIDIA GPU / container runtime (GPU-enabled projects)     | `hostRequirements.gpu: "optional"` makes launchers skip the `--gpus` flag; the container starts CPU-only and the doctor's GPU section names what the host is missing. See `references/gpu-cuda.md`.                                                                                                                                                                                                                             |
-| bash on a Windows host                                    | Hard requirement (Git Bash or WSL): `initializeCommand` needs *some* bash. Default Git-for-Windows installs put only `Git\cmd` on PATH, so an unqualified `bash` often resolves to the System32 WSL launcher — `init-host.sh` detects WSL and re-targets the real Windows home via `cmd.exe`/`wslpath`. With neither Git Bash on PATH nor a WSL distro, container creation fails before build because `bash` cannot be spawned. |
+| bash on a Windows host                                    | Hard requirement (Git Bash or WSL): `initializeCommand` needs *some* bash. Default Git-for-Windows installs put only `Git\cmd` on PATH, so an unqualified `bash` often resolves to the System32 WSL launcher - `init-host.sh` detects WSL and re-targets the real Windows home via `cmd.exe`/`wslpath`. With neither Git Bash on PATH nor a WSL distro, container creation fails before build because `bash` cannot be spawned. |
 
 Non-fatality rules that make this work: `setup-claude.sh` and `setup-codex.sh` always exit 0;
 `post-create.sh` treats credential seeding as advisory; `doctor.sh` reports instead of failing creation (it is
@@ -91,21 +91,21 @@ informational in postCreate, strict only when run manually). `bootstrap.sh` is d
 Lifecycle hooks are editor-dependent: Zed, VS Code, and the devcontainer CLI each handle them
 differently, none reports a *skipped* hook inside the container, and an interrupted
 `devcontainer up` leaves no trace. The design therefore assumes **any single lifecycle hook may
-silently not run** — a field incident proved it: a skipped postCreate left Codex
+silently not run** - a field incident proved it: a skipped postCreate left Codex
 unauthenticated and git identity unset for hours, with no error anywhere, because all seeding
 hung on that one single-shot event. Codex is the canary for this failure class: Claude state
 lives on the host mount (already signed in), but the Codex volume is *only* populated by the
 seeder. Four layers now cover each other:
 
-1. **postCreate** (`post-create.sh`) does the full setup — chown, gitconfig, credential seeds,
-    bootstrap — and on success writes a completion stamp to `/var/tmp/.post-create-ok`. The
+1. **postCreate** (`post-create.sh`) does the full setup - chown, gitconfig, credential seeds,
+    bootstrap - and on success writes a completion stamp to `/var/tmp/.post-create-ok`. The
     stamp lives on the container-local filesystem, never a volume: the container layer persists
     across stops/starts but not across rebuilds, which is exactly the stamp's required scope. A
-    volume-persisted stamp — even one keyed to the hostname — could mask a rebuild whose create
+    volume-persisted stamp - even one keyed to the hostname - could mask a rebuild whose create
     hook was skipped, because upgraded projects may pin the hostname via
     `runArgs: ["--hostname", ...]`. Runs are serialized with an exclusive `flock` on the
-    container-local `/tmp/.post-create.lock` (editors attach before postCreate finishes — the
-    spec's default `waitFor` is `updateContentCommand` — so a repair run could otherwise race
+    container-local `/tmp/.post-create.lock` (editors attach before postCreate finishes - the
+    spec's default `waitFor` is `updateContentCommand` - so a repair run could otherwise race
     the in-flight hook with two concurrent `mise install`s); a second run waits, then exits
     early if the first one stamped. Internally it degrades per-step too: the `owned-paths.sh`
     source is guarded so a transient bind-mount read error under `set -u` cannot abort the
@@ -113,19 +113,19 @@ seeder. Four layers now cover each other:
 2. **postStart** re-runs `setup-gitconfig.sh` + `setup-claude.sh` + `setup-codex.sh` on every
     container start. All three are idempotent, never overwrite existing credentials, and always
     exit 0, so this turns every missed or failed seed into "fixed on next start" for free
-    (\<1 s). Bootstrap and chown stay out — postStart must remain sub-second.
+    (\<1 s). Bootstrap and chown stay out - postStart must remain sub-second.
 3. **Shell rc** prints a one-line warning on every shell start while the stamp is absent. This
-    is the only layer guaranteed to reach the user on every path — hooks can be skipped, doctor
+    is the only layer guaranteed to reach the user on every path - hooks can be skipped, doctor
     must be invoked, but a shell always opens.
 4. **doctor** checks the same stamp (first devcontainer section, since a missing stamp explains
     most downstream failures at once). When the lock shows a run in flight it reports "wait"
-    instead of launching a second copy; otherwise `--fix` re-runs `post-create.sh` — safe
+    instead of launching a second copy; otherwise `--fix` re-runs `post-create.sh` - safe
     because post-create is idempotent, lock-serialized, and its internal doctor call never
     passes `--fix`.
 
 ## Anthropic cloud (claude.ai/code)
 
-Cloud sessions run in Anthropic's sandbox and **ignore `.devcontainer/` entirely** — no
+Cloud sessions run in Anthropic's sandbox and **ignore `.devcontainer/` entirely** - no
 Dockerfile build, no mounts, no postCreate. What carries over is the repo itself, which is why
 the bootstrap path is split out:
 
@@ -138,7 +138,7 @@ the bootstrap path is split out:
 - SessionStart runs *after* the cloud's environment-caching snapshot, so per-session installs
     repeat; the setup-script snippet in `customization.md` moves them into the cached snapshot.
 
-Git identity, GitHub auth, and Claude credentials are provided by the cloud platform itself —
+Git identity, GitHub auth, and Claude credentials are provided by the cloud platform itself -
 none of the devcontainer credential plumbing applies there, which is why `doctor.sh` gates its
 GitHub-auth, credential-mount, Codex, and volume-ownership sections on devcontainer mode; the
 generic git, mise, and project checks still run everywhere.
@@ -148,16 +148,16 @@ generic git, mise, and project checks still run everywhere.
 - **Nothing secret is committed**: host specifics enter only at runtime through
     `${localEnv:...}` expansion (which resolves on the *user's* machine) and bind mounts.
 - **No SSH keys or host credential stores are mounted.** GitHub auth flows exclusively through
-    `gh auth git-credential` — fed by `GH_TOKEN` passthrough or an in-container `gh auth login`.
+    `gh auth git-credential` - fed by `GH_TOKEN` passthrough or an in-container `gh auth login`.
 - **Commit signing is disabled in the container** via `GIT_CONFIG_*` env (signing keys stay on
     the host); host commits remain signed.
 - The leak check in SKILL.md step 5 is mandatory because upgrades often start from configs
-    containing personal reference mounts (`E:/data`, `~/Code/...`) — those must never be copied
+    containing personal reference mounts (`E:/data`, `~/Code/...`) - those must never be copied
     into a template for others.
 
 ## Editor compatibility
 
-Only spec-standard properties are used — no `customizations.vscode`, no feature that ties the
+Only spec-standard properties are used - no `customizations.vscode`, no feature that ties the
 config to one editor. Verified consumers: Zed (agent servers + dev containers), VS Code Dev
 Containers, the `devcontainer` CLI (`devcontainer up --workspace-folder .`), JetBrains.
 GitHub Codespaces limitation: host bind mounts don't exist there; Codespaces users should rely
@@ -184,53 +184,53 @@ what's missing, preserving all project-specific customizations:
 7. **`~/.claude.json` still rw-bind-mounted?** → replace with the read-only
     `~/.claude.json-host` seed mount + `setup-claude.sh` (called from post-create), and set
     `containerEnv.CLAUDE_CONFIG_DIR=/home/dev/.claude` (rw single-file mounts break Claude
-    Code's atomic saves; no seed at all brings back the first-run login prompt — see the
+    Code's atomic saves; no seed at all brings back the first-run login prompt - see the
     mount model above).
 8. **No cloud path?** → add `bootstrap.sh` + the guarded `SessionStart` hook.
 9. **`~/.config` and `~/.cache` volumes missing?** → add (gh logins and caches currently die
     on rebuild).
-10. **Leak check** the result — older configs frequently embed machine-specific mounts.
+10. **Leak check** the result - older configs frequently embed machine-specific mounts.
 11. **`initializeCommand` a plain string?** → convert to array form
     (`["bash", ".devcontainer/init-host.sh"]`); string form breaks Zed on Windows hosts (see
     Known sharp edges).
 12. **No `postStartCommand` / completion stamp?** → add the self-heal layers: the postStart
     seeder re-run in `devcontainer.json`, the stamp write in `post-create.sh`, the shell-rc
     warning lines in the Dockerfile, and the doctor's post-create section (see Lifecycle
-    self-healing above) — otherwise a silently skipped create hook stays broken until a human
+    self-healing above) - otherwise a silently skipped create hook stays broken until a human
     debugs it.
-13. Keep proven extras exactly as found — port publishing, memory limits, reference mounts,
-    plugin-path fixups — with one exception: a committed `"runArgs": ["--gpus", "all"]` breaks
+13. Keep proven extras exactly as found - port publishing, memory limits, reference mounts,
+    plugin-path fixups - with one exception: a committed `"runArgs": ["--gpus", "all"]` breaks
     container creation on GPU-less hosts; convert it to
     `"hostRequirements": { "gpu": "optional" }` (see `references/gpu-cuda.md`).
 
 ## Known sharp edges
 
-- **Exec bits**: Windows bind mounts can't preserve them — that is why every script call is
+- **Exec bits**: Windows bind mounts can't preserve them - that is why every script call is
     `bash path/to/script.sh`. Never change lifecycle commands to `./script.sh`.
 - **`initializeCommand` must be array-form, not a string**: string-form lifecycle commands
     are shell-wrapped by the consuming tool, and Zed hardcodes `/bin/sh -c` for that wrap even
-    on Windows hosts — where `/bin/sh` doesn't exist, so creation dies at spawn with
+    on Windows hosts - where `/bin/sh` doesn't exist, so creation dies at spawn with
     `os error 3` (path not found) before `init-host.sh` ever runs. Array form
     (`["bash", ".devcontainer/init-host.sh"]`) is spawned directly with no shell in Zed,
     VS Code, and the devcontainer CLI alike, and the command needs no shell features. Only
     `initializeCommand` runs on the host; `postCreateCommand` executes inside the Linux
     container where `/bin/sh` exists, so string form is safe there.
 - **CRLF**: a checkout with `core.autocrlf=true` turns the scripts into CRLF and they fail in
-    Linux with cryptic `$'\r': command not found` — hence the `.gitattributes` rule and the
+    Linux with cryptic `$'\r': command not found` - hence the `.gitattributes` rule and the
     doctor's line-ending check.
 - **Plugin marketplace paths**: the host Claude install writes absolute Windows paths into
     `~/.claude/plugins/known_marketplaces.json`; the shared rw mount exposes them to the
     container where plugins then fail to resolve. `doctor.sh --fix` rewrites them (the host
-    rewrites them back — harmless ping-pong).
+    rewrites them back - harmless ping-pong).
 - **TOML top-level keys**: when editing `~/.codex/config.toml`, new top-level keys must be
-    *prepended* — appended keys land inside the last `[table]` and are silently misread
+    *prepended* - appended keys land inside the last `[table]` and are silently misread
     (`setup-codex.sh` handles this).
 - **Stale Codex tokens**: the `~/.codex` volume is seeded only when empty, so a token that
     expires in the container is never refreshed from a newer host login. Recovery: run
     `codex login --device-auth` inside the container (overwrites the volume copy). The doctor's
-    "credentials present" only means the file exists — it cannot detect staleness.
+    "credentials present" only means the file exists - it cannot detect staleness.
 - **Seeded `config.toml` may carry host-only settings**: the wholesale first-create seed can
     import absolute host paths (stdio MCP server commands, notify hooks) that cannot run in the
-    container. Edit the volume copy at `~/.codex/config.toml` — it is never re-seeded.
+    container. Edit the volume copy at `~/.codex/config.toml` - it is never re-seeded.
 - **JSON only**: keep `devcontainer.json` comment-free strict JSON so non-JSONC tooling and
     this repo's validators can parse it.

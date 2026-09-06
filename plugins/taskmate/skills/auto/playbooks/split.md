@@ -1,4 +1,4 @@
-# Split — break oversized tasks into subtasks
+# Split - break oversized tasks into subtasks
 
 purpose: find tasks that are secretly projects and break them into 2–7 actionable subtasks
 mode: mutate
@@ -19,11 +19,11 @@ scope. Skip tasks that already have subtask relations.
 
 Pick the 1–3 worst offenders (never more per run). For each, draft subtasks that are:
 
-- **Independently completable** — each one finishable in a single sitting/session.
+- **Independently completable** - each one finishable in a single sitting/session.
 - **Verb-first and concrete** ("Draft outline", not "Outline stuff").
-- **2–7 in number** — more means the parent needs a project, not subtasks; propose that
+- **2–7 in number** - more means the parent needs a project, not subtasks; propose that
     instead.
-- **Ordered** — if sequence matters, note it in each subtask description ("after #<prev>").
+- **Ordered** - if sequence matters, note it in each subtask description ("after #<prev>").
     Reserve `blocking`/`blocked` relations for hard dependencies.
 
 The parent stays open as the tracking task; subtasks inherit its project, get priority one
@@ -40,9 +40,9 @@ taskmate.py relate <new-id> parenttask <parent-id>
 
 Then one comment on the parent summarizing the breakdown (companion mode: signed; user mode:
 only when the user asked for the split). Interactive dry-run: show each proposed breakdown
-and let the user prune before applying — humans often know one subtask is already obsolete.
+and let the user prune before applying - humans often know one subtask is already obsolete.
 
 ## Output
 
-Per parent: the subtask list with IDs and links. If nothing qualifies, print `NO_ACTION` —
+Per parent: the subtask list with IDs and links. If nothing qualifies, print `NO_ACTION` -
 do not manufacture splits; a board of small tasks is the goal, not raw material.

@@ -5,7 +5,7 @@ description: >-
   scored analysis.json, a polished standalone HTML report, and a searchable index of all
   evaluations. Use whenever the user wants to evaluate, score, vet, compare, or stress-test
   a startup idea, business opportunity, product concept, side-project bet, or asks "is this
-  worth building / pursuing?" — also when they invoke /evaluate-startup or mention
+  worth building / pursuing?" - also when they invoke /evaluate-startup or mention
   opportunity scouting, idea evaluation, or their startup-ideas cauldron. Runs an adaptive
   founder interview, parallel deep research, adversarial fact-checking, and renders results
   with the bundled render.py script. Do NOT use for reviewing existing code, valuing public
@@ -36,10 +36,10 @@ environment, resolve the script path relative to this SKILL.md file.
 
 `$ARGUMENTS` may contain, in free-form order (all optional):
 
-- **Idea description** — anything from a one-liner to a full pitch. If absent, ask for it.
-- **Output path** — e.g. `--out ./somewhere` or "store results in X".
+- **Idea description** - anything from a one-liner to a full pitch. If absent, ask for it.
+- **Output path** - e.g. `--out ./somewhere` or "store results in X".
     Default: `./startup-ideas`
-- **Custom instructions** — e.g. `--instructions "..."` or natural language like
+- **Custom instructions** - e.g. `--instructions "..."` or natural language like
     "focus on the EU market" or "add a competitor pricing matrix to the report".
     These tailor the interview, research angles, scoring weights, and report extras.
 
@@ -70,10 +70,10 @@ Colons are illegal in Windows filenames, so never use the raw RFC 3339 value.
 
 Execute phases in order. Announce each phase briefly so the user can follow along.
 
-### Phase A — Adaptive interview
+### Phase A - Adaptive interview
 
-Goal: capture the founder's **opinionated intent** — what they believe, what they want,
-what they'd refuse to do — plus close real information gaps. Full guidance and question
+Goal: capture the founder's **opinionated intent** - what they believe, what they want,
+what they'd refuse to do - plus close real information gaps. Full guidance and question
 bank: read [references/interview-guide.md](references/interview-guide.md).
 
 Rules of engagement:
@@ -90,7 +90,7 @@ Rules of engagement:
 - If the user says "just proceed", fill gaps with clearly-labeled assumptions in the
     analysis rather than stalling.
 
-### Phase B — Parallel deep research
+### Phase B - Parallel deep research
 
 Goal: independent, sourced evidence. Read
 [references/research-guide.md](references/research-guide.md) for the five standard
@@ -99,19 +99,19 @@ research angles and per-agent briefs, then spawn one subagent per angle **in par
 
 - Each subagent returns: summary, key findings, and sources (title + URL + note).
 - **No subagents available** (e.g. claude.ai): run the angles sequentially yourself with
-    WebSearch/WebFetch — trim to the 3 highest-value angles to keep the run reasonable.
+    WebSearch/WebFetch - trim to the 3 highest-value angles to keep the run reasonable.
 - Prefer primary sources. Mark estimates as estimates. A finding without a source is an
-    opinion — keep those in the assessment, not in research.
+    opinion - keep those in the assessment, not in research.
 
-### Phase C — Analysis
+### Phase C - Analysis
 
-Read [references/methodology.md](references/methodology.md) — it defines the scoring
+Read [references/methodology.md](references/methodology.md) - it defines the scoring
 model (6 categories, dimensions, weights, score anchors, conviction, verdict bands).
 Then write `<idea-slug>/analysis.json` conforming to `scripts/analysis.schema.json`.
 A complete worked example: [references/example-analysis.json](references/example-analysis.json).
 
 - Score against the anchors, not against enthusiasm. Most real ideas land 4–7.
-- Every dimension rationale must be specific to *this* idea — no template filler.
+- Every dimension rationale must be specific to *this* idea - no template filler.
 - Curate the most relevant sources into each assessment category's `sources` array
     (the raw research stays in the `research` block as an appendix).
 - Compute `scores.composite` (Σ weight × score) and `scores.conviction` (weighted
@@ -125,23 +125,23 @@ uv run "${CLAUDE_PLUGIN_ROOT}/skills/evaluate-startup/scripts/render.py" validat
 
 Fix every reported problem before proceeding.
 
-### Phase D — Adversarial review
+### Phase D - Adversarial review
 
 Spawn 2–3 reviewer subagents in parallel (or do sequential passes yourself if no
 subagents), each with a narrow brief:
 
-1. **Fact-checker** — verify every factual claim in the analysis against its cited
+1. **Fact-checker** - verify every factual claim in the analysis against its cited
     sources (re-fetch if needed). Flag unsupported numbers, stale data, invented sources.
-2. **Consistency auditor** — do scores match their rationales? Does the verdict follow
+2. **Consistency auditor** - do scores match their rationales? Does the verdict follow
     from the scores and the methodology's verdict logic? Are strengths/risks consistent
     with category findings?
-3. **Devil's advocate** — steelman the case *against* the current verdict. What did the
+3. **Devil's advocate** - steelman the case *against* the current verdict. What did the
     analysis conveniently ignore?
 
 Integrate the findings: fix errors, adjust scores where challenged successfully, add
 overlooked risks. Re-run `validate` after edits. Note material changes to the user.
 
-### Phase E — Render report
+### Phase E - Render report
 
 ```bash
 uv run "${CLAUDE_PLUGIN_ROOT}/skills/evaluate-startup/scripts/render.py" render <path>/analysis.json
@@ -153,21 +153,21 @@ Then consider **custom sections**: if the idea would benefit from a bespoke visu
 breakdown…), or if custom instructions requested one, add it to the JSON's
 `custom_sections` array as `{"title": ..., "html": ...}` (self-contained inline
 HTML/SVG/JS, matching the report's CSS variables like `var(--panel-2)`, `var(--text)`,
-`var(--border)`) and re-render. Custom sections are for genuine idea-specific value —
+`var(--border)`) and re-render. Custom sections are for genuine idea-specific value -
 skip them when the standard report already tells the story.
 
-### Phase F — Index
+### Phase F - Index
 
 ```bash
 uv run "${CLAUDE_PLUGIN_ROOT}/skills/evaluate-startup/scripts/render.py" index <output-root>
 ```
 
-Regenerates `index.html` by scanning `<output-root>/*/analysis.json` — searchable,
+Regenerates `index.html` by scanning `<output-root>/*/analysis.json` - searchable,
 sortable cards linking to each report. Always run this last so the index stays complete.
 
 (`render.py all <path>/analysis.json` chains validate + render + index when convenient.)
 
-### Phase G — Present
+### Phase G - Present
 
 Close with a compact summary in chat: verdict badge + composite + conviction, the 2–3
 decisive factors, the single most important assumption to validate next, and the file
@@ -180,6 +180,6 @@ paths. Do not paste the whole report into chat.
     a more valuable output than a flattering 8.
 - Distinguish **attractiveness** (composite) from **conviction** (evidence strength).
     A great-looking idea on thin evidence gets "validate", not "pursue".
-- Keep the user's own words in `interview_notes` — future re-evaluations depend on them.
+- Keep the user's own words in `interview_notes` - future re-evaluations depend on them.
 - If the run is interrupted, partial artifacts (analysis.json without report) are fine;
     the index gracefully links whatever exists.

@@ -2,8 +2,8 @@
 
 The model separates two questions that most evaluation frameworks conflate:
 
-1. **Attractiveness** — how good is this idea if the claims hold? → `scores.composite` (0–10)
-2. **Conviction** — how strong is the evidence behind the claims? → `scores.conviction` (0–1)
+1. **Attractiveness** - how good is this idea if the claims hold? → `scores.composite` (0–10)
+2. **Conviction** - how strong is the evidence behind the claims? → `scores.conviction` (0–1)
 
 An idea can be attractive on thin evidence (→ validate, don't commit) or unattractive on
 solid evidence (→ confidently avoid). Keeping the axes apart is what makes the verdict
@@ -29,47 +29,47 @@ the user's custom instructions justify it (note the adjustment in `verdict.summa
 Use these dimensions by default; rename/replace individual ones when the idea demands it
 (keep 3–5 per category, ids lowercase snake_case).
 
-**1. Problem & Demand** — `pain_intensity` (vitamin vs. painkiller vs. fire),
+**1. Problem & Demand** - `pain_intensity` (vitamin vs. painkiller vs. fire),
 `frequency_urgency` (daily fire vs. annual annoyance), `problem_specificity` (crisp,
 nameable problem vs. vague unease), `demand_evidence` (people already spending
 money/time on workarounds?).
 
-**2. Market & Timing** — `reachable_market` (realism of the serviceable market, not the
-headline TAM), `growth_trajectory` (growing, flat, dying?), `why_now` (what changed —
-technology, regulation, behavior — that makes this newly possible?), `tailwinds`
+**2. Market & Timing** - `reachable_market` (realism of the serviceable market, not the
+headline TAM), `growth_trajectory` (growing, flat, dying?), `why_now` (what changed -
+technology, regulation, behavior - that makes this newly possible?), `tailwinds`
 (macro/regulatory forces helping or hurting).
 
-**3. Solution & Automation Leverage** — the heart of the framework, derived from
+**3. Solution & Automation Leverage** - the heart of the framework, derived from
 "current state → ideal state via verifiable iteration":
 
-- `outcome_verifiability` — can success be checked unambiguously, ideally automatically?
+- `outcome_verifiability` - can success be checked unambiguously, ideally automatically?
     (tests pass = 10 … "feels better" = 2). This is foundational: it enables automated
     feedback loops, confident scaling, and low-oversight operation.
-- `error_tolerance` — cost and blast radius of a mistake. A false positive costing a
+- `error_tolerance` - cost and blast radius of a mistake. A false positive costing a
     5-minute review scores high; an irreversible customer-facing error scores low.
-- `feedback_loop_speed` — how fast does reality answer back? Seconds/hours high;
+- `feedback_loop_speed` - how fast does reality answer back? Seconds/hours high;
     quarters low.
-- `scope_decomposability` — does the ambitious goal break into small, independently
+- `scope_decomposability` - does the ambitious goal break into small, independently
     verifiable subtasks (a healthy gap between where goals are set and where work is
     executed)? Clean decomposition means errors get caught before they roll up.
-- `data_context_availability` — is the information the system needs actually
+- `data_context_availability` - is the information the system needs actually
     accessible (APIs, documents, permissions), or trapped in heads and silos?
 
 For non-AI ideas this category still applies: score how much of the value loop can be
 systematized, measured, and improved without heroic manual effort.
 
-**4. Competition & Moat** — `competitive_intensity` (crowded vs. open field; "no
+**4. Competition & Moat** - `competitive_intensity` (crowded vs. open field; "no
 competitors" usually means "no market"), `differentiation` (10x on something buyers
 care about?), `defensibility` (what compounds over time: data, network, standards,
 switching costs), `platform_risk` (can an incumbent kill it with a feature or a
 policy change?).
 
-**5. Business & Economics** — `revenue_clarity` (who pays, for what, when),
+**5. Business & Economics** - `revenue_clarity` (who pays, for what, when),
 `unit_economics` (plausible margin per unit of value delivered), `scalability`
 (does revenue outrun cost and headcount?), `capital_intensity` (bootstrappable vs.
 needs a war chest before signal).
 
-**6. Execution & Fit** — `technical_feasibility` (buildable with current tech at
+**6. Execution & Fit** - `technical_feasibility` (buildable with current tech at
 current quality bars), `mvp_effort` (smallest honest test: days/weeks high, quarters
 low), `founder_advantage` (unfair advantage: domain depth, distribution, credibility,
 assets), `regulatory_dependency_drag` (approvals, gatekeepers, single points of
@@ -88,7 +88,7 @@ Score against anchors, not vibes. Most real ideas land 4–7; a 9+ needs evidenc
 | 9–10  | Exceptional; rare, evidence-backed edge |
 
 Category score = your judgment anchored by the dimension scores (validator flags a
-deviation > 1.5 from the dimension mean — justify or fix).
+deviation > 1.5 from the dimension mean - justify or fix).
 
 ## Composite, conviction, band
 
@@ -111,23 +111,23 @@ much you like the idea.
 | 4.0 – 5.4 | `monitor`        | `monitor`        |
 | < 4.0     | `avoid`          | `monitor`\*      |
 
-\* A very low score on very weak evidence is a "probably not, but we barely looked" —
+\* A very low score on very weak evidence is a "probably not, but we barely looked" -
 `monitor` with pointed validation questions beats a false-confidence `avoid`.
 
 `scores.band` follows this table mechanically. `verdict.recommendation` is your final
-judgment — it usually equals the band, but you may deviate one step with explicit
+judgment - it usually equals the band, but you may deviate one step with explicit
 reasoning in `verdict.summary` (e.g., a single critical risk caps an otherwise strong
 idea). Never deviate more than one step.
 
 ## Verdict block guidance
 
-- **strengths / weaknesses** — 3–5 each, concrete, traceable to category findings.
-- **risks** — severity = damage if it happens; likelihood = odds it happens. Include at
+- **strengths / weaknesses** - 3–5 each, concrete, traceable to category findings.
+- **risks** - severity = damage if it happens; likelihood = odds it happens. Include at
     least one risk with a straight face even for great ideas.
-- **assumptions** — the load-bearing beliefs. Each must be falsifiable; `current_evidence`
+- **assumptions** - the load-bearing beliefs. Each must be falsifiable; `current_evidence`
     states what (if anything) supports it today.
-- **kill_criteria** — observable facts that, if true, mean stop. Write them so a future
+- **kill_criteria** - observable facts that, if true, mean stop. Write them so a future
     re-evaluation can check them mechanically.
-- **validation_plan** — cheapest experiments that attack the highest-criticality
+- **validation_plan** - cheapest experiments that attack the highest-criticality
     assumptions first. Method + effort + an unambiguous success signal.
-- **next_steps** — 3–6 ordered, immediately actionable items.
+- **next_steps** - 3–6 ordered, immediately actionable items.

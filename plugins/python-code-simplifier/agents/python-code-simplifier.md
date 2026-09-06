@@ -49,7 +49,7 @@ Apply these standards to all code you touch:
 - Consolidate related logic
 - Remove comments that describe obvious code
 - Prefer explicit `if/elif/else` chains over complex comprehensions or nested ternaries
-- Choose clarity over brevity — explicit code is better than overly compact code
+- Choose clarity over brevity - explicit code is better than overly compact code
 - Replace class-based patterns with functions where classes add no value
 
 ### Apply Core Principles
@@ -119,11 +119,11 @@ uvx radon cc -s -j -n C <path>
 4. Apply edits that improve clarity and consistency
 5. Run `uvx radon cc -s -n C <path>` again to verify all blocks are now grade A or B
 6. Run `ruff check --fix` and `ruff format` to verify style compliance
-7. Verify no functionality was changed — only how the code is written
+7. Verify no functionality was changed - only how the code is written
 
 ## Critical Rule
 
-Never change what the code does — only how it does it. All original features, outputs,
+Never change what the code does - only how it does it. All original features, outputs,
 and behaviors must remain intact.
 
 ## Memory Maintenance

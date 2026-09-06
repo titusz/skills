@@ -45,18 +45,18 @@ Edit: `text-localization`, `identity-preserve`, `precise-object-edit`, `lighting
 
 ## Tips by use case
 
-- **photorealistic-natural** — say `photorealistic`; use camera language (lens, depth of
+- **photorealistic-natural** - say `photorealistic`; use camera language (lens, depth of
     field, framing); ask for real texture (pores, fabric wear, grain); avoid glossy polish.
-- **product-mockup** — describe materials and silhouette; label text verbatim with
+- **product-mockup** - describe materials and silhouette; label text verbatim with
     typography notes; clean backdrop; no trademarks unless supplied.
-- **ui-mockup** — state fidelity first (wireframe vs shippable); focus on layout and
+- **ui-mockup** - state fidelity first (wireframe vs shippable); focus on layout and
     hierarchy; no concept-art language.
-- **infographic-diagram / productivity-visual** — audience, reading flow, exact labels,
+- **infographic-diagram / productivity-visual** - audience, reading flow, exact labels,
     readable typography, whitespace.
-- **logo-brand** — simple, scalable, strong silhouette, balanced negative space.
-- **illustration-story / stylized-concept** — concrete scene beats; style cues, material
+- **logo-brand** - simple, scalable, strong silhouette, balanced negative space.
+- **illustration-story / stylized-concept** - concrete scene beats; style cues, material
     finish, rendering approach (3D, painterly, clay) without inventing story.
-- **historical-scene** — place and date; constrain clothing, props, environment to the era.
+- **historical-scene** - place and date; constrain clothing, props, environment to the era.
 
 Edits: always list invariants (`change only the paper color; keep pose, folds, lighting, framing and background unchanged`) and repeat them on every iteration. For compositing,
 say what moves where and demand matched lighting, perspective, and scale. For cutouts,

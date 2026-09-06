@@ -6,7 +6,7 @@
 # ]
 # ///
 """
-codex_image — drive Codex CLI's built-in image_gen tool from the command line.
+codex_image - drive Codex CLI's built-in image_gen tool from the command line.
 
 Standalone helper shipped with the `imagegen` plugin. It wraps `codex exec` so an
 agent never has to remember the gotchas: the prompt is piped via stdin (a bare
@@ -104,7 +104,7 @@ def run_codex(
     exe = find_codex()
     if not exe:
         raise SystemExit(
-            "codex not found on PATH — install with `npm i -g @openai/codex`"
+            "codex not found on PATH - install with `npm i -g @openai/codex`"
         )
     proc = subprocess.Popen(
         [exe, *args],
@@ -195,14 +195,14 @@ def collect_refs(
 ) -> list[tuple[Path, str]]:
     """Build the ordered (path, role) list of images to pass to image_gen."""
     labelled = [
-        (resolve_image(p), "edit target — preserve everything not explicitly changed")
+        (resolve_image(p), "edit target - preserve everything not explicitly changed")
         for p in edits
     ]
     labelled += [
         (resolve_image(p), "reference for subject, composition, or mood") for p in refs
     ]
     labelled += [
-        (p, "art-style reference — match its look, do NOT copy its content")
+        (p, "art-style reference - match its look, do NOT copy its content")
         for p in style_refs
     ]
     if len(labelled) > MAX_REFS:
@@ -423,7 +423,7 @@ def cmd_doctor(_: argparse.Namespace) -> int:
         (
             "API key variables unset",
             not leaked,
-            f"{', '.join(leaked)} set — stripped at runtime, but check your shell"
+            f"{', '.join(leaked)} set - stripped at runtime, but check your shell"
             if leaked
             else "ok",
         )

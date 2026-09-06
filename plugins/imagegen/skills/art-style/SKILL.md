@@ -35,7 +35,7 @@ references (the tool caps at 5 images per call).
 ```markdown
 ---
 name: <name>
-description: <one line — what the style looks like and what it suits>
+description: <one line - what the style looks like and what it suits>
 created: <YYYY-MM-DD>
 source: <"described" | "derived from N reference images" | "refined from <name>">
 ---
@@ -50,7 +50,7 @@ Avoid: <what breaks the style>
 ```
 
 Only the body (below the frontmatter) reaches the image model. Keep it under ~12 lines,
-concrete and visual — describe what one *sees*, not adjectives like "modern" or "nice".
+concrete and visual - describe what one *sees*, not adjectives like "modern" or "nice".
 
 ## Commands
 
@@ -66,7 +66,7 @@ Derive a style from images:
 
 1. Read each image (the Read tool shows it to you). Note palette, line work, shading,
     texture, composition habits, and what is *absent*.
-2. Write the card describing the shared look — not the subjects in the images.
+2. Write the card describing the shared look - not the subjects in the images.
 3. Copy up to 3 of the images into `cauldron/styles/<name>/refs/` (Bash `cp`). Prefer the
     ones that best represent the style on their own.
 
@@ -95,7 +95,7 @@ the look drifted. Do not run more than one sample unless asked; each costs quota
 
 ### Refining
 
-Edit the card in place with the Edit tool, bump nothing — cards are not versioned. If
+Edit the card in place with the Edit tool, bump nothing - cards are not versioned. If
 the user wants to keep the old look, copy the card to a new name first.
 
 ## Rules

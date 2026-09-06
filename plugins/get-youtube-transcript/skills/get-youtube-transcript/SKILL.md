@@ -52,8 +52,8 @@ Extract video ID(s) from the provided arguments. If no arguments given, ask the 
 
 Based on the arguments, determine if the user wants to:
 
-1. **List available transcripts** — if `--list` or "list languages" is mentioned
-2. **Fetch transcript** — default action
+1. **List available transcripts** - if `--list` or "list languages" is mentioned
+2. **Fetch transcript** - default action
 
 ### Step 3: Execute
 

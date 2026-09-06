@@ -7,7 +7,7 @@
 # ]
 # ///
 """
-Tests for codex_image.py — the pure parts (prompt assembly, event parsing,
+Tests for codex_image.py - the pure parts (prompt assembly, event parsing,
 harvesting, storage, post-processing). Nothing here calls codex.
 
 Run:  uv run test_codex_image.py

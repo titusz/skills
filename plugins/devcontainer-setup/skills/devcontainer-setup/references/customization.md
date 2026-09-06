@@ -1,7 +1,7 @@
 # Opt-in customizations
 
 Everything here is deliberately absent from the default templates. Add only what the project
-actually needs, and only into the marked/mount sections — the invariants in SKILL.md still
+actually needs, and only into the marked/mount sections - the invariants in SKILL.md still
 apply (no secrets, no host-specific paths that other contributors won't have).
 
 ## GPU access (CUDA)
@@ -11,10 +11,10 @@ apply (no secrets, no host-specific paths that other contributors won't have).
 ```
 
 This alone gives ML projects CUDA in the container on GPU hosts while degrading to CPU-only
-everywhere else — launchers inject `--gpus all` only when the NVIDIA runtime is detected. Never
+everywhere else - launchers inject `--gpus all` only when the NVIDIA runtime is detected. Never
 commit `"runArgs": ["--gpus", "all"]` (fails container creation on GPU-less hosts). The full
-recipe — host prerequisites per OS, why no CUDA toolkit is needed for wheel-based ML, the
-`--shm-size` DataLoader trap, kernel-compilation escape hatch, shared model-cache volume — is in
+recipe - host prerequisites per OS, why no CUDA toolkit is needed for wheel-based ML, the
+`--shm-size` DataLoader trap, kernel-compilation escape hatch, shared model-cache volume - is in
 `references/gpu-cuda.md`.
 
 ## Ports and resources
@@ -72,7 +72,7 @@ bash .devcontainer/bootstrap.sh
 The environment snapshot then already contains mise, the toolchains, and dependencies; the
 SessionStart hook still runs but completes as a fast no-op. Re-save the environment (rebuilding
 the cache) after changing `mise.toml` tool pins. Note that cloud environment variables and
-setup scripts are visible to anyone who can edit the environment — no secrets there either.
+setup scripts are visible to anyone who can edit the environment - no secrets there either.
 
 ## Organization policy inside the container
 
@@ -97,7 +97,7 @@ server-managed settings instead.
 }
 ```
 
-With the auto-updater disabled, new CLI versions arrive only via image rebuild — the
+With the auto-updater disabled, new CLI versions arrive only via image rebuild - the
 `@latest` install in the Dockerfile makes every rebuild pick them up.
 
 ## Unattended agents (`--dangerously-skip-permissions`)

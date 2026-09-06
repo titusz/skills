@@ -61,9 +61,9 @@ if [ -n "$crlf_files" ]; then
       fi
     done
     [ -n "$converted" ] && ok "converted CRLF line endings to LF in:$converted"
-    [ -n "$convert_failed" ] && bad "could not convert:$convert_failed — convert manually (tr -d '\\r')"
+    [ -n "$convert_failed" ] && bad "could not convert:$convert_failed - convert manually (tr -d '\\r')"
   else
-    bad "CRLF line endings (break bash in the container):$crlf_files — fix: --fix, or add '.devcontainer/*.sh text eol=lf' to .gitattributes"
+    bad "CRLF line endings (break bash in the container):$crlf_files - fix: --fix, or add '.devcontainer/*.sh text eol=lf' to .gitattributes"
   fi
 else
   ok "all .devcontainer scripts have LF line endings"
@@ -73,7 +73,7 @@ fi
 # post-create.sh stamps /var/tmp/.post-create-ok on success. The stamp lives on
 # the container-local filesystem (never a volume): it survives stops/starts but
 # not rebuilds, so a previous container's stamp cannot mask a rebuild whose
-# create hook was silently skipped — even when runArgs pins the hostname.
+# create hook was silently skipped - even when runArgs pins the hostname.
 # A missing stamp explains most credential/toolchain failures below at once.
 # Editors attach before postCreate finishes, so when post-create's flock shows
 # a run in flight, report that instead of racing it with a second copy.
@@ -83,16 +83,16 @@ if [ "$MODE" = devcontainer ]; then
   if [ -e "$stamp" ]; then
     ok "post-create completed in this container"
   elif command -v flock >/dev/null 2>&1 && ! flock -n /tmp/.post-create.lock true 2>/dev/null; then
-    warn "post-create is running right now — wait for it to finish, then re-run doctor"
+    warn "post-create is running right now - wait for it to finish, then re-run doctor"
   elif [ "$FIX" = 1 ] && [ -f "$SCRIPT_DIR/post-create.sh" ]; then
     bash "$SCRIPT_DIR/post-create.sh"
     if [ -e "$stamp" ]; then
-      ok "re-ran post-create.sh — setup completed"
+      ok "re-ran post-create.sh - setup completed"
     else
-      bad "post-create.sh re-run did not complete (see its output above) — fix the error, then: bash .devcontainer/post-create.sh"
+      bad "post-create.sh re-run did not complete (see its output above) - fix the error, then: bash .devcontainer/post-create.sh"
     fi
   else
-    bad "post-create never completed in this container (lifecycle hook skipped or aborted) — fix: bash .devcontainer/post-create.sh (or --fix)"
+    bad "post-create never completed in this container (lifecycle hook skipped or aborted) - fix: bash .devcontainer/post-create.sh (or --fix)"
   fi
 fi
 
@@ -104,7 +104,7 @@ if command -v git >/dev/null 2>&1; then
   if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     ok "workspace is a usable git repository (safe.directory ok)"
   else
-    bad "git refuses this workspace — fix: git config --global --add safe.directory $ROOT"
+    bad "git refuses this workspace - fix: git config --global --add safe.directory $ROOT"
   fi
 
   name="$(git config user.name || true)"
@@ -114,9 +114,9 @@ if command -v git >/dev/null 2>&1; then
   elif [ "$MODE" = devcontainer ]; then
     # --global would land in the generated ~/.gitconfig, which is wiped on
     # every rebuild; ~/.config/git/config lives in a volume and is included.
-    bad "git identity unset — fix: git config --file ~/.config/git/config user.name 'Your Name' && git config --file ~/.config/git/config user.email 'you@example.com' (persists in the ~/.config volume; host ~/.gitconfig was empty or not mounted)"
+    bad "git identity unset - fix: git config --file ~/.config/git/config user.name 'Your Name' && git config --file ~/.config/git/config user.email 'you@example.com' (persists in the ~/.config volume; host ~/.gitconfig was empty or not mounted)"
   else
-    bad "git identity unset — fix: git config --global user.name 'Your Name' && git config --global user.email 'you@example.com'"
+    bad "git identity unset - fix: git config --global user.name 'Your Name' && git config --global user.email 'you@example.com'"
   fi
 
   if [ "$MODE" = devcontainer ]; then
@@ -125,18 +125,18 @@ if command -v git >/dev/null 2>&1; then
     elif [ "$FIX" = 1 ] && [ -f "$SCRIPT_DIR/setup-gitconfig.sh" ]; then
       bash "$SCRIPT_DIR/setup-gitconfig.sh"
       if git config --get-all credential.https://github.com.helper 2>/dev/null | grep -q "gh auth git-credential"; then
-        ok "re-ran setup-gitconfig.sh — credential helper configured"
+        ok "re-ran setup-gitconfig.sh - credential helper configured"
       else
-        bad "setup-gitconfig.sh ran but the gh credential helper is still missing — run 'bash .devcontainer/setup-gitconfig.sh' manually to see why"
+        bad "setup-gitconfig.sh ran but the gh credential helper is still missing - run 'bash .devcontainer/setup-gitconfig.sh' manually to see why"
       fi
     else
-      bad "gh credential helper not configured — fix: bash .devcontainer/setup-gitconfig.sh"
+      bad "gh credential helper not configured - fix: bash .devcontainer/setup-gitconfig.sh"
     fi
 
     # Read outside the GIT_CONFIG_* containerEnv override (highest scope),
     # which would otherwise mask a host gpgsign=true in every invocation.
     if [ "$(env -u GIT_CONFIG_COUNT git config commit.gpgsign 2>/dev/null || true)" = "true" ]; then
-      warn "commit.gpgsign=true — signing keys are usually absent in containers (devcontainer.json disables it via GIT_CONFIG_* env)"
+      warn "commit.gpgsign=true - signing keys are usually absent in containers (devcontainer.json disables it via GIT_CONFIG_* env)"
     else
       ok "commit signing off in container"
     fi
@@ -152,9 +152,9 @@ if [ "$MODE" = devcontainer ]; then
     if gh auth status >/dev/null 2>&1; then
       ok "gh authenticated ($(gh api user --jq .login 2>/dev/null || echo account))"
     elif [ -n "${GH_TOKEN:-}" ]; then
-      warn "GH_TOKEN is set but gh auth status failed — token may be expired"
+      warn "GH_TOKEN is set but gh auth status failed - token may be expired"
     else
-      warn "gh not authenticated — git push will fail; fix: export GH_TOKEN on the host before starting, or run 'gh auth login' (persists in the ~/.config volume)"
+      warn "gh not authenticated - git push will fail; fix: export GH_TOKEN on the host before starting, or run 'gh auth login' (persists in the ~/.config volume)"
     fi
   else
     bad "gh CLI missing from image"
@@ -166,26 +166,26 @@ section "claude code"
 if command -v claude >/dev/null 2>&1; then
   ok "claude $(claude --version 2>/dev/null | head -1 || echo installed)"
 else
-  bad "claude not on PATH — image build problem; rebuild the container"
+  bad "claude not on PATH - image build problem; rebuild the container"
 fi
 if [ "$MODE" = devcontainer ]; then
   if [ -d "$HOME/.claude" ] && touch "$HOME/.claude/.doctor-write-test" 2>/dev/null; then
     rm -f "$HOME/.claude/.doctor-write-test"
     ok "~/.claude mounted and writable"
   else
-    bad "~/.claude missing or read-only — check the bind mount in devcontainer.json"
+    bad "~/.claude missing or read-only - check the bind mount in devcontainer.json"
   fi
   if [ "${CLAUDE_CONFIG_DIR:-}" = "$HOME/.claude" ]; then
     ok "CLAUDE_CONFIG_DIR points at the mounted ~/.claude (state survives rebuilds)"
   else
-    warn "CLAUDE_CONFIG_DIR is not $HOME/.claude — container Claude state will not survive rebuilds; check containerEnv in devcontainer.json"
+    warn "CLAUDE_CONFIG_DIR is not $HOME/.claude - container Claude state will not survive rebuilds; check containerEnv in devcontainer.json"
   fi
   creds_present=0
   if [ -s "$HOME/.claude/.credentials.json" ]; then
     creds_present=1
     ok "credentials present (host session carried over)"
   else
-    warn "no credentials — run 'claude' to sign in (stored on the host mount, survives rebuilds)"
+    warn "no credentials - run 'claude' to sign in (stored on the host mount, survives rebuilds)"
   fi
   # Sign-in/account state and the onboarding flag live in .claude.json
   # (seeded from the host by setup-claude.sh); without both, the interactive
@@ -193,7 +193,7 @@ if [ "$MODE" = devcontainer ]; then
   # credentials. Without credentials the state alone cannot promise a
   # prompt-free start (macOS hosts seed state but keep tokens in the Keychain).
   # Sourcing setup-claude.sh loads only claude_signin_state_ok (its seed body
-  # runs only when executed) — the predicate lives in one place.
+  # runs only when executed) - the predicate lives in one place.
   . "$SCRIPT_DIR/setup-claude.sh"
   claude_state="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.claude.json"
   if claude_signin_state_ok "$claude_state"; then
@@ -205,12 +205,12 @@ if [ "$MODE" = devcontainer ]; then
   elif [ "$FIX" = 1 ]; then
     bash "$SCRIPT_DIR/setup-claude.sh"
     if claude_signin_state_ok "$claude_state"; then
-      ok "re-ran setup-claude.sh — sign-in state seeded from host"
+      ok "re-ran setup-claude.sh - sign-in state seeded from host"
     else
-      warn "setup-claude.sh could not seed sign-in state (host signed out, or stale ro mount — rebuild the container) — run 'claude' to sign in"
+      warn "setup-claude.sh could not seed sign-in state (host signed out, or stale ro mount - rebuild the container) - run 'claude' to sign in"
     fi
   else
-    warn "account/onboarding state incomplete in .claude.json — first 'claude' run will ask to sign in; fix: bash .devcontainer/setup-claude.sh (or --fix)"
+    warn "account/onboarding state incomplete in .claude.json - first 'claude' run will ask to sign in; fix: bash .devcontainer/setup-claude.sh (or --fix)"
   fi
   # Host-side plugin marketplaces store Windows install paths that the
   # container plugin system cannot resolve.
@@ -238,10 +238,10 @@ PYEOF
       then
         ok "plugin marketplace paths rewritten to container paths"
       else
-        bad "marketplace path rewrite failed (malformed $km?) — inspect the file manually"
+        bad "marketplace path rewrite failed (malformed $km?) - inspect the file manually"
       fi
     else
-      warn "plugin marketplace paths contain Windows separators — plugins may not load; fix: --fix"
+      warn "plugin marketplace paths contain Windows separators - plugins may not load; fix: --fix"
     fi
   else
     ok "plugin marketplace paths look container-compatible"
@@ -254,7 +254,7 @@ if [ "$MODE" = devcontainer ]; then
   if command -v codex >/dev/null 2>&1; then
     ok "codex $(codex --version 2>/dev/null | head -1 || echo installed)"
   else
-    bad "codex not on PATH — image build problem; rebuild the container"
+    bad "codex not on PATH - image build problem; rebuild the container"
   fi
   if [ -s "$HOME/.codex/auth.json" ]; then
     ok "credentials present in ~/.codex volume"
@@ -262,27 +262,27 @@ if [ "$MODE" = devcontainer ]; then
     if [ "$FIX" = 1 ] && [ -f "$SCRIPT_DIR/setup-codex.sh" ]; then
       bash "$SCRIPT_DIR/setup-codex.sh"
       if [ -s "$HOME/.codex/auth.json" ]; then
-        ok "re-ran setup-codex.sh — credentials seeded from host"
+        ok "re-ran setup-codex.sh - credentials seeded from host"
       else
-        warn "setup-codex.sh could not seed credentials from the host copy — run 'codex login --device-auth' in the container"
+        warn "setup-codex.sh could not seed credentials from the host copy - run 'codex login --device-auth' in the container"
       fi
     else
-      warn "host has codex credentials but the volume does not — fix: bash .devcontainer/setup-codex.sh"
+      warn "host has codex credentials but the volume does not - fix: bash .devcontainer/setup-codex.sh"
     fi
   else
-    warn "no codex credentials — run 'codex login --device-auth' (stored in the volume, survives rebuilds)"
+    warn "no codex credentials - run 'codex login --device-auth' (stored in the volume, survives rebuilds)"
   fi
   if [ -f "$HOME/.codex/config.toml" ] && grep -q '^[[:space:]]*cli_auth_credentials_store[[:space:]]*=[[:space:]]*"file"' "$HOME/.codex/config.toml"; then
     ok "file-based credential storage configured"
   elif [ "$FIX" = 1 ] && [ -f "$SCRIPT_DIR/setup-codex.sh" ]; then
     bash "$SCRIPT_DIR/setup-codex.sh"
     if grep -q '^[[:space:]]*cli_auth_credentials_store[[:space:]]*=[[:space:]]*"file"' "$HOME/.codex/config.toml" 2>/dev/null; then
-      ok "re-ran setup-codex.sh — file-based credential storage configured"
+      ok "re-ran setup-codex.sh - file-based credential storage configured"
     else
-      warn "cli_auth_credentials_store is still not \"file\" after setup-codex.sh — edit ~/.codex/config.toml manually"
+      warn "cli_auth_credentials_store is still not \"file\" after setup-codex.sh - edit ~/.codex/config.toml manually"
     fi
   else
-    warn "cli_auth_credentials_store != \"file\" — keyring storage does not survive rebuilds; fix: bash .devcontainer/setup-codex.sh"
+    warn "cli_auth_credentials_store != \"file\" - keyring storage does not survive rebuilds; fix: bash .devcontainer/setup-codex.sh"
   fi
 fi
 
@@ -298,10 +298,10 @@ if [ "$MODE" = devcontainer ] && grep -q '"gpu"\|--gpus' "$SCRIPT_DIR/devcontain
     if [ -n "$gpu_name" ]; then
       ok "GPU passed through: $gpu_name"
     else
-      warn "nvidia-smi present but not responding — update the host NVIDIA driver, then rebuild the container"
+      warn "nvidia-smi present but not responding - update the host NVIDIA driver, then rebuild the container"
     fi
   else
-    warn "no GPU in container (CPU-only) — host needs the NVIDIA driver (plus nvidia-container-toolkit on Linux; Docker Desktop bundles it) and a launcher that honors hostRequirements.gpu"
+    warn "no GPU in container (CPU-only) - host needs the NVIDIA driver (plus nvidia-container-toolkit on Linux; Docker Desktop bundles it) and a launcher that honors hostRequirements.gpu"
   fi
 fi
 
@@ -321,7 +321,7 @@ if command -v mise >/dev/null 2>&1; then
       MISE_TRUSTED=1
       ok "trusted mise config"
     else
-      warn "mise config not trusted — fix: mise trust"
+      warn "mise config not trusted - fix: mise trust"
     fi
     # An untrusted config makes mise silently ignore mise.toml, so toolchain
     # status can only be judged once trusted.
@@ -329,9 +329,9 @@ if command -v mise >/dev/null 2>&1; then
       missing="$(mise ls --missing 2>/dev/null || true)"
       if [ -n "$missing" ]; then
         if [ "$FIX" = 1 ]; then
-          mise install && ok "installed missing toolchains" || bad "mise install failed — run manually to see why"
+          mise install && ok "installed missing toolchains" || bad "mise install failed - run manually to see why"
         else
-          bad "missing toolchains: $(echo "$missing" | awk '{print $1, $2}' | tr '\n' ' ')— fix: mise install"
+          bad "missing toolchains: $(echo "$missing" | awk '{print $1, $2}' | tr '\n' ' ') - fix: mise install"
         fi
       else
         ok "all toolchains from mise.toml installed"
@@ -340,10 +340,10 @@ if command -v mise >/dev/null 2>&1; then
       warn "toolchain status unknown until the config is trusted"
     fi
   else
-    warn "no mise.toml in project — pin toolchains there ([tools]) so containers and cloud sessions match"
+    warn "no mise.toml in project - pin toolchains there ([tools]) so containers and cloud sessions match"
   fi
 else
-  bad "mise not installed — fix: curl https://mise.run | sh (or rebuild the container)"
+  bad "mise not installed - fix: curl https://mise.run | sh (or rebuild the container)"
 fi
 
 # --- volume ownership --------------------------------------------------------
@@ -353,7 +353,7 @@ if [ "$MODE" = devcontainer ]; then
   # section, not abort the report via set -u (same rule as post-create.sh).
   . "$SCRIPT_DIR/owned-paths.sh" 2>/dev/null || true
   if [ -z "${DEV_OWNED_PATHS:-}" ]; then
-    warn "could not read owned-paths.sh (bind-mount hiccup?) — ownership not checked; re-run doctor"
+    warn "could not read owned-paths.sh (bind-mount hiccup?) - ownership not checked; re-run doctor"
   else
     bad_own=""
     for d in $DEV_OWNED_PATHS; do
@@ -364,7 +364,7 @@ if [ "$MODE" = devcontainer ]; then
       if [ "$FIX" = 1 ]; then
         sudo chown -R "$(id -un)":"$(id -gn)" $bad_own && ok "reclaimed ownership of:$bad_own"
       else
-        bad "not owned by $(id -un):$bad_own — fix: --fix (sudo chown)"
+        bad "not owned by $(id -un):$bad_own - fix: --fix (sudo chown)"
       fi
     else
       ok "volumes owned by $(id -un)"
@@ -379,18 +379,18 @@ if [ "$HAS_MISE_CONFIG" = 1 ] && [ "$MISE_TRUSTED" = 0 ]; then
 elif command -v mise >/dev/null 2>&1 && mise tasks info setup >/dev/null 2>&1; then
   ok "'mise run setup' available for dependency install"
 else
-  warn "no 'setup' task in mise.toml — add one so bootstrap/cloud sessions can install dependencies"
+  warn "no 'setup' task in mise.toml - add one so bootstrap/cloud sessions can install dependencies"
 fi
 if [ -f .pre-commit-config.yaml ]; then
   hook_path="$(git rev-parse --git-path hooks/pre-commit 2>/dev/null || echo .git/hooks/pre-commit)"
   if [ -f "$hook_path" ]; then
     ok "pre-commit hooks installed"
   else
-    warn "pre-commit config present but hooks not installed — fix: run your hook installer (e.g. 'prek install' or 'pre-commit install')"
+    warn "pre-commit config present but hooks not installed - fix: run your hook installer (e.g. 'prek install' or 'pre-commit install')"
   fi
 fi
 if command -v curl >/dev/null 2>&1; then
-  # Any HTTP response (even 4xx) proves reachability — no -f here.
+  # Any HTTP response (even 4xx) proves reachability - no -f here.
   if curl -sSI --max-time 5 -o /dev/null https://api.anthropic.com 2>/dev/null; then
     ok "network: api.anthropic.com reachable"
   else
@@ -401,7 +401,7 @@ fi
 # --- summary -----------------------------------------------------------------
 printf '\ndoctor: %d ok, %d warnings, %d problems' "$PASS" "$WARN" "$FAIL"
 if [ "$FAIL" -gt 0 ]; then
-  printf ' — run with --fix to repair, or apply the fix commands above\n'
+  printf ' - run with --fix to repair, or apply the fix commands above\n'
   exit 1
 fi
 printf '\n'

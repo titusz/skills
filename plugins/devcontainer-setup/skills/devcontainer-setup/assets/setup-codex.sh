@@ -4,7 +4,7 @@
 # Codex stores its state in SQLite databases under CODEX_HOME (~/.codex),
 # opened in WAL mode. WAL needs a shared-memory (-shm) file accessed via mmap +
 # POSIX locking, which a Windows->container bind mount (Docker Desktop
-# gRPC-FUSE/virtiofs) does not support — codex then fails with "disk I/O
+# gRPC-FUSE/virtiofs) does not support - codex then fails with "disk I/O
 # error" (SQLITE_IOERR_SHMOPEN). Sharing a bind mount also lets host and
 # container codex builds collide on migration checksums. So ~/.codex lives on
 # a native Docker volume (real ext4 -> WAL works, isolated from the host ->
@@ -14,7 +14,7 @@
 # bind mount.
 #
 # Deliberately NOT `set -e`: this is a convenience seeder, not a hard
-# dependency — it always exits 0 so a hiccup can never abort post-create.
+# dependency - it always exits 0 so a hiccup can never abort post-create.
 
 codex_home="$HOME/.codex"
 host="$HOME/.codex-host"
@@ -34,7 +34,7 @@ seed_from_host() {
         fi
         sleep 1
     done
-    echo "codex: WARNING — could not read $src after retries (bind-mount hiccup?)"
+    echo "codex: WARNING - could not read $src after retries (bind-mount hiccup?)"
     return 1
 }
 
@@ -65,7 +65,7 @@ elif ! grep -q '^[[:space:]]*cli_auth_credentials_store' "$config"; then
     echo "codex: added file-based credential storage to $config"
 elif ! grep -q '^[[:space:]]*cli_auth_credentials_store[[:space:]]*=[[:space:]]*"file"' "$config"; then
     # A seeded host config selecting another store (e.g. "keyring") must be
-    # overridden in place — container keyrings do not persist across rebuilds.
+    # overridden in place - container keyrings do not persist across rebuilds.
     sed -i 's/^[[:space:]]*cli_auth_credentials_store[[:space:]]*=.*/cli_auth_credentials_store = "file"/' "$config"
     echo "codex: forced cli_auth_credentials_store = \"file\" (keyring storage does not survive container rebuilds)"
 fi
@@ -73,7 +73,7 @@ fi
 if [ -s "$codex_home/auth.json" ]; then
     echo "codex: credentials available"
 else
-    echo "codex: no credentials — run 'codex login --device-auth' to authenticate"
+    echo "codex: no credentials - run 'codex login --device-auth' to authenticate"
 fi
 
 # Always succeed: a seeding hiccup must never abort the rest of post-create.

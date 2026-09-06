@@ -1,4 +1,4 @@
-# mise.toml — tool versions and task runner for {{PROJECT_NAME}}
+# mise.toml - tool versions and task runner for {{PROJECT_NAME}}
 #
 # Single source of truth for toolchains: the devcontainer, Anthropic cloud
 # sessions, and local installs all provision from [tools] via `mise install`.

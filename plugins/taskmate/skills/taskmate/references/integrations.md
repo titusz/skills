@@ -7,7 +7,7 @@ schedule.
 ## Capability probe
 
 At the start of substantial TaskMate work (especially scheduled runs), take stock of what
-this session can actually do — check your available tools for:
+this session can actually do - check your available tools for:
 
 - **Web search / fetch** → research for `unstick`, enrich task context with sources.
 - **Email** → deliver pulse nudges or weekly reviews to humans (only when genuinely useful;
@@ -23,11 +23,11 @@ this session can actually do — check your available tools for:
     when an epic is really a multi-session project needing its own iteration loop.
 
 Never assume a capability: verify the tool exists before promising its output. Degrade
-gracefully — no email tool means the pulse nudge goes to the conversation, not nowhere.
+gracefully - no email tool means the pulse nudge goes to the conversation, not nowhere.
 
 ## The task execution loop
 
-TaskMate's highest form: don't just manage tasks — *do* them. When asked to work a board
+TaskMate's highest form: don't just manage tasks - *do* them. When asked to work a board
 (or a scheduled run finds a task marked for you, e.g. labeled `agent` or assigned to the
 companion account):
 
@@ -47,7 +47,7 @@ Every schedulable entry point is quiet by design: `/taskmate:pulse --quiet` prin
 `NO_SIGNAL` when nothing deserves attention; `/taskmate:auto <playbook>` prints `NO_ACTION`
 when there is nothing to do. Wrappers can suppress those outputs to keep silent runs silent.
 
-**Inside Claude Code** — ask for it in natural language ("run /taskmate:pulse --quiet every
+**Inside Claude Code** - ask for it in natural language ("run /taskmate:pulse --quiet every
 weekday at 8:30") so the harness creates the scheduled job, where supported.
 
 **OS-level cron (Linux/macOS):**
@@ -73,9 +73,9 @@ Scheduling guidance:
 - Give mutating jobs the narrowest tool allowlist that works.
 - Scheduled runs stay non-repetitive via the journal (`taskmate.py journal ...`, per-profile
     file in `~/.config/taskmate/memory/`). It writes through the CLI, so the `Bash` allowlist
-    above already covers it — no extra write permissions needed.
+    above already covers it - no extra write permissions needed.
 - A scheduled run that hits `not_configured` or `401` must report
-    `TASKMATE_NOT_CONFIGURED`/the auth error and exit — never retry-loop against a production
+    `TASKMATE_NOT_CONFIGURED`/the auth error and exit - never retry-loop against a production
     server, never invent credentials.
 - Sensible rhythm: `pulse` daily, `groom`/`triage` weekly, `review`+`celebrate` weekly
     (Friday), `unstick` weekly, `split` on demand.
@@ -87,6 +87,6 @@ When working inside a repository bound via `.claude/taskmate.local.md`:
 - On finishing significant repo work, offer to update the corresponding board task (comment
     with the commit/PR link, adjust `percent_done`).
 - When the user describes new work in conversation, offer to capture it as a task in the
-    bound project — capture beats memory.
+    bound project - capture beats memory.
 - Keep direction honest: the board is the shared source of truth for *what and why*; the repo
-    holds *how*. Don't duplicate long technical detail into task descriptions — link instead.
+    holds *how*. Don't duplicate long technical detail into task descriptions - link instead.

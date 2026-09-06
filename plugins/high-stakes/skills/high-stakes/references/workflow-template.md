@@ -1,34 +1,34 @@
 # High-Stakes Adversarial-Verification Workflow Template
 
 This is the reusable orchestration script the `high-stakes` skill runs for medium/large tasks. Copy
-the script below and adapt it — do not re-derive the structure each invocation. The adaptation points
+the script below and adapt it - do not re-derive the structure each invocation. The adaptation points
 are all near the top:
 
 - **Fill the inputs** (`TASK`, `ARTIFACT`, `PLAN`, `DIFF`, `ARTIFACT_KIND`, `TIER`) from the run.
     `PLAN` is your Phase-1 plan verbatim (Assumptions with their `[verified:…]`/`[UNVERIFIED]` tags,
-    Questions, Conflicts) — the gauntlet checks the work against it. `DIFF` is the `git diff` of the
+    Questions, Conflicts) - the gauntlet checks the work against it. `DIFF` is the `git diff` of the
     edits (or before/after of each touched file); orthogonal damage and dead code are only visible here.
     `ARTIFACT_KIND` is `"code"` or `"prose"` and switches the correctness check.
 - **Scale the panel** via the `.filter(...)` on `PANEL`: drop a mode that genuinely cannot apply to
     this task, but never prune `dead-code-sweeper` or `scope-diff-reviewer` when the artifact is code.
 - The `export const meta` header and everything below the inputs are fixed machinery: the verdict
     schema, the guilty-until-clean prompts, the user-decision escalation, and the two-clean-rounds loop.
-    Leave them intact (`meta` is required — every Workflow script must start with it).
+    Leave them intact (`meta` is required - every Workflow script must start with it).
 
 ## Design contract
 
 - **Guilty until proven clean.** Every skeptic assumes its mode IS present and tries to prove it. It
     returns `clean: true` only when it has actively confirmed the artifact is free of its mode, with the
-    evidence its schema demands — otherwise it defaults to a finding.
+    evidence its schema demands - otherwise it defaults to a finding.
 - **One skeptic, one mode.** Single-assignment agents catch what a generalist rationalizes away.
 - **Evidence, not assertion.** Correctness must paste a real test command + result; simplicity must
     name the simpler construction it searched for; tradeoffs must enumerate the alternatives first;
     sycophancy runs the strip-test on the conversational prose. A bare `clean: true` is rejected.
 - **User-decision findings escalate, never repair.** A genuine 50/50, an unresolved contradiction, or
-    a flawed premise (modes #2, #3, #5) is put to the user with `AskUserQuestion` — the autonomous fixer
+    a flawed premise (modes #2, #3, #5) is put to the user with `AskUserQuestion` - the autonomous fixer
     may not pick a side, because that just launders a guess into settled prose.
 - **Two-clean-rounds stop.** Loop until two consecutive fully clean rounds, or the budget is
-    exhausted (then report unresolved findings — never fake convergence).
+    exhausted (then report unresolved findings - never fake convergence).
 - **Determinism.** No wall-clock time, no randomness; fan-out is fixed by the triage decision, not
     computed from anything nondeterministic.
 
@@ -59,23 +59,23 @@ export const meta = {
     description: "Adversarial per-mode verification gauntlet: one skeptic per failure mode, looping to two clean rounds, escalating user-decision findings instead of guessing.",
 };
 
-// === Adaptation points: fill from the run (all deterministic — no clocks/random) ===========
+// === Adaptation points: fill from the run (all deterministic - no clocks/random) ===========
 const TASK = `<the $ARGUMENTS task text; if it was empty, the concrete task you confirmed>`;
 const ARTIFACT = `<path(s) or inline reference to the executor's draft>`;
 const PLAN = `<your Phase-1 plan verbatim: Assumptions with [verified:<evidence>]/[UNVERIFIED] tags,
 Questions, Conflicts, Tradeoffs, Success criteria>`;
 const DIFF = `<git diff of the executor's edits, or before/after of each touched file>`;
-const ARTIFACT_KIND = "code"; // "code" | "prose" — switches the correctness check
-const TIER = "large"; // "medium" | "large" — from triage
+const ARTIFACT_KIND = "code"; // "code" | "prose" - switches the correctness check
+const TIER = "large"; // "medium" | "large" - from triage
 const MAX_ROUNDS = TIER === "large" ? 5 : 3;
 
-// Modes the user must decide — the fixer may never close these; they escalate instead.
+// Modes the user must decide - the fixer may never close these; they escalate instead.
 const USER_DECISION_MODES = ["unmanaged-confusion", "hidden-inconsistencies", "no-pushback"];
 
 // Per-mode prove strings. The correctness entry is chosen by artifact kind.
 const correctnessProve = ARTIFACT_KIND === "code" ?
-    "the logic is wrong on an edge/boundary/concurrency case — you may return clean:true ONLY by pasting the real test command, its exit code, and the specific edge cases it covered; if you did not run such a test, return clean:false" :
-    "a claim is factually or logically wrong — trace each claim to its cited source or the real inputs; you may return clean:true ONLY by naming the claims you traced and where; do not certify by fluent reading";
+    "the logic is wrong on an edge/boundary/concurrency case - you may return clean:true ONLY by pasting the real test command, its exit code, and the specific edge cases it covered; if you did not run such a test, return clean:false" :
+    "a claim is factually or logically wrong - trace each claim to its cited source or the real inputs; you may return clean:true ONLY by naming the claims you traced and where; do not certify by fluent reading";
 
 // Select the panel for this tier. NEVER prune dead-code-sweeper or scope-diff-reviewer for code.
 const PANEL = [{
@@ -101,7 +101,7 @@ const PANEL = [{
 }, {
     label: "sycophancy-detector",
     mode: "sycophancy",
-    prove: "reflexive praise/agreement or instant capitulation substitutes for judgment — run the strip-test: mentally delete every praise/agreement phrase ('great', 'absolutely right', 'of course', 'good catch') and check whether concrete technical judgment remains; flag if not"
+    prove: "reflexive praise/agreement or instant capitulation substitutes for judgment - run the strip-test: mentally delete every praise/agreement phrase ('great', 'absolutely right', 'of course', 'good catch') and check whether concrete technical judgment remains; flag if not"
 }, {
     label: "correctness-tester",
     mode: "subtle-conceptual-errors",
@@ -113,12 +113,12 @@ const PANEL = [{
 }, {
     label: "dead-code-sweeper",
     mode: "dead-code",
-    prove: "scaffolding, unused symbols/imports, dead branches, or commented-out experiments remain — diff the artifact against its pre-change state and flag anything introduced or orphaned that is never reached or referenced"
+    prove: "scaffolding, unused symbols/imports, dead branches, or commented-out experiments remain - diff the artifact against its pre-change state and flag anything introduced or orphaned that is never reached or referenced"
 }, {
     label: "scope-diff-reviewer",
     mode: "orthogonal-damage",
-    prove: "an edit appears in the DIFF the task did not require — a deleted/rewritten/reformatted comment or any touched line outside scope; judge from the DIFF, not the final file: a deleted comment is invisible in the final artifact"
-}, ].filter(s => true); // relevance filter — but NEVER prune dead-code-sweeper or scope-diff-reviewer for code
+    prove: "an edit appears in the DIFF the task did not require - a deleted/rewritten/reformatted comment or any touched line outside scope; judge from the DIFF, not the final file: a deleted comment is invisible in the final artifact"
+}, ].filter(s => true); // relevance filter - but NEVER prune dead-code-sweeper or scope-diff-reviewer for code
 
 const verdictSchema = {
     type: "object",
@@ -209,7 +209,7 @@ ${DIFF}
 
 Rules of engagement:
 - Inspect the REAL inputs (open the actual files/data/sources). Do not judge from assumptions.
-- Your review target includes the agent's plan and delivery prose, not just the code — for the
+- Your review target includes the agent's plan and delivery prose, not just the code - for the
   sycophancy check, run the strip-test on that conversational text.
 - For correctness on code, verify behaviorally and paste the real test command, exit code, and edge
   cases into testEvidence; clean:true is invalid without it. For prose, trace claims to sources.
@@ -220,7 +220,7 @@ Rules of engagement:
 - For orthogonal-damage, walk the DIFF hunk by hunk and state for each whether the task required it;
   if no diff was provided, that itself is a blocker finding.
 - Set needs_user_decision: true if a finding is a genuine 50/50, an unresolved contradiction, or a
-  flawed premise that only the user can settle — do not pick a side yourself.
+  flawed premise that only the user can settle - do not pick a side yourself.
 - Default to a finding when you cannot positively confirm the artifact is free of your mode. Silence
   must be earned. An empty findings list means you actively looked and there is genuinely nothing.
 Return only the schema object.`;
@@ -270,13 +270,13 @@ async function runGauntlet(round) {
 async function repair(findings, round) {
     phase(`Repair after round ${round}`);
     const fixPrompt = `Fix exactly these verified findings in the artifact and nothing else.
-Confine edits strictly to what each finding requires — do not touch unrelated code or comments
+Confine edits strictly to what each finding requires - do not touch unrelated code or comments
 (that would itself be orthogonal-damage), and delete any scaffolding you introduce.
 If a finding is wrong, a pure style preference, or contradicts the success criteria, do NOT silently
-comply — reject it with a one-line technical reason instead of editing (faithfully implementing an
+comply - reject it with a one-line technical reason instead of editing (faithfully implementing an
 incorrect finding is sycophancy toward the skeptic).
 If a finding cannot be fixed without choosing between materially different interpretations the user
-must decide, return it unchanged and flag it as requiring a user decision — never pick a side.
+must decide, return it unchanged and flag it as requiring a user decision - never pick a side.
 
 Artifact: ${ARTIFACT}
 Findings:
@@ -296,13 +296,13 @@ let escalated = [];
 for (let round = 1; round <= MAX_ROUNDS && cleanStreak < 2; round++) {
     const findings = await runGauntlet(round);
 
-    // User-decision findings cannot be silently repaired — halt and escalate.
+    // User-decision findings cannot be silently repaired - halt and escalate.
     const blocking = findings.filter(
         f => f.needsUserDecision || USER_DECISION_MODES.includes(f.mode)
     );
     if (blocking.length) {
         escalated = blocking;
-        log("STOP: findings require a user decision, not a silent repair — escalating, NOT guessing:");
+        log("STOP: findings require a user decision, not a silent repair - escalating, NOT guessing:");
         log(JSON.stringify(blocking, null, 2));
         break; // exit WITHOUT declaring convergence; ask the user with AskUserQuestion outside the script
     }
@@ -324,7 +324,7 @@ if (escalated.length) {
     log("Converged: two consecutive clean rounds. Artifact passed the gauntlet.");
     log("Before reporting success, confirm no Phase-1 [UNVERIFIED] assumption is still unstated.");
 } else {
-    log("Did NOT converge within budget. Report these unresolved findings honestly — do not declare victory:");
+    log("Did NOT converge within budget. Report these unresolved findings honestly - do not declare victory:");
     log(JSON.stringify(lastFindings, null, 2));
 }
 ```
@@ -341,4 +341,4 @@ if (escalated.length) {
 - The two-clean-rounds rule is the margin against a skeptic that went easy once; do not lower it to
     one on a high-stakes task.
 - The loop deliberately has three terminal states: converged, halted-for-user-decision, and
-    budget-exhausted. Only the first is a pass — report the other two honestly.
+    budget-exhausted. Only the first is a pass - report the other two honestly.

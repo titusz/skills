@@ -1,6 +1,6 @@
 # Interview Guide
 
-Purpose: extract the founder's **opinionated intent** and close genuine gaps — not run a
+Purpose: extract the founder's **opinionated intent** and close genuine gaps - not run a
 questionnaire. The interview feeds `idea.*`, `meta.tags`, founder-fit scoring, and the
 weighting of custom instructions.
 
@@ -10,7 +10,7 @@ weighting of custom instructions.
     instructions). Build a coverage map against the goals below.
 2. Ask only about uncovered goals. Batch related questions; max 3 questions per batch,
     max 3 batches, hard cap 9 questions.
-3. After each batch, re-check coverage — later batches shrink or disappear as answers
+3. After each batch, re-check coverage - later batches shrink or disappear as answers
     cascade.
 4. Multiple-choice options are welcome (fast to answer) but always leave room for
     free-text nuance; never force a wrong-shaped answer.
@@ -28,14 +28,14 @@ weighting of custom instructions.
 
 ## Coverage goals and sample phrasings
 
-**Batch theme 1 — The problem and who has it**
+**Batch theme 1 - The problem and who has it**
 
 - "Walk me through the moment someone hits this problem. What do they do today instead?"
-- "Who feels this most painfully — describe one concrete person or company."
+- "Who feels this most painfully - describe one concrete person or company."
 - "Have you seen anyone pay money (or serious time) to work around this? What did that
     look like?"
 
-**Batch theme 2 — The solution and your edge**
+**Batch theme 2 - The solution and your edge**
 
 - "In your ideal version, what does the product actually *do* on a random Tuesday?"
 - "What do you know or have that most people attempting this wouldn't?" (skills,
@@ -44,14 +44,14 @@ weighting of custom instructions.
 - "How would you know it's working? What would you look at?" (feeds outcome
     verifiability without saying so)
 
-**Batch theme 3 — Constraints, ambition, and appetite**
+**Batch theme 3 - Constraints, ambition, and appetite**
 
-- "How big does this need to get for you to call it a success — lifestyle business,
+- "How big does this need to get for you to call it a success - lifestyle business,
     venture scale, or something else?"
-- "What are your hard constraints — time, money, geography, things you refuse to do?"
+- "What are your hard constraints - time, money, geography, things you refuse to do?"
 - "What's the failure you actually fear here? What would make you stop?"
 - "A year from now this turned out to be a waste of time. What's the most likely reason?"
-    (pre-mortem — surfaces unknown unknowns and seeds kill criteria)
+    (pre-mortem - surfaces unknown unknowns and seeds kill criteria)
 
 ## Capture
 

@@ -77,7 +77,7 @@ BAND_META = {
     "pursue": {
         "label": "Pursue",
         "color": "#10b981",
-        "desc": "Strong signal, strong evidence — commit resources.",
+        "desc": "Strong signal, strong evidence - commit resources.",
     },
     "prototype": {
         "label": "Prototype",
@@ -87,7 +87,7 @@ BAND_META = {
     "validate": {
         "label": "Validate",
         "color": "#8b5cf6",
-        "desc": "Attractive but under-evidenced — de-risk assumptions first.",
+        "desc": "Attractive but under-evidenced - de-risk assumptions first.",
     },
     "explore": {
         "label": "Explore",
@@ -97,12 +97,12 @@ BAND_META = {
     "monitor": {
         "label": "Monitor",
         "color": "#f59e0b",
-        "desc": "Not now — watch for the conditions to change.",
+        "desc": "Not now - watch for the conditions to change.",
     },
     "avoid": {
         "label": "Avoid",
         "color": "#ef4444",
-        "desc": "Evidence says no — spend your time elsewhere.",
+        "desc": "Evidence says no - spend your time elsewhere.",
     },
 }
 
@@ -200,7 +200,7 @@ def validate_analysis(data: dict) -> list[str]:
             problems.append(f"schema: {loc}: {message}")
     else:
         problems.append(
-            "warning: analysis.schema.json not found next to render.py — schema check skipped"
+            "warning: analysis.schema.json not found next to render.py - schema check skipped"
         )
 
     # Semantic checks (only if structurally plausible)
@@ -216,7 +216,7 @@ def validate_analysis(data: dict) -> list[str]:
         if missing:
             problems.append(
                 f"categories: missing required categor{'y' if len(missing) == 1 else 'ies'} "
-                f"{', '.join(missing)} — methodology.md fixes the model at six"
+                f"{', '.join(missing)} - methodology.md fixes the model at six"
             )
 
         composite = compute_composite(data)
@@ -247,7 +247,7 @@ def validate_analysis(data: dict) -> list[str]:
         if band_distance(recommendation, expected_band) > 1:
             problems.append(
                 f"verdict: recommendation '{recommendation}' deviates more than one step "
-                f"from band '{expected_band}' — methodology.md forbids this"
+                f"from band '{expected_band}' - methodology.md forbids this"
             )
 
         for cat in cats:
@@ -258,7 +258,7 @@ def validate_analysis(data: dict) -> list[str]:
                 if abs(mean - cat["score"]) > 1.5:
                     problems.append(
                         f"scores: category '{cat['id']}' score {cat['score']} deviates >1.5 "
-                        f"from dimension mean {mean:.1f} — double-check reasoning"
+                        f"from dimension mean {mean:.1f} - double-check reasoning"
                     )
     except (KeyError, TypeError, ZeroDivisionError):
         pass  # structural errors already reported by schema validation
@@ -415,7 +415,7 @@ REPORT_TEMPLATE = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ d.meta.name }} — Startup Evaluation</title>
+<title>{{ d.meta.name }} - Startup Evaluation</title>
 <style>{{ base_css | safe }}</style>
 <script>{{ theme_js | safe }}</script>
 </head>
@@ -503,7 +503,7 @@ REPORT_TEMPLATE = """<!DOCTYPE html>
         <div class="small muted" style="margin-top:10px"><b>Sources</b>
           <ul class="tight">
             {% for s in c.sources %}
-            <li>{% if s.get('url') %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}{% if s.get('note') %} — {{ s.note }}{% endif %}</li>
+            <li>{% if s.get('url') %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}{% if s.get('note') %} - {{ s.note }}{% endif %}</li>
             {% endfor %}
           </ul>
         </div>
@@ -536,7 +536,7 @@ REPORT_TEMPLATE = """<!DOCTYPE html>
         <td>{{ r.risk }}</td>
         <td><span class="scorechip" style="background: {{ r.severity | sev_color }}">{{ r.severity }}</span></td>
         <td class="small muted">{{ r.likelihood }}</td>
-        <td class="small">{{ r.get('mitigation', '—') }}</td>
+        <td class="small">{{ r.get('mitigation', '-') }}</td>
       </tr>
       {% endfor %}
     </table>
@@ -550,7 +550,7 @@ REPORT_TEMPLATE = """<!DOCTYPE html>
       <ul class="tight">
         {% for a in d.verdict.assumptions %}
         <li><b class="small" style="text-transform:uppercase; color: {{ {'high':'#ef4444','medium':'#f59e0b','low':'#3b82f6'}[a.criticality] }}">{{ a.criticality }}</b>
-          — {{ a.assumption }}{% if a.get('current_evidence') %} <span class="small muted">({{ a.current_evidence }})</span>{% endif %}</li>
+          - {{ a.assumption }}{% if a.get('current_evidence') %} <span class="small muted">({{ a.current_evidence }})</span>{% endif %}</li>
         {% endfor %}
       </ul>
     </div>
@@ -571,7 +571,7 @@ REPORT_TEMPLATE = """<!DOCTYPE html>
       <tr>
         <td>{{ v.question }}</td>
         <td class="small">{{ v.method }}</td>
-        <td class="small muted">{{ v.get('effort', '—') }}</td>
+        <td class="small muted">{{ v.get('effort', '-') }}</td>
         <td class="small">{{ v.success_signal }}</td>
       </tr>
       {% endfor %}
@@ -630,7 +630,7 @@ REPORT_TEMPLATE = """<!DOCTYPE html>
         <div class="small muted"><b>Sources</b>
           <ul class="tight">
             {% for s in a.sources %}
-            <li>{% if s.get('url') %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}{% if s.get('note') %} — {{ s.note }}{% endif %}</li>
+            <li>{% if s.get('url') %}<a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}{% if s.get('note') %} - {{ s.note }}{% endif %}</li>
             {% endfor %}
           </ul>
         </div>
@@ -916,7 +916,7 @@ def main() -> int:
     if args.cmd == "validate":
         problems = validate_analysis(load_json(args.analysis))
         if report_problems(problems):
-            print(f"INVALID — {len(problems)} problem(s)")
+            print(f"INVALID - {len(problems)} problem(s)")
             return 1
         print("VALID ✓  (schema, weights, scores, and verdict band all consistent)")
         return 0

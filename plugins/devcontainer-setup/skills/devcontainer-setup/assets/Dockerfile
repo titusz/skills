@@ -1,6 +1,6 @@
 # Devcontainer image for {{PROJECT_NAME}}.
 #
-# Deliberately generic: language toolchains are NOT baked in here — they are
+# Deliberately generic: language toolchains are NOT baked in here - they are
 # provisioned at postCreate by `mise install` from the project's mise.toml
 # (single source of truth for versions) and persisted in a named volume, so
 # this Dockerfile stays nearly identical across projects. Only OS-level
@@ -15,13 +15,13 @@ FROM node:24-bookworm
 # Base system packages: shell conveniences, dev CLIs, and a C toolchain
 # (build-essential) so mise-built runtimes and native extensions compile.
 # PROJECT-APT: add project-specific system libraries to this list
-# (e.g. ffmpeg, libsndfile1, libpq-dev) — keep language runtimes out.
+# (e.g. ffmpeg, libsndfile1, libpq-dev) - keep language runtimes out.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     less procps sudo fzf zsh man-db unzip gnupg2 jq nano vim ca-certificates \
     build-essential pkg-config \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# GitHub CLI — backs the container-local git credential helper (see
+# GitHub CLI - backs the container-local git credential helper (see
 # setup-gitconfig.sh) so no SSH keys or host credential stores are mounted.
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     -o /usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -33,7 +33,7 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
 # Non-root user with passwordless sudo (required: Claude Code refuses
 # --dangerously-skip-permissions as root, and volumes need chown at
 # postCreate). The base image's node user already holds UID/GID 1000, so
-# rename it instead of adding a second user — dev must own UID 1000 for the
+# rename it instead of adding a second user - dev must own UID 1000 for the
 # Dev Containers UID remap (updateRemoteUserUID) to work on Linux hosts.
 RUN usermod --login dev --home /home/dev --move-home --shell /bin/zsh node \
     && groupmod --new-name dev node \
@@ -48,7 +48,7 @@ RUN mkdir /commandhistory \
 
 # Pre-create the workspace and the named-volume mount-points with dev
 # ownership so first-use volumes inherit it. (Bind-mount targets need no
-# stubs — Docker overlays them with the mounted source's metadata.)
+# stubs - Docker overlays them with the mounted source's metadata.)
 RUN mkdir -p /workspace \
     /home/dev/.claude \
     /home/dev/.codex \
@@ -74,15 +74,15 @@ ENV NPM_CONFIG_PREFIX=/usr/local/share/npm-global
 ENV PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:/usr/local/share/npm-global/bin:$PATH"
 ENV SHELL=/bin/zsh
 
-# mise — tool version manager + task runner; toolchains land in the
+# mise - tool version manager + task runner; toolchains land in the
 # ~/.local/share/mise named volume at postCreate (`mise install`).
 # Download-then-run so a failed download fails the build (a plain curl|sh
-# succeeds silently on curl failure — /bin/sh has no pipefail).
+# succeeds silently on curl failure - /bin/sh has no pipefail).
 RUN curl -fsSL https://mise.run -o /tmp/mise-install.sh \
     && sh /tmp/mise-install.sh \
     && rm /tmp/mise-install.sh
 
-# Agent CLIs — installed the same way, always latest, verified at build so a
+# Agent CLIs - installed the same way, always latest, verified at build so a
 # broken install fails fast. Credentials come from host mounts at runtime,
 # never from the image.
 RUN npm install -g @anthropic-ai/claude-code@latest @openai/codex@latest \
@@ -102,8 +102,8 @@ RUN curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/in
     && echo 'export HISTFILE=/commandhistory/.zsh_history' >> $HOME/.zshrc \
     && echo 'eval "$(mise activate zsh)"' >> $HOME/.zshrc \
     && echo 'eval "$(mise activate bash)"' >> $HOME/.bashrc \
-    && echo '[ -e /var/tmp/.post-create-ok ] || echo "devcontainer: post-create has not completed in this container — wait if it is still running, else run: bash .devcontainer/post-create.sh"' >> $HOME/.zshrc \
-    && echo '[ -e /var/tmp/.post-create-ok ] || echo "devcontainer: post-create has not completed in this container — wait if it is still running, else run: bash .devcontainer/post-create.sh"' >> $HOME/.bashrc
+    && echo '[ -e /var/tmp/.post-create-ok ] || echo "devcontainer: post-create has not completed in this container - wait if it is still running, else run: bash .devcontainer/post-create.sh"' >> $HOME/.zshrc \
+    && echo '[ -e /var/tmp/.post-create-ok ] || echo "devcontainer: post-create has not completed in this container - wait if it is still running, else run: bash .devcontainer/post-create.sh"' >> $HOME/.bashrc
 
 # ---- host- and project-specific layers below: keep them last so the generic
 # ---- layers above stay shared across projects in the build cache

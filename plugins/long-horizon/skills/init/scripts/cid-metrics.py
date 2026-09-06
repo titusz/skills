@@ -5,8 +5,8 @@
 """Deterministic analytics over the CID iteration journal.
 
 Parses the markdown table in .cid/journal.md (plus .cid/journal-archive.md with
---all) and prints the loop's fitness signals — verdict mix, convergence from the
-Advances column, verdict streaks, same-step bounces, and phase trajectory — so
+--all) and prints the loop's fitness signals - verdict mix, convergence from the
+Advances column, verdict streaks, same-step bounces, and phase trajectory - so
 CID roles consume one small digest instead of re-deriving arithmetic from raw
 table rows. Read-only. Exits 0 even when the journal is missing (with a note)
 so callers need no error handling.
@@ -140,7 +140,7 @@ def compute(rows: list[dict], malformed: int, window_size: int) -> dict:
 def render(metrics: dict, source: str) -> str:
     """Format the digest as the compact text block roles read."""
     lines = [
-        f"CID journal metrics — window: last {metrics['window']} of "
+        f"CID journal metrics - window: last {metrics['window']} of "
         f"{metrics['total_iterations']} iterations ({source})"
     ]
     verdicts = ", ".join(f"{k} {v}" for k, v in sorted(metrics["verdicts"].items()))
@@ -178,7 +178,7 @@ def render(metrics: dict, source: str) -> str:
         lines.append(f"Retro rows: {metrics['retro_rows']} (excluded from metrics)")
     if metrics["malformed_rows"]:
         lines.append(
-            f"WARNING: {metrics['malformed_rows']} malformed table row(s) skipped — "
+            f"WARNING: {metrics['malformed_rows']} malformed table row(s) skipped - "
             "check .cid/journal.md by hand"
         )
     return "\n".join(lines)
@@ -200,7 +200,7 @@ def main() -> int:
     pack = Path(args.dir)
     journal = pack / "journal.md"
     if not journal.is_file():
-        print(f"No journal at {journal} — no iterations recorded yet.")
+        print(f"No journal at {journal} - no iterations recorded yet.")
         return 0
 
     sources = [journal]

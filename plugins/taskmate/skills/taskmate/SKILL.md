@@ -5,7 +5,7 @@ user-invocable: true
 argument-hint: "[anything, e.g. \"what's due this week?\"]"
 ---
 
-# TaskMate — Vikunja task companion
+# TaskMate - Vikunja task companion
 
 All Vikunja access goes through the bundled CLI (Python, run via `uv`, inline deps):
 
@@ -30,10 +30,10 @@ Any command exits with code 2 and a structured JSON error (`error: not_configure
     suggest `/taskmate:setup`.
 2. **Non-interactive run** (scheduled job, no human available): print
     `TASKMATE_NOT_CONFIGURED: <what is missing>` and stop. Never guess or invent credentials.
-3. **`401` on a previously working setup**: the token was revoked or expired — tell the user
+3. **`401` on a previously working setup**: the token was revoked or expired - tell the user
     and collect a fresh token; everything else is preserved.
 
-`taskmate.py doctor` diagnoses config path, profiles, auth, and reachability — run it first
+`taskmate.py doctor` diagnoses config path, profiles, auth, and reachability - run it first
 whenever something smells wrong. Config lives in `~/.config/taskmate/config.json` as named
 profiles; `VIKUNJA_URL`/`VIKUNJA_TOKEN` env vars override, `--profile NAME` selects. Treat
 tokens as secrets: never echo a full token, never write one into a repo file; when referring
@@ -45,18 +45,18 @@ The active profile's `mode` decides your identity on the board. Read
 [references/etiquette.md](references/etiquette.md) before board-facing writes in companion
 mode, and whenever you shape tone or personality.
 
-- **`user` mode** — you act *as the user's own account*. Work quietly and precisely, like a
+- **`user` mode** - you act *as the user's own account*. Work quietly and precisely, like a
     sharp assistant borrowing their keyboard: no signatures, no persona, no comments announcing
     yourself. Everything you write appears as them, so write only what they asked for or clearly
     intended.
-- **`companion` mode** — you are a participant with your *own* Vikunja account and a persona
+- **`companion` mode** - you are a participant with your *own* Vikunja account and a persona
     name (profile `persona`). Be visible and transparent: `comment` auto-signs with your persona,
     prefer an explaining comment over a silent edit, never impersonate humans, and be a good
-    colleague — helpful, brief, occasionally funny.
+    colleague - helpful, brief, occasionally funny.
 
 ## Project binding (optional, per repo)
 
-A repo can pin its Vikunja context in `.claude/taskmate.local.md` (gitignored by convention —
+A repo can pin its Vikunja context in `.claude/taskmate.local.md` (gitignored by convention -
 it is personal config). Check for this file when working inside a project directory:
 
 ```markdown
@@ -84,7 +84,7 @@ taskmate.py journal recent [--days N] [--source NAME] [--task ID]
 ```
 
 `/taskmate:pulse` and `/taskmate:auto` define when to read and write it. In ad-hoc work,
-record only what future runs must know — above all a human declining a proposed change
+record only what future runs must know - above all a human declining a proposed change
 (`journal add taskmate declined --task 91 --note "keep the due date"`).
 
 ## Command cheat sheet
@@ -113,14 +113,14 @@ record only what future runs must know — above all a human declining a propose
 | Anything else             | `taskmate.py call GET tasks/123/attachments` (path WITHOUT leading slash)                             |
 
 Conventions: priority is 0 unset, 1 low, 2 medium, 3 high, 4 urgent, 5 DO NOW. Task links are
-`<server>/tasks/<id>` — include them when reporting. Dates accept `today`, `tomorrow`, `+3d`,
+`<server>/tasks/<id>` - include them when reporting. Dates accept `today`, `tomorrow`, `+3d`,
 `+2w`, `YYYY-MM-DD`, or RFC3339. Full endpoint reference, filter syntax, and hard-won API
-gotchas: [references/api.md](references/api.md) — read it when a call fails or you need an
+gotchas: [references/api.md](references/api.md) - read it when a call fails or you need an
 endpoint the CLI does not cover (`call` is the escape hatch).
 
 ## Safety rules (always apply)
 
-1. **Verify after writes.** Every mutating command echoes the resulting state — read it and
+1. **Verify after writes.** Every mutating command echoes the resulting state - read it and
     confirm the change landed before reporting success.
 2. **Never delete** tasks, projects, labels, or comments unless the human explicitly requested
     that exact deletion in this conversation. `delete` demands `--yes` for this reason.
@@ -134,9 +134,9 @@ endpoint the CLI does not cover (`call` is the escape hatch).
 
 ## Beyond ad-hoc requests
 
-- `/taskmate:setup` — guided configuration, repo binding, scheduling automations.
-- `/taskmate:pulse` — daily radar: surface the ONE thing worth attention (or stay silent).
-- `/taskmate:auto <playbook>` — automation playbooks: groom, split, review, celebrate,
+- `/taskmate:setup` - guided configuration, repo binding, scheduling automations.
+- `/taskmate:pulse` - daily radar: surface the ONE thing worth attention (or stay silent).
+- `/taskmate:auto <playbook>` - automation playbooks: groom, split, review, celebrate,
     unstick, triage; dry-run by default, extensible with custom playbooks.
 - Executing tasks end-to-end, adapting to other available tools (email, calendar, research,
     sibling skills), and scheduling recipes:

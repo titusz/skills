@@ -15,7 +15,7 @@ Exit codes: 0 ok, 1 API/network error, 2 not configured (structured JSON hint on
 
 A per-profile journal (memory/<profile>.jsonl beside the config file) gives otherwise
 stateless scheduled runs cross-run memory: `journal add|recent`. Journal commands work
-offline — they never touch the Vikunja API.
+offline - they never touch the Vikunja API.
 """
 
 from __future__ import annotations
@@ -667,7 +667,7 @@ def cmd_comment(args, ctx) -> None:
     """Add a comment; companion mode signs with the persona unless --no-sign."""
     text = args.text
     if ctx["profile"]["mode"] == "companion" and not args.no_sign:
-        text += f"\n\n— {ctx['profile']['persona']}"
+        text += f"\n\n - {ctx['profile']['persona']}"
     comment = api(
         ctx, "PUT", f"/tasks/{args.id}/comments", body={"comment": to_html(text)}
     )
@@ -806,7 +806,7 @@ def cmd_call(args, ctx) -> None:
         die(
             1,
             "mangled_path",
-            detail=f"Got '{args.path}' — your shell (Git Bash/MSYS) rewrote the leading slash.",
+            detail=f"Got '{args.path}' - your shell (Git Bash/MSYS) rewrote the leading slash.",
             hint="Pass the API path without a leading slash, e.g.: call DELETE labels/16",
         )
     body = None
