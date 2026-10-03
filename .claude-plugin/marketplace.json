@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A collection of reusable Claude Code skills, agents, and hooks",
-    "version": "0.8.1"
+    "version": "0.9.0"
   },
   "plugins": [
     {
@@ -120,6 +120,14 @@
       "version": "0.1.1",
       "license": "MIT",
       "keywords": ["image", "image-generation", "codex", "gpt-image", "art-style", "illustration", "assets"]
+    },
+    {
+      "name": "council",
+      "source": "./plugins/council",
+      "description": "Convene a council of 16 personality-typed subagents to debate a complex, many-sided question under coded rules of order - blind openings, an open floor where members bid for the right to speak, a clerk who keeps the debate on its real disagreements - and decide by consensus or vote",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": ["council", "debate", "deliberation", "consensus", "vote", "perspectives", "decision-making", "subagents", "workflow"]
     }
   ]
 }

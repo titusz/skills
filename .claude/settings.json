@@ -13,7 +13,8 @@
     "taskmate@titusz-skills": true,
     "devcontainer-setup@titusz-skills": true,
     "evaluate-startup@titusz-skills": true,
-    "imagegen@titusz-skills": true
+    "imagegen@titusz-skills": true,
+    "council@titusz-skills": true
   },
   "extraKnownMarketplaces": {
     "titusz-skills": {

@@ -9,6 +9,22 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` - see [Versioning](.claude/CLAUDE.md#versioning).
 
+## [0.9.0] - 2026-10-03
+
+### Added
+
+- **council 0.1.0** - a council of sixteen personality-typed subagents that
+    debates a complex, many-sided question and decides by consensus or vote.
+    One agent file per seat (the four-letter types popularised by Myers-Briggs,
+    described in original wording; no affiliation with the MBTI trademark
+    holders), each on Sonnet at low effort. The rules of order are coded in a
+    plugin workflow: blind openings, open-floor rounds in which members bid
+    for the right to speak, a right of reply, closing by quiet floor, motion
+    or round cap, and a ballot vote counted in code with one runoff. The main
+    session acts as a neutral clerk between sittings, relays the debate, and
+    reports the verdict with its dissent. Run it with `/council:council`;
+    requires dynamic workflows.
+
 ## [0.8.1] - 2026-09-06
 
 ### Fixed

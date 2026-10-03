@@ -37,6 +37,7 @@ Then install individual plugins:
 | **devcontainer-setup**     | Generate or upgrade a cross-platform .devcontainer that mounts host git/Claude Code/Codex credentials, pins toolchains via [mise](https://mise.jdx.dev), bootstraps Anthropic cloud sessions, and ships a doctor check/repair command - zero secrets in committed files | MIT     |
 | **evaluate-startup**       | Evaluate a startup or business idea with evidence - adaptive founder interview, parallel deep research, adversarial fact-checking, a scored analysis separating attractiveness from conviction, a standalone HTML report, and a searchable index of all evaluations     | MIT     |
 | **imagegen**               | Generate and edit raster images via the Codex CLI's built-in image tool on a ChatGPT subscription (no API key) - reference images, reusable art-style cards, exact-size post-processing, outputs stored with their prompts in a project-local `cauldron/` folder        | MIT     |
+| **council**                | Convene a council of 16 personality-typed subagents (the four-letter Myers-Briggs types) to debate a hard question under coded rules of order - blind openings, an open floor where members bid to speak, a neutral clerk - and decide by consensus or vote             | MIT     |
 
 ## Development
 
