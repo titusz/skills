@@ -9,7 +9,7 @@ This version tracks the **catalog as a whole**: a new plugin is a minor bump, a
 catalog-wide fix is a patch. Individual plugins carry their own `version` in
 their `plugin.json` - see [Versioning](.claude/CLAUDE.md#versioning).
 
-## [0.9.0] - 2026-10-03
+## [0.9.0] - 2026-10-04
 
 ### Added
 
